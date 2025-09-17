@@ -29,7 +29,7 @@ exports.loginUser = async (req, res) => {
                return res.status(404).json({message: "Failed to generate token "});
           }
 
-          res.status(200).json({message:"User login Successfully", user});
+          res.status(200).json({message:"User login Successfully", user, token});
 
     } catch (err) {
        console.log("Error in login user", err);
