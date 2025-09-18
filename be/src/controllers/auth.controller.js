@@ -21,7 +21,7 @@ exports.loginUser = async (req, res) => {
           const validated = await compareHashPass(password, user.password);
           console.log(validated);
 
-          if (!validated) {
+          if (!validated) { 
                return res.status(401).json({ message: "incorrect password or Email" });
           }
 
