@@ -4,37 +4,40 @@ const { generateToken } = require('../lib/jwt');
 
 
 exports.loginUser = async (req, res) => {
-    try {
-          const {email, password} = req.body;
+     try {
+          const { email, password } = req.body;
 
           if (!email || !password) {
-               return res.status(400).json({message:"Credentials required"});
+               return res.status(400).json({ message: "Credentials required" });
           }
 
-          const user = await User.findOne({email});
+          const user = await User.findOne({ email });
+          console.log(user);
 
           if (!user) {
-               return res.status(404).json({message:"User not found "});
+               return res.status(404).json({ message: "User not found " });
           }
 
           const validated = await compareHashPass(password, user.password);
+          console.log(validated);
 
           if (!validated) {
-               return res.status(401).json({message: "incorrect password or Email"});
+               return res.status(401).json({ message: "incorrect password or Email" });
           }
 
-          const token = await generateToken(user._id, process.env.JWT_SECRET, process.env.JWT_EXPIRY);
+          const token = await generateToken(user._id, process.env.JWT_SECRET, process.env.JWT_EXPIRES_IN);
+          console.log("token is: ", token);
 
-          if (!token ) {
-               return res.status(404).json({message: "Failed to generate token "});
+          if (!token) {
+               return res.status(404).json({ message: "Failed to generate token " });
           }
 
-          res.status(200).json({message:"User login Successfully", user, token});
+          res.status(200).json({ message: "User login Successfully", user, token });
 
-    } catch (err) {
-       console.log("Error in login user", err);
-       res.status(500).json({message: "Internal Server Error"});
-    }
+     } catch (err) {
+          console.log("Error in login user", err);
+          res.status(500).json({ message: "Internal Server Error" });
+     }
 }
 
 exports.registerUser = async (req, res) => {
