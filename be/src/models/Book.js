@@ -32,7 +32,8 @@ const bookSchema = new mongoose.Schema({
     },
     // category & tags
     category: {
-        type: String, // Or use ObjectId if you want a separate Category collection
+        type: mongoose.Schema.Types.ObjectId, ref: "Category",
+        required: true
     },
     tags: [String], // Array of keywords
     // Store / Inventory
