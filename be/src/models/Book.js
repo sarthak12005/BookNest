@@ -35,8 +35,7 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref: "Category",
         required: true
     },
-    tags: [String], // Array of keywords
-    // Store / Inventory
+    tags: [String],
     price: {
         type: Number,
         required: true
@@ -52,9 +51,11 @@ const bookSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    // Extra
-    coverImage: {
-        type: String // URL or file path
+    coverImages: {
+        type: [String],
+    },
+    pdfUrl: {
+        type: String,
     },
     pages: {
         type: Number
@@ -73,8 +74,6 @@ const bookSchema = new mongoose.Schema({
             date: { type: Date, default: Date.now }
         }
     ]
-
-    // Timestamps
 }, { timestamps: true });
 
 const Book = mongoose.model("Book", bookSchema);
