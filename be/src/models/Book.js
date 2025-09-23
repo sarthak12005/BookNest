@@ -7,7 +7,7 @@ const bookSchema = new mongoose.Schema({
         trim: true
     },
     author: {
-        type: String, // you can also link to an Author collection
+        type: String, 
         required: true,
         trim: true
     },
@@ -18,7 +18,7 @@ const bookSchema = new mongoose.Schema({
     isbn: {
         type: String,
         unique: true,
-        sparse: true // allows some books without ISBN
+        sparse: true 
     },
     publisher: {
         type: String
@@ -30,7 +30,6 @@ const bookSchema = new mongoose.Schema({
         type: String,
         default: "English"
     },
-    // category & tags
     category: {
         type: mongoose.Schema.Types.ObjectId, ref: "Category",
         required: true
@@ -77,5 +76,6 @@ const bookSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const Book = mongoose.model("Book", bookSchema);
+
 
 module.exports = Book;
