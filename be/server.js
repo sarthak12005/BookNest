@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended: true}));
 
 
 const authRoutes = require('./src/routes/auth.routes');
+const categoryRoutes = require('./src/routes/category.routes');
 
 
 app.get('/', (req, res) => {
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/auth', authRoutes);
+app.use('/api/category', categoryRoutes);
 
 
 app.listen(PORT, () => {
