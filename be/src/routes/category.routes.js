@@ -24,10 +24,20 @@ exports.addCategory = async (req, res) => {
             console.log("error in uploading image", err);
         }
 
-        
+        const newCategory = new Category({
+            category_name,
+            image: url,
+            description
+        });
 
+        if (!newCategory) {
+            return res.status(400).json({ message: "Error in creating category" });
+        }
 
+        await newCategory.save();
+        res.status(201).json({ message: "Category Added Successfully", newCategory });
     } catch (err) {
-
+        console.error(err);
+        res.status(500).json({ message: "Server Error" });
     }
 }
