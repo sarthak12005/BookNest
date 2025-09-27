@@ -42,3 +42,19 @@ exports.addCategory = async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 }
+
+exports.getCategory = async (req, res) => {
+    try {
+        const categories = await Category.find();
+
+        if (!categories) {
+            return res.status(404).json({ message: "No Category Found" });
+        }
+
+        res.status(200).json({ message: "Categorys fetched successfully", categories });
+
+    } catch (error) {
+        console.error("error in fetching categories", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
