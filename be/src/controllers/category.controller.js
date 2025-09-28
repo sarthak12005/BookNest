@@ -19,7 +19,7 @@ exports.addCategory = async (req, res) => {
         let url = "";
         try {
             const result = await cloudinary.uploader.upload(file);
-             url = result.secure_url;
+            url = result.secure_url;
             console.log("the file url is: ", url);
         } catch (err) {
             console.log("error in uploading image", err);
@@ -56,5 +56,21 @@ exports.getCategory = async (req, res) => {
     } catch (error) {
         console.error("error in fetching categories", error);
         res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+exports.getCategoryById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const category = await Category.findById(id);
+
+        if (!category) {
+            return res.status(404).json({ message: "Category not found " });
+        }
+
+        res.status(200).json({ message: "Category Found", category });
+    } catch (error) {
+        console.log("error in fetching category by id: ", error);
+        res.status(500).json({message:"Internal Server Error"});
     }
 }
