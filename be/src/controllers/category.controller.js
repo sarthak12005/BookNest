@@ -1,7 +1,6 @@
 const Category = require('../models/Category');
 const cloudinary = require('../config/Cloudinary');
 
-
 exports.addCategory = async (req, res) => {
     try {
         const { category_name, file, description } = req.body;
@@ -58,7 +57,6 @@ exports.getCategory = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
-
 exports.getCategoryById = async (req, res) => {
     try {
         const { id } = req.params;
