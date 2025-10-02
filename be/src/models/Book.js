@@ -31,7 +31,7 @@ const bookSchema = new mongoose.Schema({
         default: "English"
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId, ref: "Category",
+        type: String,
         required: true
     },
     tags: [String],

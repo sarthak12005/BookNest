@@ -57,6 +57,7 @@ exports.getCategory = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
 exports.getCategoryById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -88,3 +89,5 @@ exports.deleteCategoryById = async (req, res) => {
         res.status(500).json({message:"Internal Server Error"});
     }
 }
+
+
