@@ -5,7 +5,7 @@ const { addBook, getBookById, getAllBooks, deleteBookById } = require('../contro
 router.post('/book', addBook);
 router.get('/books', getAllBooks);
 router.get('/book/:id', getBookById);
-router.post('/book/:id', deleteBookById);
+router.delete('/book/:id', deleteBookById);
 
 
 module.exports = router;
