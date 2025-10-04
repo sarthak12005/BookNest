@@ -1,5 +1,6 @@
 import React from 'react'
 import { Search, SearchIcon, ShoppingCart } from 'lucide-react'
+import {useNavigate} from 'react-router'
 
 const Sidebar = () => {
   const menuItems = [
@@ -9,6 +10,8 @@ const Sidebar = () => {
     { name: 'Author', link: '/author' },
     { name: 'Contact', link: '/contact' },
   ];
+
+  const navigate = useNavigate();
   return (
     <header>
       <nav className='w-screen p-4 border-0 border-b-black flex justify-between items-center px-20 '>
@@ -17,7 +20,7 @@ const Sidebar = () => {
         </div>
         <ul className='flex gap-6 text-black/70 font-semibold'>
           {menuItems.map((item) => (
-            <li key={item.name} className='transition-colors duration-200 cursor-pointer ease-in-out hover:text-blue-400'>
+            <li key={item.name} className='transition-colors duration-200 cursor-pointer ease-in-out hover:text-blue-400' onClick={() => navigate(item.link)}>
               {item.name}
             </li>
           ))}
