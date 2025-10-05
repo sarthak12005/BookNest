@@ -28,9 +28,9 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-        <div className='flex gap-3 '>
+        <div className='flex gap-4 '>
           <span className='text-black/70 hover:text-black/100 transition-colors duration-200 ease-in-out cursor-pointer'><SearchIcon /></span>
-          <span className='text-black/70 hover:text-black/100 transition-colors duration-200 ease-in-out cursor-pointer'><HeartIcon /></span>
+          <span className='text-black/70 hover:text-red-500 transition-colors duration-200 ease-in-out cursor-pointer'><HeartIcon /></span>
           <span className='text-black/70 hover:text-black/100 transition-colors duration-200 ease-in-out cursor-pointer'><ShoppingCart /></span>
         </div>
       </nav>
