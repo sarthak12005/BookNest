@@ -1,7 +1,7 @@
 import axiosInstance from "./axiosInstance";
 
 
-export const fetchBooks = async (params) => {
+export const fetchBooks = async () => {
     try {
         const response = await axiosInstance.get('/books/books');
         return response.data;
