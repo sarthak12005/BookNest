@@ -9,18 +9,29 @@ import './App.css'
 
 function App() {
 
+   const routes = [
+      {
+         path: '/', element: <Layout><Home/></Layout>
+      },
+      {
+         path: '/books', element: <Layout><Books/></Layout>
+      },
+      {
+         path: '/categories', element: <Layout><Categories/></Layout>
+      },
+      {
+         path: '/auth', element: <Layout><AuthPage/></Layout>
+      }
+   ]
+
    return (
       <>
          <div >
             {/* initializing the Routes */}
             <Routes>
-               <Route path='/' element={
-                  <Layout>
-                     <Home />
-                  </Layout>} />
-               <Route path='/books' element={<Books />} />
-               <Route path='/categories' element={<Categories />} />
-               <Route path='/auth' element={<AuthPage />} />
+              {routes.map((route,index) => (
+                   <Route key={index} path={route.path} element={route.element} />
+              ))}
             </Routes>
 
             {/* initializing the toaster  */}
