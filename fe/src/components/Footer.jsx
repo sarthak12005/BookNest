@@ -25,17 +25,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#1a2332] text-[#b8c5d6] px-20 py-16">
+    <footer className="bg-[#1a2332] text-[#b8c5d6] px-20 py-8">
       <div className="max-w-7xl mx-auto">
         {/* Footer Top Section */}
-        <div className="flex justify-between gap-20 mb-16">
+        <div className="flex justify-between gap-20 mb-10">
           {/* Brand Section */}
           <div className="flex-1 max-w-md">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12  flex items-center justify-center">
                 <img src="/BookLogo.png" alt="BookNest Logo" className='w-40 object-center' />
               </div>
-              <h2 className="text-white text-2xl font-semibold">Skylit Books</h2>
+              <h2 className="text-white text-2xl font-semibold">BookNest</h2>
             </div>
             <p className="text-[#b8c5d6] leading-relaxed mb-8">
               Discover your next favorite read with our curated collection of books from around the world. Join millions of readers on their literary journey.

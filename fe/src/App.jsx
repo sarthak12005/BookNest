@@ -7,7 +7,7 @@ import AuthPage from './pages/AuthPage'
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
 import Contact from './pages/Contact'
-import Author from './pages/Author'
+import About from './pages/About'
 
 function App() {
 
@@ -28,7 +28,7 @@ function App() {
          path: '/contact', element: <Layout><Contact/></Layout>
       },
       {
-         path: '/author', element: <Layout><Author/></Layout>
+         path: '/author', element: <Layout><About/></Layout>
       }
    ]
 
