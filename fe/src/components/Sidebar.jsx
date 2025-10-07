@@ -10,7 +10,7 @@ const Sidebar = () => {
     { name: 'Home', link: '/' },
     { name: 'Books', link: '/books' },
     { name: 'Categories', link: '/categories' },
-    { name: 'Author', link: '/author' },
+    { name: 'About', link: '/about' },
     { name: 'Contact', link: '/contact' },
   ];
 

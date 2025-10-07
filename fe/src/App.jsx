@@ -28,7 +28,7 @@ function App() {
          path: '/contact', element: <Layout><Contact/></Layout>
       },
       {
-         path: '/author', element: <Layout><About/></Layout>
+         path: '/about', element: <Layout><About/></Layout>
       }
    ]
 
