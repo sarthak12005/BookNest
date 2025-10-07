@@ -62,11 +62,11 @@ const Footer = () => {
           <div className="flex-shrink-0">
             <h3 className="text-white text-lg font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="hover:text-white transition-colors">Browse Books</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Categories</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">New Releases</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Bestsellers</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Author Interviews</a></li>
+             {quickLinks.map((item) => (
+                <li key={item.name} className='transition-colors duration-200 cursor-pointer ease-in-out hover:text-white' onClick={() => navigate(item.link)}>
+                  {item.name}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -74,11 +74,13 @@ const Footer = () => {
           <div className="flex-shrink-0">
             <h3 className="text-white text-lg font-semibold mb-6">Support</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cookie Policy</a></li>
+
+              {supportLinks.map((item) => (
+                <li key={item.name} className='transition-colors duration-200 cursor-pointer ease-in-out hover:text-white' onClick={() => navigate(item.link)}>
+                  {item.name}
+                </li>
+              ))}
+              
             </ul>
           </div>
         </div>
