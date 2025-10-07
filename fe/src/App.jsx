@@ -6,6 +6,8 @@ import Categories from './pages/Categories'
 import AuthPage from './pages/AuthPage'
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
+import Contact from './pages/Contact'
+import Author from './pages/Author'
 
 function App() {
 
@@ -20,7 +22,13 @@ function App() {
          path: '/categories', element: <Layout><Categories/></Layout>
       },
       {
-         path: '/auth', element: <Layout><AuthPage/></Layout>
+         path: '/auth', element: <AuthPage/>
+      },
+      {
+         path: '/contact', element: <Layout><Contact/></Layout>
+      },
+      {
+         path: '/author', element: <Layout><Author/></Layout>
       }
    ]
 
