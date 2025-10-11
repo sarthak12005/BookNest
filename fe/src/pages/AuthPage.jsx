@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import {useNavigate} from 'react-router';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 
@@ -29,10 +30,10 @@ export default function AuthPage() {
 
 
     const handleLoginSubmit = async (data) => {
-         try {
-            const {email , password} = data;
+        try {
+            const { email, password } = data;
 
-            const res = await axios.post('http://localhost:5000/api/auth/login', {
+            const res = await axios.post(`${API_URL}/auth/login`, {
                 email,
                 password
             });
@@ -42,18 +43,18 @@ export default function AuthPage() {
                 localStorage.setItem('token', res.data.token);
                 navigate('/');
             }
-            
-         } catch (error) {
+
+        } catch (error) {
             console.error('Login error:', error);
             toast.error(error.response?.data?.message || "Login failed. Please try again.");
-         }
+        }
     }
 
     const handleRegisterSubmit = async (data) => {
         try {
-            const {name , email, password, username} = data;
+            const { name, email, password, username } = data;
 
-            const res = await axios.post('http://localhost:5000/api/auth/signup', {
+            const res = await axios.post(`${API_URL}/auth/signup`, {
                 fullName: name,
                 email,
                 username,
