@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import toast from 'react-hot-toast';
+import axios from 'axios';
+import {useNavigate} from 'react-router';
+
+
 
 export default function AuthPage() {
     const [activeTab, setActiveTab] = useState('login');
@@ -9,10 +13,12 @@ export default function AuthPage() {
     const [rememberMe, setRememberMe] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
+        username: '',
         email: '',
         password: '',
-        confirmPassword: ''
     });
+
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setFormData({
@@ -21,28 +27,71 @@ export default function AuthPage() {
         });
     };
 
+
+    const handleLoginSubmit = async (data) => {
+         try {
+            const {email , password} = data;
+
+            const res = await axios.post('http://localhost:5000/api/auth/login', {
+                email,
+                password
+            });
+
+            if (res.status === 200) {
+                toast.success("login Successfully");
+                localStorage.setItem('token', res.data.token);
+                navigate('/');
+            }
+            
+         } catch (error) {
+            console.error('Login error:', error);
+            toast.error(error.response?.data?.message || "Login failed. Please try again.");
+         }
+    }
+
+    const handleRegisterSubmit = async (data) => {
+        try {
+            const {name , email, password, username} = data;
+
+            const res = await axios.post('http://localhost:5000/api/auth/signup', {
+                fullName: name,
+                email,
+                username,
+                password
+            });
+
+            if (res.status === 200) {
+                toast.success("Registration successful! Please Login");
+                setActiveTab('login');
+            }
+
+        } catch (error) {
+            console.error("Registration error:", error);
+            toast.error(error.response?.data?.message || "Registration failed. Please try again.");
+        }
+    }
+
+
     const handleSubmit = () => {
         if (activeTab === 'login') {
-            console.log('Login attempt:', { email: formData.email, password: formData.password });
-            toast.success('Login functionality is not implemented yet.');
+            handleLoginSubmit(formData);
         } else {
-            console.log('Register attempt:', formData);
-            toast.success('Registration functionality is not implemented yet.');
+            handleRegisterSubmit(formData);
         }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex justify-center items-center px-4 py-8 selection:bg-red-400">
+        <div className="min-h-screen bg-gradient-to-br  flex justify-center items-center px-4 py-8 selection:bg-red-400">
             <div className="flex flex-col lg:flex-row w-full max-w-6xl rounded-3xl overflow-hidden shadow-2xl bg-white">
 
                 {/* LEFT SIDE - FORM SECTION */}
-                <div className="w-full lg:w-1/2 bg-gradient-to-br from-blue-500 to-blue-600 flex flex-col justify-center items-center py-12 px-6 sm:px-10">
+                <div className="w-full lg:w-1/2 bg-gradient-to-br from-gray-200 to-gray-300 flex flex-col justify-center items-center py-12 px-6 sm:px-10">
                     {/* Tabs */}
                     <div className="w-full max-w-sm bg-white/20 backdrop-blur-sm rounded-xl flex p-1 mb-8">
                         <button
                             className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'login'
                                 ? 'bg-white text-blue-600 shadow-lg'
-                                : 'text-white hover:bg-white/10'
+                                : 'text-black hover:bg-white/10'
                                 }`}
                             onClick={() => setActiveTab('login')}
                         >
@@ -51,7 +100,7 @@ export default function AuthPage() {
                         <button
                             className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'register'
                                 ? 'bg-white text-blue-600 shadow-lg'
-                                : 'text-white hover:bg-white/10'
+                                : 'text-black hover:bg-white/10'
                                 }`}
                             onClick={() => setActiveTab('register')}
                         >
@@ -93,6 +142,26 @@ export default function AuthPage() {
                                 </div>
                             )}
 
+                            {/* username field */}
+                            {activeTab === 'register' && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                        Username
+                                    </label>
+                                    <div className="relative">
+                                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                        <input
+                                            type="text"
+                                            name="username"
+                                            value={formData.username}
+                                            onChange={handleInputChange}
+                                            placeholder="John Doe"
+                                            className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Email Field */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -126,6 +195,7 @@ export default function AuthPage() {
                                         </button>
                                     )}
                                 </div>
+
                                 <div className="relative">
                                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                                     <input
@@ -145,33 +215,6 @@ export default function AuthPage() {
                                     </button>
                                 </div>
                             </div>
-
-                            {/* Confirm Password (Register only) */}
-                            {activeTab === 'register' && (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                        Confirm Password
-                                    </label>
-                                    <div className="relative">
-                                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                                        <input
-                                            type={showConfirmPassword ? 'text' : 'password'}
-                                            name="confirmPassword"
-                                            value={formData.confirmPassword}
-                                            onChange={handleInputChange}
-                                            placeholder="••••••••"
-                                            className="w-full pl-11 pr-12 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                        >
-                                            {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
 
                             {/* Remember Me (Login only) */}
                             {activeTab === 'login' && (
