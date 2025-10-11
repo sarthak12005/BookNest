@@ -10,6 +10,11 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    credentials: true
+}));
+
 
 const authRoutes = require('./src/routes/auth.routes');
 const categoryRoutes = require('./src/routes/category.routes');
