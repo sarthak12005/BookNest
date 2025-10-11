@@ -1,167 +1,274 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function AuthPage() {
     const [activeTab, setActiveTab] = useState('login');
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = () => {
+        if (activeTab === 'login') {
+            console.log('Login attempt:', { email: formData.email, password: formData.password });
+            toast.success('Login functionality is not implemented yet.');
+        } else {
+            console.log('Register attempt:', formData);
+            toast.success('Registration functionality is not implemented yet.');
+        }
+    };
 
     return (
-        <div className='min-h-screen flex flex-col lg:flex-row justify-center items-center'>
-            {/* LEFT SIDE */}
-            <div className='w-full lg:w-1/2 bg-[#fefefe] h-64 sm:h-80 lg:h-screen'>
-                <div className="w-full h-full flex justify-center items-center">
-                    <img src="/BookMountain.png" alt="BookMountain" className='object-cover lg:object-center w-full h-full' />
-                </div>
-            </div>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex justify-center items-center px-4 py-8 selection:bg-red-400">
+            <div className="flex flex-col lg:flex-row w-full max-w-6xl rounded-3xl overflow-hidden shadow-2xl bg-white">
 
-            {/* RIGHT SIDE */}
-            <div className='w-full lg:w-1/2 bg-[#60b8e8] min-h-screen lg:h-screen flex justify-center items-center flex-col gap-3 py-8 px-4 sm:px-6 lg:px-8'>
-                <div className="w-full sm:w-[90%] md:w-[70%] lg:w-[58%] h-10 bg-gray-300 rounded-[7px] flex justify-between items-center text-base sm:text-[18px] font-semibold overflow-hidden">
-                    <button
-                        className={`w-1/2 py-2 transition-all duration-300 ${activeTab === 'login' ? 'bg-white text-gray-900 shadow-md' : 'bg-transparent text-gray-600'}`}
-                        onClick={() => {
-                            setActiveTab('login')
-                        }}
-                    >
-                        Login
-                    </button>
-                    <button
-                        className={`w-1/2 py-2 transition-all duration-300 ${activeTab === 'register' ? 'bg-white text-gray-900 shadow-md' : 'bg-transparent text-gray-600'}`}
-                        onClick={() => {
-                            setActiveTab('register')
-                        }}
-                    >
-                        Register
-                    </button>
-                </div>
-                <div className="flex flex-col items-center w-full sm:w-[90%] md:w-[75%] lg:w-[62%] max-w-md bg-white py-6 sm:py-8 px-6 sm:px-10 rounded-2xl shadow-lg">
-                    {/* Welcome Text */}
-                    <div className="text-center mb-4 sm:mb-6">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{activeTab === 'login' ? "Welcome Back" : "Join Our Community"}</h2>
-                        <p className="text-gray-600 text-xs sm:text-sm">
-                            Log in to access your bookshelf and continue your reading journey
+                {/* LEFT SIDE - FORM SECTION */}
+                <div className="w-full lg:w-1/2 bg-gradient-to-br from-blue-500 to-blue-600 flex flex-col justify-center items-center py-12 px-6 sm:px-10">
+                    {/* Tabs */}
+                    <div className="w-full max-w-sm bg-white/20 backdrop-blur-sm rounded-xl flex p-1 mb-8">
+                        <button
+                            className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'login'
+                                ? 'bg-white text-blue-600 shadow-lg'
+                                : 'text-white hover:bg-white/10'
+                                }`}
+                            onClick={() => setActiveTab('login')}
+                        >
+                            Login
+                        </button>
+                        <button
+                            className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${activeTab === 'register'
+                                ? 'bg-white text-blue-600 shadow-lg'
+                                : 'text-white hover:bg-white/10'
+                                }`}
+                            onClick={() => setActiveTab('register')}
+                        >
+                            Register
+                        </button>
+                    </div>
+
+                    {/* Form Card */}
+                    <div className="w-full max-w-sm bg-white py-8 px-8 rounded-2xl shadow-xl">
+                        <div className="text-center mb-6">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                                {activeTab === 'login' ? 'Welcome Back!' : 'Create Account'}
+                            </h2>
+                            <p className="text-sm text-gray-500">
+                                {activeTab === 'login'
+                                    ? 'Enter your credentials to access your account'
+                                    : 'Sign up to get started with your account'}
+                            </p>
+                        </div>
+
+                        <div className="space-y-4">
+                            {/* Name Field (Register only) */}
+                            {activeTab === 'register' && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                        Full Name
+                                    </label>
+                                    <div className="relative">
+                                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            placeholder="John Doe"
+                                            className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Email Field */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                    Email Address
+                                </label>
+                                <div className="relative">
+                                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        placeholder="you@example.com"
+                                        className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Password Field */}
+                            <div>
+                                <div className="flex justify-between items-center mb-1.5">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Password
+                                    </label>
+                                    {activeTab === 'login' && (
+                                        <button
+                                            type="button"
+                                            className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                                        >
+                                            Forgot Password?
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="relative">
+                                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                    <input
+                                        type={showPassword ? 'text' : 'password'}
+                                        name="password"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        placeholder="••••••••"
+                                        className="w-full pl-11 pr-12 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                    >
+                                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Confirm Password (Register only) */}
+                            {activeTab === 'register' && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                        Confirm Password
+                                    </label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                        <input
+                                            type={showConfirmPassword ? 'text' : 'password'}
+                                            name="confirmPassword"
+                                            value={formData.confirmPassword}
+                                            onChange={handleInputChange}
+                                            placeholder="••••••••"
+                                            className="w-full pl-11 pr-12 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                        >
+                                            {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Remember Me (Login only) */}
+                            {activeTab === 'login' && (
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        id="remember"
+                                        checked={rememberMe}
+                                        onChange={(e) => setRememberMe(e.target.checked)}
+                                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                    />
+                                    <label htmlFor="remember" className="ml-2 text-sm text-gray-700">
+                                        Remember me for 30 days
+                                    </label>
+                                </div>
+                            )}
+
+                            {/* Submit Button */}
+                            <button
+                                onClick={handleSubmit}
+                                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            >
+                                {activeTab === 'login' ? 'Sign In' : 'Create Account'}
+                            </button>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="flex items-center my-6">
+                            <div className="flex-1 border-t border-gray-300"></div>
+                            <span className="px-3 text-xs text-gray-500">Or continue with</span>
+                            <div className="flex-1 border-t border-gray-300"></div>
+                        </div>
+
+                        {/* Social Buttons */}
+                        <div className="grid grid-cols-3 gap-3">
+                            <button className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all">
+                                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                                </svg>
+                            </button>
+                            <button className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all">
+                                <svg className="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                </svg>
+                            </button>
+                            <button className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all">
+                                <svg className="w-5 h-5" fill="#181717" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Toggle Link */}
+                        <p className="text-sm text-gray-600 text-center mt-6">
+                            {activeTab === 'login' ? "Don't have an account? " : 'Already have an account? '}
+                            <button
+                                type="button"
+                                onClick={() => setActiveTab(activeTab === 'login' ? 'register' : 'login')}
+                                className="text-blue-600 hover:text-blue-700 font-semibold"
+                            >
+                                {activeTab === 'login' ? 'Sign up' : 'Sign in'}
+                            </button>
                         </p>
                     </div>
+                </div>
 
-                    {/* Form */}
-                    <form className="w-full space-y-4 sm:space-y-5">
-                        {/* Email Field */}
-                        <div>
-                            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                                Email Address
-                            </label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                                <input
-                                    type="email"
-                                    placeholder="reader@skylitbooks.com"
-                                    className="w-full pl-10 sm:pl-11 pr-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
+                {/* RIGHT SIDE - IMAGE SECTION */}
+                <div className="relative w-full lg:w-1/2 min-h-[400px] lg:min-h-0 bg-gradient-to-br from-slate-800 to-slate-900 flex items-end justify-center p-10" style={{
+                    backgroundImage:
+                        "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1400&q=80')",
+                }}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
+                    <div className="relative z-10 text-center text-white max-w-md py-25">
+                        {/* <div className="w-48 h-48 mx-auto mb-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                            <div className="w-40 h-40 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                                <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
                             </div>
+                        </div> */}
+                        <h3 className="text-2xl font-bold mb-3">
+                            Secure & Simple Authentication
+                        </h3>
+                        <p className="text-gray-300 text-sm leading-relaxed">
+                            Join thousands of users who trust our platform for secure access to their accounts. Get started in seconds with email or social login.
+                        </p>
+                        <div className="mt-8 flex justify-center gap-2">
+                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                            <div className="w-2 h-2 bg-white/50 rounded-full"></div>
+                            <div className="w-2 h-2 bg-white/50 rounded-full"></div>
                         </div>
-
-                        {/* Password Field */}
-                        <div>
-                            <div className="flex justify-between items-center mb-2">
-                                <label className="block text-xs sm:text-sm font-medium text-gray-700">
-                                    Password
-                                </label>
-                                <button
-                                    type="button"
-                                    className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium"
-                                >
-                                    Forgot Password?
-                                </button>
-                            </div>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder="••••••••••••"
-                                    className="w-full pl-10 sm:pl-11 pr-10 sm:pr-12 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                >
-                                    {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Remember Me Checkbox */}
-                        <div className="flex items-center">
-                            <input
-                                type="checkbox"
-                                id="remember"
-                                checked={rememberMe}
-                                onChange={(e) => setRememberMe(e.target.checked)}
-                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                            />
-                            <label htmlFor="remember" className="ml-2 text-xs sm:text-sm text-gray-700">
-                                Remember me for 30 days
-                            </label>
-                        </div>
-
-                        {activeTab === 'login' ? (<>
-                            <button
-                                type="submit"
-                                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2.5 sm:py-3 text-sm sm:text-base rounded-lg transition-colors duration-200"
-                            >
-                                Log In
-                            </button>
-                        </>) : (<>
-                            <button
-                                type="submit"
-                                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2.5 sm:py-3 text-sm sm:text-base rounded-lg transition-colors duration-200"
-                            >
-                                Sign In
-                            </button>
-                        </>)}
-
-                    </form>
-
-                    {/* Divider */}
-                    <div className="w-full flex items-center my-5 sm:my-6">
-                        <div className="flex-1 border-t border-gray-300"></div>
-                        <span className="px-3 sm:px-4 text-xs sm:text-sm text-gray-500">Or continue with</span>
-                        <div className="flex-1 border-t border-gray-300"></div>
                     </div>
-
-                    {/* Social Login Buttons */}
-                    <div className="w-full flex gap-3 sm:gap-4 mb-5 sm:mb-6">
-                        <button className="flex-1 flex items-center justify-center py-2.5 sm:py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24">
-                                <path fill="#EA4335" d="M5.26620003,9.76452941 C6.19878754,6.93863203 8.85444915,4.90909091 12,4.90909091 C13.6909091,4.90909091 15.2181818,5.50909091 16.4181818,6.49090909 L19.9090909,3 C17.7818182,1.14545455 15.0545455,0 12,0 C7.27006974,0 3.1977497,2.69829785 1.23999023,6.65002441 L5.26620003,9.76452941 Z" />
-                                <path fill="#34A853" d="M16.0407269,18.0125889 C14.9509167,18.7163016 13.5660892,19.0909091 12,19.0909091 C8.86648613,19.0909091 6.21911939,17.076871 5.27698177,14.2678769 L1.23746264,17.3349879 C3.19279051,21.2936293 7.26500293,24 12,24 C14.9328362,24 17.7353462,22.9573905 19.834192,20.9995801 L16.0407269,18.0125889 Z" />
-                                <path fill="#4A90E2" d="M19.834192,20.9995801 C22.0291676,18.9520994 23.4545455,15.903663 23.4545455,12 C23.4545455,11.2909091 23.3454545,10.5272727 23.1818182,9.81818182 L12,9.81818182 L12,14.4545455 L18.4363636,14.4545455 C18.1187732,16.013626 17.2662994,17.2212117 16.0407269,18.0125889 L19.834192,20.9995801 Z" />
-                                <path fill="#FBBC05" d="M5.27698177,14.2678769 C5.03832634,13.556323 4.90909091,12.7937589 4.90909091,12 C4.90909091,11.2182781 5.03443647,10.4668121 5.26620003,9.76452941 L1.23999023,6.65002441 C0.43658717,8.26043162 0,10.0753848 0,12 C0,13.9195484 0.444780743,15.7301709 1.23746264,17.3349879 L5.27698177,14.2678769 Z" />
-                            </svg>
-                        </button>
-                        <button className="flex-1 flex items-center justify-center py-2.5 sm:py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="#1877F2" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                            </svg>
-                        </button>
-                        <button className="flex-1 flex items-center justify-center py-2.5 sm:py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="#181717" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    {/* Sign Up Link */}
-                    <p className="text-xs sm:text-sm text-gray-600">
-                        Don't have an account?{' '}
-                        <button className="text-blue-600 hover:text-blue-700 font-medium">
-                            Create one now
-                        </button>
-                    </p>
                 </div>
             </div>
-
         </div>
     );
 }
