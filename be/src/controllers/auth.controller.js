@@ -80,3 +80,16 @@ exports.registerUser = async (req, res) => {
      }
 }
 
+exports.getMe = async (req, res) => {
+     try {
+          const userId = req.user.userId;
+          const user = await User.findById(userId).select("-password -__v -createdAt -updatedAt");
+          if (!user) {
+               return res.status(404).json({ message: "User not found" });
+          }
+          res.status(200).json({ message: "User found successfully", user });
+     } catch (error) {
+          
+     }
+}
+
