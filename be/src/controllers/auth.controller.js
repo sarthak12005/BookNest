@@ -12,21 +12,18 @@ exports.loginUser = async (req, res) => {
           }
 
           const user = await User.findOne({ email });
-          console.log(user);
 
           if (!user) {
                return res.status(404).json({ message: "User not found " });
           }
 
           const validated = await compareHashPass(password, user.password);
-          console.log(validated);
 
           if (!validated) { 
                return res.status(401).json({ message: "incorrect password or Email" });
           }
 
           const token = await generateToken(user._id, process.env.JWT_SECRET, process.env.JWT_EXPIRES_IN);
-          console.log("token is: ", token);
 
           if (!token) {
                return res.status(404).json({ message: "Failed to generate token " });
@@ -43,8 +40,6 @@ exports.loginUser = async (req, res) => {
 exports.registerUser = async (req, res) => {
      try {
           const { fullName, email, username, password } = req.body;
-
-          console.log(fullName, email, username, password);
 
           if (!fullName || !email || !username || !password) {   // this statement checks that if we have a null or empty value present in the body
                return res.status(400).json({ message: "Credentials Required" }); // the 400 status code is used for bad request 
@@ -89,7 +84,8 @@ exports.getMe = async (req, res) => {
           }
           res.status(200).json({ message: "User found successfully", user });
      } catch (error) {
-          
+          console.log("error in fetching me: ", error);
+          res.status(500).json({message: "Internal Server error", error});
      }
 }
 
