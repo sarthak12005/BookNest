@@ -24,7 +24,33 @@ exports.getCart = async (req, res) => {
 }
 
 exports.addToCart = async (req, res) => {
+    try {
+        const {userId} = req.user;
+        const {productId, quantity} = req.body;
+        
+        if (!userId) {
+            return res.status(400).json({message: "UserId Required"});
+        }
 
+        const cart = await Cart.findOne({userId});
+
+        if (!cart) {
+            const newCart = new Cart({
+                userId: userId,
+                product:{
+                    productId: productId,
+                    quantity: quantity
+                }
+            });
+
+            if (!newCart) {
+                
+            }
+        }
+
+    } catch (error) {
+        
+    }
 }
 
 exports.removeItem = async (req, res) => {
