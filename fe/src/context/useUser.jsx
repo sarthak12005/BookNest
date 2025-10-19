@@ -7,27 +7,27 @@ const userContext = createContext();
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const token = localStorage.getItem('token');
-    //             const res = await axios.get(`${API_URL}/auth/me`, {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`
-    //                 }
-    //             });
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await axios.get(`${API_URL}/auth/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
-    //             if (res.status === 200) {
-    //                 setUser(res.data.user);
-    //             }
-    //         } catch (error) {
-    //             console.error('error in fetching user', error);
-    //             setUser(null);
-    //         }
-    //     }
+                if (res.status === 200) {
+                    setUser(res.data.user);
+                }
+            } catch (error) {
+                console.error('error in fetching user', error);
+                setUser(null);
+            }
+        }
 
-    //     fetchUser();
-    // },[]);
+        fetchUser();
+    },[]);
 
     return (
         <userContext.Provider value={{ user }}>

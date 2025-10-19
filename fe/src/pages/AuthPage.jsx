@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+import { useUser } from '../context/useUser';
+import { useEffect } from 'react';
 const API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -20,6 +22,14 @@ export default function AuthPage() {
     });
 
     const navigate = useNavigate();
+    const {user} = useUser();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/')
+            return null;
+        }
+    },[user]);
 
     const handleInputChange = (e) => {
         setFormData({
