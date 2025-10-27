@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const { generateHashPass, compareHashPass } = require('../lib/bcrypt');
 const { generateToken } = require('../lib/jwt');
+const jwt = require('jsonwebtoken')
 
 
 exports.loginUser = async (req, res) => {
@@ -19,11 +20,11 @@ exports.loginUser = async (req, res) => {
 
           const validated = await compareHashPass(password, user.password);
 
-          if (!validated) { 
+          if (!validated) {
                return res.status(401).json({ message: "incorrect password or Email" });
           }
 
-          const token = await generateToken(user._id, process.env.JWT_SECRET, process.env.JWT_EXPIRES_IN);
+          const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
 
           if (!token) {
                return res.status(404).json({ message: "Failed to generate token " });
@@ -76,16 +77,22 @@ exports.registerUser = async (req, res) => {
 }
 
 exports.getMe = async (req, res) => {
-     try {
-          const userId = req.user.userId;
-          const user = await User.findById(userId).select("-password -__v -createdAt -updatedAt");
-          if (!user) {
-               return res.status(404).json({ message: "User not found" });
-          }
-          res.status(200).json({ message: "User found successfully", user });
-     } catch (error) {
-          console.log("error in fetching me: ", error);
-          res.status(500).json({message: "Internal Server error", error});
-     }
-}
+  try {
+    const id = req.user.userId; 
 
+    if (!id) {
+      return res.status(400).json({ message: "Invalid user token: ID missing" });
+    }
+
+    const user = await User.findById(id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found for this token" });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("FATAL: Server error in getMe:", error);
+    res.status(500).json({ message: "Server encountered a critical error when fetching user." });
+  }
+};

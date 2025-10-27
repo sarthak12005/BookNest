@@ -1,34 +1,26 @@
+// src/middlewares/verifyToken.js
+const jwt = require("jsonwebtoken");
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET;
 
+exports.authMiddleware = (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
 
-const authMiddelware = (req, res, next) => {
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) return res.status(400).json({ message: "Authrization failed" });
-
-    try {
-
-        const decoded = jwt.verify(token, JWT_SECRET);
-
-        if (!decoded.userId) {
-            console.log("the userId is not provided ");
-            res.status(404).json({ message: "the userid is not found" });
-        }
-
-
-        req.user = {
-            userId: decoded.userId,
-        }
-
-        next();
-
-    } catch (err) {
-        console.log("the error in jwt verify is : ", err);
-        res.status(500).json({ message: "Internal server in verifying jwt token", err });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
     }
 
-}
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-module.exports = authMiddelware;
+    // 👇 Attach decoded token to req.user
+    req.user = {
+       userId: decoded.userId,
+    };
+
+    next();
+  } catch (error) {
+    console.error("JWT Error:", error.message);
+    res.status(401).json({ message: "Invalid or expired token" });
+  }
+};

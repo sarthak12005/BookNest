@@ -10,6 +10,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 
 export default function AuthPage() {
+    const navigate = useNavigate();
+    const {user} = useUser();
     const [activeTab, setActiveTab] = useState('login');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -21,15 +23,13 @@ export default function AuthPage() {
         password: '',
     });
 
-    const navigate = useNavigate();
-    const {user} = useUser();
+    
 
     useEffect(() => {
         if (user) {
-            navigate('/')
-            return null;
+            navigate('/');
         }
-    },[user]);
+    },[user,navigate]);
 
     const handleInputChange = (e) => {
         setFormData({
