@@ -1,4 +1,5 @@
 import axiosInstance from "./axiosInstance";
+import toast from 'react-hot-toast'
 
 
 export const fetchBooks = async () => {
@@ -29,6 +30,21 @@ export const fetchUser = async () => {
     } catch (error) {
         console.log("error in fetch User :", error);
         return error;
+    }
+}
+
+export const loginUser = async (loginData) => {
+    try {
+        const res = await axiosInstance.post('/auth/login', loginData);
+
+        if (res.status === 200) {
+            localStorage.setItem(res.data.token);
+            toast.success('Login Successfully');
+
+        }
+
+    } catch (error) {
+        
     }
 }
 
