@@ -1,16 +1,18 @@
 import axiosInstance from "./axiosInstance";
 import toast from 'react-hot-toast'
-import { useNavigate } from "react-router";
 
-const navigate = useNavigate();
+
+
 
 
 export const fetchBooks = async () => {
     try {
-        const response = await axiosInstance.get('/books/books');
-        return response.data;
+        const response = await axiosInstance.get('/book/books');
+        const books = response.data;
+        return books;
     } catch (error) {
         console.error("Error fetching books:", error);
+
     }
 };
 
@@ -36,7 +38,7 @@ export const fetchUser = async () => {
     }
 }
 
-export const loginUser = async (loginData) => {
+export const loginUser = async (loginData, navigate) => {
     try {
         const { email, password } = loginData;
 
