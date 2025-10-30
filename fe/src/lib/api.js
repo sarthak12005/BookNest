@@ -1,5 +1,8 @@
 import axiosInstance from "./axiosInstance";
 import toast from 'react-hot-toast'
+import { useNavigate } from "react-router";
+
+const navigate = useNavigate();
 
 
 export const fetchBooks = async () => {
@@ -13,16 +16,16 @@ export const fetchBooks = async () => {
 
 export const addBooks = async (data) => {
     try {
-        
+
     } catch (error) {
-        
+
     }
 }
 
 export const fetchUser = async () => {
     try {
         const res = await axiosInstance.get('/auth/me');
-        
+
         if (res.status === 200) {
             return res.data.user;
         }
@@ -35,16 +38,22 @@ export const fetchUser = async () => {
 
 export const loginUser = async (loginData) => {
     try {
-        const res = await axiosInstance.post('/auth/login', loginData);
+        const { email, password } = loginData;
+
+        const res = await axios.post(`${API_URL}/auth/login`, {
+            email,
+            password
+        });
 
         if (res.status === 200) {
-            localStorage.setItem(res.data.token);
-            toast.success('Login Successfully');
-
+            toast.success("login Successfully");
+            localStorage.setItem('token', res.data.token);
+            navigate('/');
         }
 
     } catch (error) {
-        
+        console.error('Login error:', error);
+        toast.error(error.response?.data?.message || "Login failed. Please try again.");
     }
 }
 
