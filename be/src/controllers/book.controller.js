@@ -53,7 +53,7 @@ exports.getAllBooks = async (req, res) => {
             return res.status(404).json({ message: "No books found" });
         }
 
-        res.status(200).json({books});
+        res.status(200).json(books);
     } catch (error) {
         console.error("error in fetching books", error);
         res.status(500).json({ message: "Internal Server Error" });

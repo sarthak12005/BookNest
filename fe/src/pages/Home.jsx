@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
 import { useUser } from "../context/useUser";
 import { useNavigate } from 'react-router';
-import axios from "axios";
+import { fetchBooks } from "../lib/api";
+
+
 const Home = () => {
   const { user } = useUser();
   const [books, setBooks] = useState([]);
@@ -11,7 +13,14 @@ const Home = () => {
     if (user === null) {
       navigate('/auth');
     }
-  }, [user, navigate]);
+    const books = fetchBooks();
+    setBooks(books);
+  },[user, navigate]);
+
+ 
+
+  
+
 
   return (
     <>
