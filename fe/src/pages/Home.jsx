@@ -28,11 +28,11 @@ const Home = () => {
     <>
       <h1>Hello Home</h1>
       <div>
-        {/* {books.map((b) => (
+        {books.map((b) => (
           <div key={b._id}>
             {b.title} || {b.author}
           </div>
-        ))} */}
+        ))}
       </div>
     </>
   )
