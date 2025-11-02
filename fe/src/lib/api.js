@@ -45,7 +45,6 @@ export const fetchBooks = async () => {
         return books;
     } catch (error) {
         console.error("Error fetching books:", error);
-
     }
 };
 

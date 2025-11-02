@@ -13,14 +13,15 @@ const Home = () => {
     if (user === null) {
       navigate('/auth');
     }
-    const books = fetchBooks();
-    setBooks(books);
   },[user, navigate]);
 
+  useEffect(() => {
+     const books = fetchBooks();
+     
+     setBooks(books);
+  },[]);
+
  
-
-  
-
 
   return (
     <>
