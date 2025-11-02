@@ -13,19 +13,27 @@ const Home = () => {
     if (user === null) {
       navigate('/auth');
     }
-  },[user, navigate]);
+  }, [user, navigate]);
 
   useEffect(() => {
-     const books = fetchBooks();
-     
-     setBooks(books);
-  },[]);
+    const loadBooks = async () => {
+      const books = await fetchBooks(); // Wait for the Promise to resolve
+      setBooks(books);
+    };
+    loadBooks(); // Call the async function
+  }, []);
 
- 
 
   return (
     <>
-        <h1>Hello Home</h1>
+      <h1>Hello Home</h1>
+      <div>
+        {/* {books.map((b) => (
+          <div key={b._id}>
+            {b.title} || {b.author}
+          </div>
+        ))} */}
+      </div>
     </>
   )
 }
