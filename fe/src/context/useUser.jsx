@@ -1,11 +1,12 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../lib/axiosInstance";
+import { useNavigate } from "react-router";
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -13,11 +14,7 @@ const UserProvider = ({ children }) => {
             if (!token) return; // Don't bother fetching if no token
 
             try {
-                const res = await axios.get(`${API_URL}/auth/me`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const res = await axiosInstance.get(`/auth/me`);
 
                 if (res.status === 200) {
                     setUser(res.data.user);
@@ -29,11 +26,11 @@ const UserProvider = ({ children }) => {
         }
 
         fetchUser();
-    }, []); 
+    }, [navigate]);
 
     return (
-       
-        <UserContext.Provider value={{ user }}> 
+
+        <UserContext.Provider value={{ user }}>
             {children}
         </UserContext.Provider>
     )

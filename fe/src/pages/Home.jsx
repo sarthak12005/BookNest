@@ -26,14 +26,10 @@ const Home = () => {
 
   return (
     <>
-      <h1>Hello Home</h1>
-      <div>
-        {books.map((b) => (
-          <div key={b._id}>
-            {b.title} || {b.author}
-          </div>
-        ))}
-      </div>
+       <section className="h-screen">
+           <div className="h-[80%] bg-gradient-to-br from-[#d4e6fa] to-[white]"></div>
+           <div className="h-[20%] bg-[#c9e0fb]"></div>
+       </section>
     </>
   )
 }
