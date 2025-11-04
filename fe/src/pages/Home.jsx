@@ -26,10 +26,24 @@ const Home = () => {
 
   return (
     <>
-       <section className="h-screen">
-           <div className="h-[80%] bg-gradient-to-br from-[#d4e6fa] to-[white]"></div>
-           <div className="h-[20%] bg-[#c9e0fb]"></div>
-       </section>
+      <section className="h-screen">
+        <div className="h-[80%] bg-gradient-to-br from-[#d4e6fa] to-[white] flex gap-2 justify-center">
+          <div className="w-[600px]  flex  justify-center flex-col px-5 gap-4">
+            <div>
+              <h1 className="text-6xl font-bold">Find Your next <span className="text-blue-400">favorite</span> book</h1>
+            </div>
+            <div>
+              <p className="text-gray-600 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore quod vitae eligendi minus iste nostrum?</p>
+            </div>
+            <div className="button flex gap-2">
+                <button className="bg-yellow-500 px-5 py-3 rounded-[17px] text-white font-semibold">Shop Bestsellers</button>
+                <button className="bg-transperent px-5 py-3 rounded-[17px] text-blue-500 border-2 border-blue-400 hover:bg-blue-400 hover:text-white font-semibold ">Browse Categories</button>
+            </div>
+          </div>
+          <div className="w-[600px] bg-blue-500"></div>
+        </div>
+        <div className="h-[20%] bg-[#c9e0fb]"></div>
+      </section>
     </>
   )
 }
