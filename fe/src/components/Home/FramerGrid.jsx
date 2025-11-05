@@ -1,51 +1,35 @@
 import { motion } from "framer-motion";
 
 export default function FloatingGrid() {
-  const floatAnimation = {
-    y: [0, -15, 0], // up & down
-  };
+  const floatAnimation = { y: [0, -15, 0] };
+  const floatTransition = { duration: 3, repeat: Infinity, ease: "easeInOut" };
 
-  const floatTransition = {
-    duration: 3,
-    repeat: Infinity,
-    ease: "easeInOut",
-  };
+  const books = [
+    "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c",
+    "https://images.unsplash.com/photo-1521587760476-6c12a4b040da",
+    "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJvb2tzfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
+    "https://images.unsplash.com/photo-1667312939934-60fc3bfa4ec0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGJvb2tzfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600"
+  ];
+
+  const positions = [
+    "top-[10%] left-16",
+    "top-[8%] right-10",
+    "bottom-[10%] right-16",
+    "bottom-[8%] left-10"
+  ];
 
   return (
     <>
-      
-      {/* top left */}
-      <motion.div
-        className="w-[160px] h-[200px] absolute top-[5%] left-10 rounded-xl shadow-xl"
-        animate={floatAnimation}
-        transition={{ ...floatTransition, delay: 0 }}
-        whileHover={{ scale: 1.05 }}
-      />
-
-      {/* top right */}
-      <motion.div
-        className="w-[160px] h-[200px] bg-red-500 absolute top-[5%] right-8 rounded-xl shadow-xl"
-        animate={floatAnimation}
-        transition={{ ...floatTransition, delay: 0.4 }}
-        whileHover={{ scale: 1.05 }}
-      />
-
-      {/* bottom right */}
-      <motion.div
-        className="w-[160px] h-[200px] bg-red-500 absolute bottom-[5%] right-8 rounded-xl shadow-xl"
-        animate={floatAnimation}
-        transition={{ ...floatTransition, delay: 0.8 }}
-        whileHover={{ scale: 1.05 }}
-      />
-
-      {/* bottom left */}
-      <motion.div
-        className="w-[160px] h-[200px] bg-red-500 absolute bottom-[5%] left-6 rounded-xl shadow-xl"
-        animate={floatAnimation}
-        transition={{ ...floatTransition, delay: 1.2 }}
-        whileHover={{ scale: 1.05 }}
-      />
-
+      {books.map((img, i) => (
+        <motion.div
+          key={i}
+          className={`w-[160px] h-[200px] absolute rounded-xl shadow-xl bg-cover bg-center ${positions[i]}`}
+          style={{ backgroundImage: `url(${img})` }}
+          animate={floatAnimation}
+          transition={{ ...floatTransition, delay: i * 0.4 }}
+          whileHover={{ scale: 1.05 }}
+        />
+      ))}
     </>
   );
 }

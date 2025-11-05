@@ -47,7 +47,7 @@ const Home = () => {
               <p className="flex gap-1 items-center"><span className="text-green-500"><RefreshCcwDotIcon size={18} /></span>Free Shipping over ₹999</p>
             </div>
           </div>
-          <div className="w-[600px] h-full bg-blue-200 relative ">
+          <div className="w-[600px] h-full  relative">
             <FloatingGrid />
           </div>
         </div>
