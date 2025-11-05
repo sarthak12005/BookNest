@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   return (
     <header>
-      <nav className='w-screen p-4 border-0 border-b-black flex justify-between items-center px-20 '>
+      <nav className='max-w-screen p-4 border-0 border-b-black flex justify-between items-center px-20 '>
         <div className='font-bold text-2xl'>
            <img src="/BookNestLogo.png" alt="BookNest Logo" className='w-30 object-center' />
         </div>

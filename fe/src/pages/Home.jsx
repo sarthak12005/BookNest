@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useUser } from "../context/useUser";
 import { useNavigate } from 'react-router';
 import { fetchBooks } from "../lib/api";
+import { RefreshCcwDotIcon, ShipIcon, TruckIcon } from "lucide-react";
 
 
 const Home = () => {
@@ -26,7 +27,7 @@ const Home = () => {
 
   return (
     <>
-      <section className="h-screen">
+      <section className="h-screen max-w-screen">
         <div className="h-[80%] bg-gradient-to-br from-[#d4e6fa] to-[white] flex gap-2 justify-center">
           <div className="w-[600px]  flex  justify-center flex-col px-5 gap-4">
             <div>
@@ -36,8 +37,12 @@ const Home = () => {
               <p className="text-gray-600 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore quod vitae eligendi minus iste nostrum?</p>
             </div>
             <div className="button flex gap-2">
-                <button className="bg-yellow-500 px-5 py-3 rounded-[17px] text-white font-semibold">Shop Bestsellers</button>
-                <button className="bg-transperent px-5 py-3 rounded-[17px] text-blue-500 border-2 border-blue-400 hover:bg-blue-400 hover:text-white font-semibold ">Browse Categories</button>
+              <button className="bg-yellow-500 px-5 py-3 rounded-[17px] text-white font-semibold">Shop Bestsellers</button>
+              <button className="bg-transperent px-5 py-3 rounded-[17px] text-blue-500 border-2 border-blue-400 hover:bg-blue-400 hover:text-white font-semibold ">Browse Categories</button>
+            </div>
+            <div className="flex gap-2">
+              <p className="flex gap-1 items-center"><span className="text-green-500"><TruckIcon size={18} /></span>Free Shipping over ₹999</p>
+              <p className="flex gap-1 items-center"><span className="text-green-500"><RefreshCcwDotIcon size={18} /></span>Free Shipping over ₹999</p>
             </div>
           </div>
           <div className="w-[600px] bg-blue-500"></div>

@@ -34,7 +34,7 @@ function App() {
 
    return (
       <>
-         <div >
+         <div className='max-w-screen'>
             {/* initializing the Routes */}
             <Routes>
               {routes.map((route,index) => (
