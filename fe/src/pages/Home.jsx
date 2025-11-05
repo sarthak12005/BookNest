@@ -2,7 +2,9 @@ import { useState, useEffect } from "react"
 import { useUser } from "../context/useUser";
 import { useNavigate } from 'react-router';
 import { fetchBooks } from "../lib/api";
-import { RefreshCcwDotIcon, ShipIcon, TruckIcon } from "lucide-react";
+import { RefreshCcwDotIcon, TruckIcon } from "lucide-react";
+import { motion } from 'framer-motion'
+import FloatingGrid from "../components/Home/FramerGrid";
 
 
 const Home = () => {
@@ -45,9 +47,13 @@ const Home = () => {
               <p className="flex gap-1 items-center"><span className="text-green-500"><RefreshCcwDotIcon size={18} /></span>Free Shipping over ₹999</p>
             </div>
           </div>
-          <div className="w-[600px] bg-blue-500"></div>
+          <div className="w-[600px] h-full bg-blue-200 relative ">
+            <FloatingGrid />
+          </div>
         </div>
-        <div className="h-[20%] bg-[#c9e0fb]"></div>
+        <div className="h-[20%] bg-[#c9e0fb]">
+
+        </div>
       </section>
     </>
   )
