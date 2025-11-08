@@ -1,37 +1,30 @@
 @import "tailwindcss";
 
-/* ===== Scrollbar Styling (for WebKit browsers like Chrome, Edge, Safari) ===== */
 
-/* Scrollbar width */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
-/* Scrollbar track (background) */
 ::-webkit-scrollbar-track {
-  background: #f0f4ff; /* light blue-gray tone */
+  background: #f0f4ff; 
   border-radius: 10px;
 }
 
-/* Scrollbar thumb (the draggable part) */
 ::-webkit-scrollbar-thumb {
-  background: #6790e8; /* your brand blue */
+  background: #6790e8; 
   border-radius: 7px;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover effect on the thumb */
 ::-webkit-scrollbar-thumb:hover {
-  background: #8ca2ea; /* darker blue on hover */
+  background: #8ca2ea; 
   transform: scale(1);
 }
 
-/* Optional — make the corner (bottom-right) look clean */
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
 
-/* For Firefox (uses different properties) */
 * {
   scrollbar-width: thin;
   scrollbar-color: #91b4ff #f0f4ff;
