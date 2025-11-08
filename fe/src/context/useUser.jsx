@@ -19,9 +19,11 @@ const UserProvider = ({ children }) => {
                 if (res.status === 200) {
                     setUser(res.data.user);
                 }
+                
             } catch (error) {
                 console.error('Error fetching user', error);
                 setUser(null);
+                navigate('/auth');
             }
         }
 

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 export default function FloatingGrid() {
-  const floatAnimation = { y: [0, -15, 0] };
+  const floatAnimation = { y: [0, -3, 0] };
   const floatTransition = { duration: 3, repeat: Infinity, ease: "easeInOut" };
 
   const books = [
