@@ -25,7 +25,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#1a2332] text-[#b8c5d6] px-20 py-8">
+    <footer className="bg-[#1a2332] text-[#b8c5d6] px-20 py-5 mt-18">
       <div className="max-w-7xl mx-auto">
         {/* Footer Top Section */}
         <div className="flex justify-between gap-20 mb-10">
