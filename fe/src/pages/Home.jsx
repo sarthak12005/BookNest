@@ -27,11 +27,9 @@ const Home = () => {
 
 
   return (
-    <>
-    
+    <div className="mb-10">
        <HeroSection/>
-     
-    </>
+    </div>
   )
 }
 
