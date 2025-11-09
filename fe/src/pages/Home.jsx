@@ -12,12 +12,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user === null) {
-      navigate('/auth');
-    }
-  }, [user, navigate]);
-
-  useEffect(() => {
     const loadBooks = async () => {
       const books = await fetchBooks(); // Wait for the Promise to resolve
       setBooks(books);
