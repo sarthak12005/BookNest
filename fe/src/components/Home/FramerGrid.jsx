@@ -20,16 +20,18 @@ export default function FloatingGrid() {
 
   return (
     <>
-      {books.map((img, i) => (
-        <motion.div
-          key={i}
-          className={`w-[160px] h-[200px] absolute rounded-xl shadow-xl bg-cover bg-center ${positions[i]}`}
-          style={{ backgroundImage: `url(${img})` }}
-          animate={floatAnimation}
-          transition={{ ...floatTransition, delay: i * 0.4 }}
-          whileHover={{ scale: 1.05 }}
-        />
-      ))}
+      <div className="h-screen">
+        {books.map((img, i) => (
+          <motion.div
+            key={i}
+            className={`w-[160px] h-[200px] absolute rounded-xl shadow-xl bg-cover bg-center ${positions[i]}`}
+            style={{ backgroundImage: `url(${img})` }}
+            animate={floatAnimation}
+            transition={{ ...floatTransition, delay: i * 0.4 }}
+            whileHover={{ scale: 1.05 }}
+          />
+        ))}
+      </div>
     </>
   );
 }

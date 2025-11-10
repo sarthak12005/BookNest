@@ -29,3 +29,7 @@
   scrollbar-width: thin;
   scrollbar-color: #91b4ff #f0f4ff;
 }
+
+body::selection {
+   background: #000;
+}
