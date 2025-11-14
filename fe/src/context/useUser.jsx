@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import axiosInstance from "../lib/axiosInstance";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 const UserContext = createContext();
 
@@ -22,6 +23,9 @@ const UserProvider = ({ children }) => {
                 
             } catch (error) {
                 console.error('Error fetching user', error);
+                if (error?.status === 429) {
+                    toast.error("too many request");
+                }
                 setUser(null);
                 navigate('/auth');
             }
