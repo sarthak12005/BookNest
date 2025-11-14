@@ -73,17 +73,17 @@
               {categories.map((cat, i) => (
                 <div
                   key={i}
-                  className="min-w-[270px] h-[230px] rounded-2xl relative overflow-hidden shadow-lg cursor-pointer"
+                  className="min-w-[270px] h-[230px]  rounded-2xl relative overflow-hidden shadow-lg cursor-pointer transform hover:rotate-3"
                   style={{
-                    backgroundImage: `url(${cat.bg_image})`,
+                    backgroundImage: `url(${cat.image})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
                 >
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-black/30 p-6 flex flex-col justify-end text-white">
-                    <h3 className="text-2xl font-semibold">{cat.title}</h3>
-                    <p className="text-sm">{cat.subTitle}</p>
+                    <h3 className="text-2xl font-semibold">{cat.category_name}</h3>
+                    <p className="text-sm">{cat.description}</p>
                     <p className="mt-3 text-sm underline flex items-center gap-1">
                       Shop now →
                     </p>
