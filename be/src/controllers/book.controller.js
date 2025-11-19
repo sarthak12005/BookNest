@@ -103,3 +103,24 @@ exports.deleteBookById = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+exports.addReview = async (req,res) => {
+    try {
+        const {userId} = req.user;
+        const {id} = req.params;
+        const {comment, rating} = req.body;
+
+        if (!comment || !rating || rating !== 0 || !userId || !id) {
+            return res.status(400).json({message: "Something is missing"});
+        }
+
+        const book = await Book.findById(id);
+
+        
+
+
+
+    } catch (error) {
+        
+    }
+}

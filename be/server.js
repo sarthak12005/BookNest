@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 require('./src/config/db');
 
@@ -17,6 +18,8 @@ app.use(cors({
     origin: [client_url1, client_url2],
     credentials: true
 }));
+
+app.use(cookieParser());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
