@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const { authMiddleware } = require('../middlewares/authMiddleware');
 const { addReview } = require('../controllers/review.controller');
