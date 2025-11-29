@@ -29,3 +29,19 @@ exports.addReview = async (req, res) => {
     }
 }
 
+
+exports.getReviews = async (req, res) => {
+    try {
+        const reviews = await Review.find().populate('userId', 'fullName username email profilePic');
+
+        if (!reviews) {
+            return res.status(404).json({message:"No Reviews found"});
+        }
+
+        res.status(200).json({message:"fetched Reviews successfully", reviews:reviews});
+
+    } catch (error) {
+        console.log("Error in Review controller", error);
+        res.status(500).json({message:"Internal server error", error});
+    }
+}
