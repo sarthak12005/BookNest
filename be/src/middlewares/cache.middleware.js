@@ -8,11 +8,9 @@ const cache = (keyPrefix) => {
             const cachedData = await redisClient.get(key);
 
             if (cachedData) {
-                console.log("⚡ Serving from Redis cache");
                 return res.json(JSON.parse(cachedData));
             }
 
-            // Override res.json to store data in cache
             const originalSend = res.json.bind(res);
             res.json = async (data) => {
                 await redisClient.setEx(key, 60, JSON.stringify(data));
@@ -22,7 +20,7 @@ const cache = (keyPrefix) => {
             next();
         } catch (error) {
             console.error("❌ Error in cache middleware:", error);
-            next(); // continue even if redis fails
+            next(); 
         }
     };
 };
