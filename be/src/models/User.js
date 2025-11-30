@@ -17,11 +17,17 @@ const userSchema = new mongoose.Schema({
         type: String, default: ''
     },
     userCart: {
-        type: [String], default: []
+        type: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Cart'
+        }
     },
-    userFaviourite: {
-        type: [String], default: []
-    },
+    userFaviourite: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
     bio: {
         type: String, default: ''
     },
@@ -34,12 +40,34 @@ const userSchema = new mongoose.Schema({
     state: {
         type: String, default: ''
     },
-    country : {
+    country: {
         type: String, default: ''
     },
-    purchasedBooks: {
-        tyep: [String], default: []
+    role: {
+        type: String,
+        default: 'user',
+        enum: ['user', 'admin']
+    },
+    purchasedBooks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Book'
+        }
+    ],
+    deleted: {
+        type: Boolean,
+        default: false,
+    },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
+    blocked: {
+        type: Boolean,
+        default: false
     }
+
+
 });
 
 
