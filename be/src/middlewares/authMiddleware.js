@@ -1,8 +1,10 @@
 // src/middlewares/verifyToken.js
 const jwt = require("jsonwebtoken");
+const { defineAbilitiesFor } = require('../permissions/ability');
+const User = require("../models/User");
 require('dotenv').config();
 
-exports.authMiddleware = (req, res, next) => {
+exports.authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -13,10 +15,17 @@ exports.authMiddleware = (req, res, next) => {
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    const user = await User.findOne({ _id: decoded.userId })
+
+    if (!user)
+      return res.status(401).json({ message: "User not found" });
+
     // 👇 Attach decoded token to req.user
     req.user = {
-       userId: decoded.userId,
+      userId: user._id
     };
+
+    req.ability = defineAbilitiesFor(user);
 
     next();
   } catch (error) {
