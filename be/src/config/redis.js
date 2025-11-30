@@ -12,7 +12,6 @@ redisClient.on("error", (err) => {
     console.error("❌ Redis connection error:", err);
 });
 
-// ❗ FIX: wrap connect inside a function
 async function connectRedis() {
     try {
         await redisClient.connect();
