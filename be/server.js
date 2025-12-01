@@ -39,6 +39,7 @@ app.use(limiter);
 const authRoutes = require('./src/routes/auth.routes');
 const categoryRoutes = require('./src/routes/category.routes');
 const bookRoutes = require('./src/routes/book.routes');
+const reviewRoutes = require('./src/routes/review.routes');
 
 
 app.get('/', (req, res) => {
@@ -49,6 +50,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/book', bookRoutes);
+app.use('/api/review', reviewRoutes);
 
 
 app.listen(PORT, () => {

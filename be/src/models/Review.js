@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, default: mongoose } = require('mongoose');
 
 const reviewSchema = new Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

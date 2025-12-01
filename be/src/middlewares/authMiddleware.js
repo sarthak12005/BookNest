@@ -17,13 +17,18 @@ exports.authMiddleware = async (req, res, next) => {
 
     const user = await User.findOne({ _id: decoded.userId })
 
+
     if (!user)
       return res.status(401).json({ message: "User not found" });
+
+
 
     // 👇 Attach decoded token to req.user
     req.user = {
       userId: user._id
     };
+
+    
 
     req.ability = defineAbilitiesFor(user);
 

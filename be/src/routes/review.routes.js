@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authMiddleware)
 
-router.post('/', addReview);
+router.post('/:id', addReview);
 router.get('/', cache("reviews"), getReviews);
 router.get('/:id',getReviewById);
 router.delete('/:id', deleteReview);
