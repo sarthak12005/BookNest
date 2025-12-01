@@ -7,7 +7,7 @@ const bookSchema = new mongoose.Schema({
         trim: true
     },
     author: {
-        type: String, 
+        type: String,
         required: true,
         trim: true
     },
@@ -18,7 +18,7 @@ const bookSchema = new mongoose.Schema({
     isbn: {
         type: String,
         unique: true,
-        sparse: true 
+        sparse: true
     },
     publisher: {
         type: String
@@ -31,7 +31,8 @@ const bookSchema = new mongoose.Schema({
         default: "English"
     },
     category: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
         required: true
     },
     tags: [String],
