@@ -49,11 +49,11 @@ exports.registerUser = async (req, res) => {
      try {
           const { fullName, email, username, password } = req.body;
 
-          if (!fullName || !email || !username || !password) {   // this statement checks that if we have a null or empty value present in the body
-               return res.status(400).json({ message: "Credentials Required" }); // the 400 status code is used for bad request 
+          if (!fullName || !email || !username || !password) {   
+               return res.status(400).json({ message: "Credentials Required" }); 
           }
 
-          const existingUser = await User.findOne({ email }); // this method is used to find that the user is already present in the database
+          const existingUser = await User.findOne({ email }); 
 
           if (existingUser) {
                return res.status(409).json({ message: "This email is already exits" });
