@@ -11,8 +11,8 @@ const PORT = process.env.PORT;
 const client_url1 = process.env.CLIENT_URL1
 const client_url2 = process.env.CLIENT_URL2
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({extended: true, limit: '50mb'}));
 
 app.use(cors({
     origin: [client_url1, client_url2],
@@ -22,17 +22,16 @@ app.use(cors({
 app.use(cookieParser());
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 100,
   message: {
     success: false,
     message: "Too many requests from this IP, please try again after 15 minutes."
   },
-  standardHeaders: true, // Return rate limit info in headers
-  legacyHeaders: false, // Disable X-RateLimit headers
+  standardHeaders: true, 
+  legacyHeaders: false,
 });
 
-// Apply limiter to all routes
 app.use(limiter);
 
 
