@@ -1,3 +1,4 @@
+const { generateHashPass } = require('../lib/bcrypt');
 const User = require('../models/User');
 
 exports.getUsers = async (req, res) => {
@@ -36,7 +37,19 @@ exports.getUserById = async (req, res) => {
 
 exports.createUser = async (req, res) => {
     try {
-        
+        const {name, email, password, username} = req.body;
+
+        if (!name || !email || !password || !username) 
+            return res.status(400).json({message: "Credentials Required"});
+
+        const hashPass = generateHashPass(password);
+
+        const user = new User({
+            email,
+            password: hashPass,
+            username,
+            fullName: name
+        });
     } catch (error) {
         
     }
