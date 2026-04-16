@@ -4,19 +4,14 @@ const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-
 const app = express();
-
-const client_url1 = process.env.CLIENT_URL1
-const client_url2 = process.env.CLIENT_URL2
-
-
+const client_urls = process.env.CLIENT_URLS.split(',');
 
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({extended: true, limit: '50mb'}));
 
 app.use(cors({
-    origin: [client_url1, client_url2],
+    origin: client_urls,
     credentials: true
 }));
 
@@ -35,8 +30,14 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.get('/', (req, res) => {
+
+
+app.get('/api/server', (req, res) => {
     res.send("Hello world!");
 });
+
+const authRoutes = require('./modules/Auth/auth.routes');
+
+app.use('/api/auth', authRoutes);
 
 module.exports = app;

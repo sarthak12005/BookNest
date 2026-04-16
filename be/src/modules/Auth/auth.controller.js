@@ -1,87 +1,73 @@
-const User = require('../models/User');
-const { generateHashPass, compareHashPass } = require('../lib/bcrypt');
-const { generateToken } = require('../lib/jwt');
-const jwt = require('jsonwebtoken')
+const User = require('../Users/schema/users.schema');
+const { generateHashPass, compareHashPass } = require('../../lib/bcrypt');
+const { generateToken } = require('../../lib/jwt');
+const jwt = require('jsonwebtoken');
+const { BadRequestException, InternalServerError } = require('../../utils/errorResponse');
+const UserService = require('../Users/users.service');
+const ApiSuccessResponse = require('../../utils/ApiSuccessResponse');
+
 
 
 exports.loginUser = async (req, res) => {
      try {
           const { email, password } = req.body;
 
-          if (!email || !password) {
-               return res.status(400).json({ message: "Credentials required" });
-          }
+          const response = await UserService.login({ email, password });
 
-          const user = await User.findOne({ email });
-
-          if (!user) {
-               return res.status(404).json({ message: "User not found " });
-          }
-
-          const validated = await compareHashPass(password, user.password);
-
-          if (!validated) {
-               return res.status(401).json({ message: "incorrect password or Email" });
-          }
-
-          const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
-
-          if (!token) {
-               return res.status(404).json({ message: "Failed to generate token " });
-          }
-
-          res.cookie("jwt", token, {
+          res.cookie("jwt", response.token, {
                maxAge: 7 * 24 * 60 * 60 * 1000,
-               httpOnly: true, 
+               httpOnly: true,
                sameSite: "strict",
-               secure: process.env.NODE_ENV === "production"
+               secure: process.env.NODE_ENV === "production",
           });
 
-          res.status(200).json({ message: "User login Successfully", user, token });
+          return ApiSuccessResponse(res,
+               200,
+               "User login Successfully",
+               {
+                    token:response.token,
+                    _id: response.user._id,
+                    email: response.user.email
+               }
+          );
 
      } catch (err) {
-          console.log("Error in login user", err);
-          res.status(500).json({ message: "Internal Server Error" });
+          console.error("Error in login user", err);
+
+          return res.status(err.statusCode || 500).json({
+               success: false,
+               message: err.message || "Internal Server Error",
+               errors: err.errors || [],
+          });
      }
-}
+};
 
 exports.registerUser = async (req, res) => {
      try {
           const { fullName, email, username, password } = req.body;
 
-          if (!fullName || !email || !username || !password) {   
-               return res.status(400).json({ message: "Credentials Required" }); 
-          }
-
-          const existingUser = await User.findOne({ email }); 
-
-          if (existingUser) {
-               return res.status(409).json({ message: "This email is already exits" });
-          }
-
-          const hashpass = await generateHashPass(password);
-
-          const user = new User({
+          const user = await UserService.register({
                fullName,
                email,
-               password: hashpass,
-               username
+               username,
+               password
           });
 
-          if (!user) {
-               return res.status(400).json({ message: "User not Created" });
-          }
-
-          await user.save();
-
-          res.status(200).json({ message: "User Created Successfullly", user });
-
+          return ApiSuccessResponse(res, 201, "User Created Successfully", {
+               _id: user._id,
+               email: user.email
+          });
 
      } catch (err) {
-          console.log("error in Registering user", err);
-          res.status(500).json({ message: "Internal Server Error", err });
+          console.error("Error registering user:", err);
+
+          return res.status(err.statusCode || 500).json({
+               success: false,
+               message: err.message || "Internal Server Error",
+               errors: err.errors || []
+          });
      }
-}
+};
 
 exports.getMe = async (req, res) => {
      try {
