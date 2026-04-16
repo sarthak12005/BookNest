@@ -1,7 +1,7 @@
 // src/middlewares/verifyToken.js
 const jwt = require("jsonwebtoken");
-const { defineAbilitiesFor } = require('../permissions/ability');
-const User = require("../models/User");
+const { defineAbilitiesFor } = require('../src/casl/ability');
+const User = require("../src/models/User");
 require('dotenv').config();
 
 exports.authMiddleware = async (req, res, next) => {

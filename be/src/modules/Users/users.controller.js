@@ -1,20 +1,25 @@
 const { generateHashPass } = require('../lib/bcrypt');
 const User = require('../models/User');
+const Address = require('../models/Address');
+const Order = require('../models/Order');
+const Role = require('../models/Role');
+const Permission = require("../models/Permission");
+// TODO: THIS FEATURE IS FOR ADMIN SO WE HAVE TO MOVE THIS TO ADMIN CONTROLLER
+// exports.getUsers = async (req, res) => {
+//     try {
+//         const users = await User.find()
+//         if (!users) {
+//             return res.status(404).json({ message: "Users not found" });
+//         }
 
-exports.getUsers = async (req, res) => {
-    try {
-        const users = await User.find()
-        if (!users) {
-            return res.status(404).json({ message: "Users not found" });
-        }
+//         res.status(200).json({ message: "Users Fetched Successfully", users });
+//     } catch (err) {
+//         console.log("error in fetching users", err);
+//         res.status(500).json({ message: "Internal server error", err });
+//     }
+// }
 
-        res.status(200).json({ message: "Users Fetched Successfully", users });
-    } catch (err) {
-        console.log("error in fetching users", err);
-        res.status(500).json({ message: "Internal server error", err });
-    }
-}
-
+// TODO: THIS FEATURE IS NEED SO MUCH IMPROVEMENT THERE WE HAVE TO DO
 exports.getUserById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -51,7 +56,7 @@ exports.createUser = async (req, res) => {
             fullName: name
         });
     } catch (error) {
-        
+            
     }
 }
 

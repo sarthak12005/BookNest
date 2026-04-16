@@ -1,7 +1,7 @@
 const express = require('express');
-const { authMiddleware } = require('../middlewares/authMiddleware');
+const { authMiddleware } = require('../../middlewares/authMiddleware');
 const { addReview, getReviews, getReviewById, deleteReview } = require('../controllers/review.controller');
-const { cache } = require('../middlewares/cache.middleware');
+const { cache } = require('../../middlewares/cache.middleware');
 const router = express.Router();
 
 router.use(authMiddleware)

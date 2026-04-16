@@ -1,5 +1,5 @@
 const Category = require('../models/Category');
-const cloudinary = require('../config/Cloudinary');
+const cloudinary = require('../../config/Cloudinary');
 
 exports.addCategory = async (req, res) => {
     try {

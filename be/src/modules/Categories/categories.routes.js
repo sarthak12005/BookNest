@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { addCategory, getCategory, getCategoryById, deleteCategoryById } = require('../controllers/category.controller');
-const { cache } = require('../middlewares/cache.middleware');
+const { cache } = require('../../middlewares/cache.middleware');
 
 
 router.post('/category', addCategory);

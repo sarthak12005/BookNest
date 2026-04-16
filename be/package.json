@@ -2,12 +2,13 @@
   "name": "be",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "be": "nodemon server.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "be": "nodemon src/index.js",
+    "seed": "node src/database/seeders/seed.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
   "dependencies": {
     "@casl/ability": "^6.7.3",
     "@casl/mongoose": "^8.0.3",
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",

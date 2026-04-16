@@ -1,5 +1,5 @@
 const Book = require('../models/Book');
-const cloudinary = require('../config/Cloudinary');
+const cloudinary = require('../../config/Cloudinary');
 
 exports.addBook = async (req, res) => {
     try {
