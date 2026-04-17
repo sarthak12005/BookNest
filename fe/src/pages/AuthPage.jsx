@@ -50,14 +50,12 @@ export default function AuthPage() {
       );
 
       if (res.status === 200) {
-        toast.success("login Successfully");
-        localStorage.setItem("token", res.data.token);
+        toast.success(res.data.message);
         navigate("/");
       }
     } catch (error) {
-      console.error("Login error:", error);
       toast.error(
-        error.response?.data?.message || "Login failed. Please try again.",
+        error.response?.data?.errors[0].message || "Login failed. Please try again.",
       );
     }
   };

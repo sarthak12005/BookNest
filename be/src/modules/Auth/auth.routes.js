@@ -7,8 +7,8 @@ const loginZodSchema = require('../Users/zod/login.zod');
 const { authMiddleware } = require('../../middlewares/authMiddleware');
 
 
-router.post('/login', validate(loginZodSchema), loginUser);
-router.post('/register', validate(registerUserSchema), registerUser);
+router.post('/login', validate(loginZodSchema, "body"), loginUser);
+router.post('/register', validate(registerUserSchema, "body"), registerUser);
 router.get('/me', authMiddleware, getMe);
 
 

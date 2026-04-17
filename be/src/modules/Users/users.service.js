@@ -1,5 +1,5 @@
-const ApiSuccessResponse = require('../../utils/ApiSuccessResponse');
-const { InternalServerError, BadRequestException, NotFoundException } = require('../../utils/errorResponse');
+const {ApiSuccessResponse} = require('../../utils/ApiSuccessResponse');
+const { InternalServerError, BadRequestException, NotFoundException, throwBadRequestException, throwUnauthorizedException } = require('../../utils/errorResponse');
 const UserRepo = require('./users.repo');
 const RoleRepo = require('../Roles/roles.repo');
 const { compareHashPass } = require('../../lib/bcrypt');
@@ -56,31 +56,21 @@ exports.login = async ({ email, password }) => {
         const user = await UserRepo.findByEmail(email);
 
         if (!user) {
-            throw {
-                statusCode: 404,
-                message: "User not found",
-                errors: [
-                    {
-                        field: "email",
-                        message: "User not found",
-                    },
-                ],
-            };
+            throwBadRequestException("User not found", [{ field: email, message: "user not exists with this email" }]);
         }
 
         const isValid = await compareHashPass(password, user.password);
 
         if (!isValid) {
-            throw {
-                statusCode: 401,
-                message: "Invalid credentials",
-                errors: [
+            throwUnauthorizedException(
+                "Unauthorized",
+                [
                     {
                         field: "password",
-                        message: "Incorrect password",
+                        message: "Invalid Credentials",
                     },
                 ],
-            };
+            );
         }
 
         const token = jwt.sign(
@@ -96,7 +86,6 @@ exports.login = async ({ email, password }) => {
                 errors: [],
             };
         }
-
         // ✅ return to controller
         return {
             token,

@@ -6,14 +6,26 @@ const sendError = (res, statusCode, message, errors = []) => {
   });
 };
 
+const throwSendError = (statusCode, message, errors = []) => {
+  throw {
+    statusCode: statusCode,
+    message: message,
+    errors: errors
+  };
+}
+
 // 🔹 400 - Bad Request
 const BadRequestException = (res, message = "Bad Request", errors = []) => {
   return sendError(res, 400, message, errors);
 };
 
+const throwBadRequestException = (message="Bad Request", errors=[]) => {
+    throwSendError(400, message, errors);
+}
+
 // 🔹 401 - Unauthorized
-const UnauthorizedException = (res, message = "Unauthorized") => {
-  return sendError(res, 401, message);
+const throwUnauthorizedException = (message = "Unauthorized", errors=[]) => {
+  return throwSendError(401, message, errors);
 };
 
 // 🔹 404 - Not Found
@@ -22,13 +34,15 @@ const NotFoundException = (res, message = "Not Found") => {
 };
 
 // 🔹 500 - Internal Server Error
-const InternalServerError = (res, message = "Internal Server Error") => {
-  return sendError(res, 500, message);
+const throwInternalServerError = (message = "Internal Server Error", errors = []) => {
+  return throwSendError(500, message, errors);
 };
+
 
 module.exports = {
   BadRequestException,
-  UnauthorizedException,
+  throwUnauthorizedException,
   NotFoundException,
-  InternalServerError,
+  throwInternalServerError,
+  throwBadRequestException
 };

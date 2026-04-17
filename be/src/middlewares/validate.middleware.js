@@ -1,8 +1,10 @@
-const validate = (schema) => async (req, res, next) => {
+const validate = (schema, source = "body") => async (req, res, next) => {
   try {
-    const result = await schema.parseAsync(req.body);
+    const data = req[source];
 
-    req.body = result;
+    const result = await schema.parseAsync(data);
+
+    req[source] = result;
     next();
 
   } catch (err) {

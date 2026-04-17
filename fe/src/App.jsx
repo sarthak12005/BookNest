@@ -43,7 +43,7 @@ function App() {
             </Routes>
 
             {/* initializing the toaster  */}
-            <Toaster position='top-right' reverseOrder={false} />
+            <Toaster position='top-center' reverseOrder={false} />
          </div>
       </>
    );

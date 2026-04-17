@@ -64,8 +64,8 @@ export const addBook = async (data) => {
 
 export const fetchCategory = async () => {
     try {
-        const res = await axiosInstance.get('/category/category');
-        return res.data.categories;
+        const res = await axiosInstance.get('/category?page=1&limit=5');
+        return res.data.data;
     } catch (error) {
         console.log("Error in fetching categories");
     }

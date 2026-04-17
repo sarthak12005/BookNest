@@ -18,11 +18,12 @@ app.use(cors({
 app.use(cookieParser());
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
+  windowMs: 5 * 60 * 1000, 
   max: 100,
   message: {
     success: false,
-    message: "Too many requests from this IP, please try again after 15 minutes."
+    message: "Too many requests from this IP, please try again after 15 minutes.",
+    data: {}
   },
   standardHeaders: true, 
   legacyHeaders: false,
@@ -36,8 +37,10 @@ app.get('/api/server', (req, res) => {
     res.send("Hello world!");
 });
 
-const authRoutes = require('./modules/Auth/auth.routes');
+const authRoutes = require('./modules/Auth/auth.routes'); // auth routes 
+const categoriesRoutes = require('./modules/Categories/categories.routes');// category routes 
 
 app.use('/api/auth', authRoutes);
+app.use('/api/category', categoriesRoutes);
 
 module.exports = app;

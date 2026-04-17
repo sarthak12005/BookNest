@@ -13,21 +13,21 @@ const Home = () => {
   const [categories, setCategories] = useState([])
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchLoading = async () => {
-  //     try {
-  //       setLoading(true)
-  //       await loadCategory();
-  //       await loadBooks();
-  //     } catch (error) {
+  useEffect(() => {
+    const fetchLoading = async () => {
+      try {
+        setLoading(true)
+        await loadCategory();
+        // await loadBooks();
+      } catch (error) {
 
-  //     } finally {
-  //        setLoading(false);
-  //     }
-  //   }
+      } finally {
+         setLoading(false);
+      }
+    }
 
-  //   fetchLoading()
-  // }, []);
+    fetchLoading()
+  }, []);
 
 
   // const loadBooks = async () => {
@@ -35,10 +35,10 @@ const Home = () => {
   //   setBooks(books);
   // };
 
-  // const loadCategory = async () => {
-  //   const categories = await fetchCategory();
-  //   setCategories(categories);
-  // }
+  const loadCategory = async () => {
+    const categories = await fetchCategory();
+    setCategories(categories);
+  }
 
   if (loading) {
      return (

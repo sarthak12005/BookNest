@@ -6,4 +6,16 @@ const ApiSuccessResponse = (res, code, message, data) => {
     });
 }
 
-module.exports = ApiSuccessResponse;
+const ApiPaginationSuccessResponse = (res, code, message, data, pagination) => {
+    return res.status(code).json({
+        success: true,
+        message: message,
+        data: data,
+        pagination: pagination
+    });
+}
+
+module.exports = {
+    ApiSuccessResponse,
+    ApiPaginationSuccessResponse
+};

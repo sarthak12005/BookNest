@@ -1,5 +1,6 @@
-const Category = require('../models/Category');
+const Category = require('./schemas/categories.schema')
 const cloudinary = require('../../config/Cloudinary');
+const { ApiPaginationSuccessResponse } = require('../../utils/ApiSuccessResponse');
 
 exports.addCategory = async (req, res) => {
     try {
@@ -44,19 +45,48 @@ exports.addCategory = async (req, res) => {
 
 exports.getCategory = async (req, res) => {
     try {
-        const categories = await Category.find();
+        // 👉 get from query (already validated via Zod ideally)
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 5;
 
-        if (!categories) {
-            return res.status(404).json({ message: "No Category Found" });
+        const skip = (page - 1) * limit;
+
+        // 👉 filter
+        const filter = { isDeleted: false, isActive: true };
+
+        // 👉 fetch data + count in parallel
+        const [categories, total] = await Promise.all([
+            Category.find(filter)
+                .sort({ sortOrder: 1, createdAt: -1 }) // optional sorting
+                .skip(skip)
+                .limit(limit),
+
+            Category.countDocuments(filter),
+        ]);
+
+        // 👉 calculate pagination meta
+        const totalPages = Math.ceil(total / limit);
+
+        const pagination = {
+            total,
+            page,
+            limit,
+            totalPages,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
         }
 
-        res.status(200).json({ message: "Categorys fetched successfully", categories });
+         return ApiPaginationSuccessResponse(res, 200, "Categories fetched successfully", categories, pagination)
 
     } catch (error) {
-        console.error("error in fetching categories", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error in fetching categories:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
     }
-}
+};
 
 exports.getCategoryById = async (req, res) => {
     try {
@@ -70,23 +100,23 @@ exports.getCategoryById = async (req, res) => {
         res.status(200).json({ message: "Category Found", category });
     } catch (error) {
         console.log("error in fetching category by id: ", error);
-        res.status(500).json({message:"Internal Server Error"});
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
 exports.deleteCategoryById = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const category = await Category.findByIdAndDelete(id);
 
         if (!category) {
-            return res.status(404).json({message: "Category not found "});
+            return res.status(404).json({ message: "Category not found " });
         }
 
-        res.status(200).json({message: "Category Deleted Successfully", category});
+        res.status(200).json({ message: "Category Deleted Successfully", category });
     } catch (error) {
         console.log("error in deleting category by id: ", error);
-        res.status(500).json({message:"Internal Server Error"});
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 

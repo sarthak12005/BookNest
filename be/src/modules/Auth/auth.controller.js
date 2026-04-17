@@ -4,42 +4,31 @@ const { generateToken } = require('../../lib/jwt');
 const jwt = require('jsonwebtoken');
 const { BadRequestException, InternalServerError } = require('../../utils/errorResponse');
 const UserService = require('../Users/users.service');
-const ApiSuccessResponse = require('../../utils/ApiSuccessResponse');
+const {ApiSuccessResponse} = require('../../utils/ApiSuccessResponse');
 
 
 
 exports.loginUser = async (req, res) => {
-     try {
-          const { email, password } = req.body;
 
-          const response = await UserService.login({ email, password });
+     const { email, password } = req.body;
 
-          res.cookie("jwt", response.token, {
-               maxAge: 7 * 24 * 60 * 60 * 1000,
-               httpOnly: true,
-               sameSite: "strict",
-               secure: process.env.NODE_ENV === "production",
-          });
+     const response = await UserService.login({ email, password });
 
-          return ApiSuccessResponse(res,
-               200,
-               "User login Successfully",
-               {
-                    token:response.token,
-                    _id: response.user._id,
-                    email: response.user.email
-               }
-          );
+     res.cookie("jwt", response.token, {
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+          httpOnly: true,
+          sameSite: "strict",
+          secure: process.env.NODE_ENV === "production",
+     });
 
-     } catch (err) {
-          console.error("Error in login user", err);
-
-          return res.status(err.statusCode || 500).json({
-               success: false,
-               message: err.message || "Internal Server Error",
-               errors: err.errors || [],
-          });
-     }
+     return ApiSuccessResponse(res,
+          200,
+          "User login Successfully",
+          {
+               _id: response.user._id,
+               email: response.user.email
+          }
+     );
 };
 
 exports.registerUser = async (req, res) => {
