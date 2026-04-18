@@ -1,6 +1,7 @@
 const Category = require('./schemas/categories.schema')
 const cloudinary = require('../../config/Cloudinary');
 const { ApiPaginationSuccessResponse } = require('../../utils/ApiSuccessResponse');
+const { toObjectIdOrThrow } = require('../../common/helper/toObjectId');
 
 exports.addCategory = async (req, res) => {
     try {
@@ -75,7 +76,7 @@ exports.getCategory = async (req, res) => {
             hasNextPage: page < totalPages,
             hasPrevPage: page > 1,
         }
-
+        console.log("returning from database")
          return ApiPaginationSuccessResponse(res, 200, "Categories fetched successfully", categories, pagination)
 
     } catch (error) {
@@ -91,7 +92,8 @@ exports.getCategory = async (req, res) => {
 exports.getCategoryById = async (req, res) => {
     try {
         const { id } = req.params;
-        const category = await Category.findById(id);
+        const _id = await toObjectIdOrThrow(id);
+        const category = await Category.findById(_id);
 
         if (!category) {
             return res.status(404).json({ message: "Category not found " });

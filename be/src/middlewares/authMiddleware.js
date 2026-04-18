@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../modules/Users/schema/users.schema");
+const Role = require('../modules/Roles/schemas/roles.schema');
+const Permission = require('../modules/Permissions/schemas/permissions.schema')
 
 exports.authMiddleware = async (req, res, next) => {
   try {
@@ -29,7 +31,16 @@ exports.authMiddleware = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // ✅ Check user exists
-    const user = await User.findById(decoded.userId).select("_id");
+    const user = await User.findById(decoded.userId)
+      .select("_id name email roleIds")
+      .populate({
+        path: "role",
+        select: "_id code name permissions",
+        populate: {
+          path: "permissions",
+          select: "_id code name",
+        },
+      })
 
     if (!user) {
       return res.status(401).json({
@@ -37,9 +48,18 @@ exports.authMiddleware = async (req, res, next) => {
       });
     }
 
+    const permissions = new Set();
+
+    if (user.role && user.role.permissions) {
+      user.role.permissions.forEach(p => {
+        permissions.add(p.code);
+      });
+    }
+
     // ✅ Attach only what we need
     req.user = {
       userId: user._id,
+      permissions: Array.from(permissions),
     };
 
     next();

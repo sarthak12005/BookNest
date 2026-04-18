@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "be": "nodemon src/index.js",
-    "seed": "node src/database/seeders/seed.js"
+    "seed": "node src/database/seeders/seed.js",
+    "seed:permission": "node src/database/seeders/seedPermissions.js"
   },
   "keywords": [],
   "author": "",

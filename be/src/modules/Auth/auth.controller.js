@@ -25,6 +25,7 @@ exports.loginUser = async (req, res) => {
           200,
           "User login Successfully",
           {
+               token: response.token,
                _id: response.user._id,
                email: response.user.email
           }

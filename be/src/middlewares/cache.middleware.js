@@ -8,6 +8,7 @@ const cache = (keyPrefix) => {
             const cachedData = await redisClient.get(key);
 
             if (cachedData) {
+                console.log("data comming from cache")
                 return res.json(JSON.parse(cachedData));
             }
 

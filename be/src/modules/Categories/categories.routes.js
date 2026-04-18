@@ -4,12 +4,26 @@ const { addCategory, getCategory, getCategoryById, deleteCategoryById } = requir
 const { cache } = require('../../middlewares/cache.middleware');
 const validate = require('../../middlewares/validate.middleware');
 const searchingCategoryZodSchema = require('./zod/searching.zod');
+const { authMiddleware } = require('../../middlewares/authMiddleware');
+const { checkPermission } = require('../../middlewares/permissionMiddleware');
+const { PERMISSION_COLLECTION } = require('../../common/collection/permission.collection');
 
 
 // router.post('/category', addCategory);
 router.get(
-    '/',cache("categories"),validate(searchingCategoryZodSchema, "query"), getCategory);
-// router.get('/category/:id', getCategoryById);
+    '/',
+    authMiddleware,
+    checkPermission(PERMISSION_COLLECTION.READ_CATEGORIES),
+    cache("categories"),
+    validate(searchingCategoryZodSchema, "query"), 
+    getCategory
+);
+router.get(
+    '/:id', 
+    authMiddleware,
+    checkPermission(PERMISSION_COLLECTION.READ_CATEGORIES),
+    getCategoryById
+);
 // router.delete('/category/:id', deleteCategoryById);
 
 
