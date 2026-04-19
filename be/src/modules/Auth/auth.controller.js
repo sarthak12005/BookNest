@@ -17,8 +17,8 @@ exports.loginUser = async (req, res) => {
      res.cookie("jwt", response.token, {
           maxAge: 7 * 24 * 60 * 60 * 1000,
           httpOnly: true,
-          sameSite: "strict",
-          secure: process.env.NODE_ENV === "production",
+          sameSite: "None",
+          secure: process.env.NODE_ENV === "deployment",
      });
 
      return ApiSuccessResponse(res,

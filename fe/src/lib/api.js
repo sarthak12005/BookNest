@@ -28,7 +28,6 @@ export const loginUser = async (loginData, navigate) => {
 
         if (res.status === 200) {
             toast.success("login Successfully");
-            localStorage.setItem('token', res.data.token);
             navigate('/');
         }
 
@@ -53,7 +52,7 @@ export const addBook = async (data) => {
         const res = await axiosInstance.post('/book/book', data);
 
         if (res.status === 200) {
-             toast.success("Book Added Successfully!");
+            toast.success("Book Added Successfully!");
         }
 
     } catch (error) {
