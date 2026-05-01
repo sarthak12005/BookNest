@@ -51,6 +51,7 @@ export default function AuthPage() {
 
       if (res.status === 200) {
         toast.success(res.data.message);
+        console.log("login successfull");
         setUser(res.data.data.user);
         navigate("/");
       }
