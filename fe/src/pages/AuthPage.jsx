@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";

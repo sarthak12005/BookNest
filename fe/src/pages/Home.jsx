@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useUser } from "../context/useUser";
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { fetchBooks, fetchCategory } from "../lib/api";
 import HeroSection from "../components/Home/HeroSection";
 import CategorySection from "../components/Home/CategorySection";

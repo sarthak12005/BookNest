@@ -1,6 +1,6 @@
 import { Facebook, Instagram, TwitterIcon, Youtube } from 'lucide-react';
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 
 const Footer = () => {
