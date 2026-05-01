@@ -20,7 +20,7 @@ const Sidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const profileRef = useRef();
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -47,6 +47,7 @@ const Sidebar = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      setUser(null);
       console.log("logout successfully");
       localStorage.removeItem("token"); // if you also store token
       navigate("/auth");
