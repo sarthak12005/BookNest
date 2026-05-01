@@ -72,13 +72,8 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 // 🔥 UNIQUE NAME PER LEVEL (IMPORTANT)
-categorySchema.index(
-  { name: 1, parent: 1 },
-  { unique: true }
-);
-
+categorySchema.index({ name: 1, parent: 1 }, { unique: true });
 
 // 🔥 AUTO SLUG
 categorySchema.pre('save', function (next) {
@@ -90,6 +85,5 @@ categorySchema.pre('save', function (next) {
   }
   next();
 });
-
 
 module.exports = mongoose.model('Category', categorySchema);

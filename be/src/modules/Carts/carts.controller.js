@@ -1,27 +1,25 @@
 const Cart = require('../models/Cart');
 
-
 exports.getCart = async (req, res) => {
-    try {
-        const userId = req.user.userId;
+  try {
+    const userId = req.user.userId;
 
-        if (!userId) {
-            return res.status(400).json({message: "UserId not found"});
-        }
-
-        const cart = await Cart.findOne({userId});
-
-        if (!cart) {
-            return res.status(404).json({message: "Cart Not Found"});
-        }
-
-        res.status(200).json({message: "Cart fetched successfully", cart});
-    } catch (error) {
-        console.log("Error in get cart controller", error)
-        res.status(500).json({message: "Internal Server error", error});
-        
+    if (!userId) {
+      return res.status(400).json({ message: 'UserId not found' });
     }
-}
+
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart Not Found' });
+    }
+
+    res.status(200).json({ message: 'Cart fetched successfully', cart });
+  } catch (error) {
+    console.log('Error in get cart controller', error);
+    res.status(500).json({ message: 'Internal Server error', error });
+  }
+};
 
 exports.addToCart = async (req, res) => {
   try {
@@ -29,7 +27,7 @@ exports.addToCart = async (req, res) => {
     const { productId, quantity } = req.body;
 
     if (!userId || !productId || !quantity) {
-      return res.status(400).json({ message: "UserId, productId, and quantity are required" });
+      return res.status(400).json({ message: 'UserId, productId, and quantity are required' });
     }
 
     // Find user’s cart
@@ -48,7 +46,7 @@ exports.addToCart = async (req, res) => {
       });
 
       await newCart.save();
-      return res.status(201).json({ message: "Cart created and product added", cart: newCart });
+      return res.status(201).json({ message: 'Cart created and product added', cart: newCart });
     }
 
     // If cart exists, check if product already exists in the cart
@@ -65,20 +63,13 @@ exports.addToCart = async (req, res) => {
     }
 
     await cart.save();
-    return res.status(200).json({ message: "Product added to cart", cart });
-
+    return res.status(200).json({ message: 'Product added to cart', cart });
   } catch (error) {
-    console.error("Error adding to cart:", error);
-    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+    console.error('Error adding to cart:', error);
+    return res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 };
 
+exports.removeItem = async (req, res) => {};
 
-exports.removeItem = async (req, res) => {
-
-}
-
-
-exports.removeProduct = async (req, res) => {
-
-}
+exports.removeProduct = async (req, res) => {};

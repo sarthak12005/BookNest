@@ -24,7 +24,11 @@ export const loginUser = async (loginData, navigate) => {
         const res = await axios.post(`${API_URL}/auth/login`, {
             email,
             password
-        });
+        }, 
+        {
+            withCredentials: true
+        }
+        );
 
         if (res.status === 200) {
             toast.success("login Successfully");
@@ -40,6 +44,9 @@ export const loginUser = async (loginData, navigate) => {
 export const fetchBooks = async () => {
     try {
         const response = await axiosInstance.get('/book/books');
+        if (!response.data) {
+            return []
+        }
         const books = response.data;
         return books;
     } catch (error) {
@@ -64,9 +71,22 @@ export const addBook = async (data) => {
 export const fetchCategory = async () => {
     try {
         const res = await axiosInstance.get('/category?page=1&limit=5');
+
+        if (!res.data.data) {
+            return [];
+        }
         return res.data.data;
     } catch (error) {
         console.log("Error in fetching categories");
+    }
+}
+
+export const logout = async () => {
+    try {
+        const res = await axiosInstance.post('/auth/logout');
+        return res;
+    } catch (error) {
+        console.log(error);
     }
 }
 

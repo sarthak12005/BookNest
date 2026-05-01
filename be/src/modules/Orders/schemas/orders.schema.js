@@ -18,7 +18,6 @@ const orderItemSchema = new mongoose.Schema(
   { _id: false }
 );
 
-
 const orderSchema = new mongoose.Schema(
   {
     user: {
@@ -60,7 +59,7 @@ const orderSchema = new mongoose.Schema(
 
     currency: {
       type: String,
-      default: "INR",
+      default: 'INR',
     },
 
     // 📍 ADDRESS SNAPSHOT (VERY IMPORTANT)
@@ -141,6 +140,5 @@ const orderSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
 
 module.exports = mongoose.model('Order', orderSchema);

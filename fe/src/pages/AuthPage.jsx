@@ -9,7 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AuthPage() {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const {user, setUser} = useUser();
   const [activeTab, setActiveTab] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -51,6 +51,8 @@ export default function AuthPage() {
 
       if (res.status === 200) {
         toast.success(res.data.message);
+        console.log(res.data.data.user);
+        setUser(res.data.data.user);
         navigate("/");
       }
     } catch (error) {

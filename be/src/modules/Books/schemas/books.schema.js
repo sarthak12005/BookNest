@@ -46,12 +46,12 @@ const bookSchema = new mongoose.Schema(
 
     language: {
       type: String,
-      default: "English",
+      default: 'English',
     },
 
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
       required: true,
       index: true,
     },
@@ -76,13 +76,13 @@ const bookSchema = new mongoose.Schema(
         validator: function (value) {
           return value <= this.price;
         },
-        message: "Discount price must be less than or equal to price",
+        message: 'Discount price must be less than or equal to price',
       },
     },
 
     currency: {
       type: String,
-      default: "INR",
+      default: 'INR',
     },
 
     // 📦 Inventory
@@ -150,7 +150,6 @@ const bookSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 // 🔥 TEXT SEARCH INDEX
 bookSchema.index({
   title: 'text',
@@ -158,7 +157,6 @@ bookSchema.index({
   description: 'text',
   tags: 'text',
 });
-
 
 // 🔥 AUTO SLUG GENERATION
 bookSchema.pre('save', function (next) {
@@ -170,6 +168,5 @@ bookSchema.pre('save', function (next) {
   }
   next();
 });
-
 
 module.exports = mongoose.model('Book', bookSchema);

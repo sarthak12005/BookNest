@@ -1,18 +1,21 @@
-const redisClient = require("../config/redis");
+const redisClient = require('../config/redis');
 
 const cache = (keyPrefix) => {
   return async (req, res, next) => {
     try {
       // Build unique key using URL query + params
-      const key = keyPrefix + ":" + JSON.stringify({
-        params: req.params,
-        query: req.query
-      });
+      const key =
+        keyPrefix +
+        ':' +
+        JSON.stringify({
+          params: req.params,
+          query: req.query,
+        });
 
       // Check cache
       const cachedData = await redisClient.get(key);
       if (cachedData) {
-        console.log("⚡ Redis Cache Hit");
+        console.log('⚡ Redis Cache Hit');
         return res.json(JSON.parse(cachedData));
       }
 
@@ -25,7 +28,7 @@ const cache = (keyPrefix) => {
 
       next();
     } catch (err) {
-      console.error("Redis cache error:", err);
+      console.error('Redis cache error:', err);
       next();
     }
   };

@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
-const User = require("../modules/Users/schema/users.schema");
+const jwt = require('jsonwebtoken');
+const User = require('../modules/Users/schema/users.schema');
 const Role = require('../modules/Roles/schemas/roles.schema');
-const Permission = require('../modules/Permissions/schemas/permissions.schema')
+const Permission = require('../modules/Permissions/schemas/permissions.schema');
 
 exports.authMiddleware = async (req, res, next) => {
   try {
@@ -13,17 +13,14 @@ exports.authMiddleware = async (req, res, next) => {
     }
 
     // ✅ 2. Fallback: Authorization header
-    else if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer ")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
+    else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      token = req.headers.authorization.split(' ')[1];
     }
 
     // ❌ No token
     if (!token) {
       return res.status(401).json({
-        message: "Unauthorized - No token provided",
+        message: 'Unauthorized - No token provided',
       });
     }
 
@@ -32,26 +29,26 @@ exports.authMiddleware = async (req, res, next) => {
 
     // ✅ Check user exists
     const user = await User.findById(decoded.userId)
-      .select("_id name email roleIds")
+      .select('_id name email roleIds')
       .populate({
-        path: "role",
-        select: "_id code name permissions",
+        path: 'role',
+        select: '_id code name permissions',
         populate: {
-          path: "permissions",
-          select: "_id code name",
+          path: 'permissions',
+          select: '_id code name',
         },
-      })
+      });
 
     if (!user) {
       return res.status(401).json({
-        message: "Unauthorized - User not found",
+        message: 'Unauthorized - User not found',
       });
     }
 
     const permissions = new Set();
 
     if (user.role && user.role.permissions) {
-      user.role.permissions.forEach(p => {
+      user.role.permissions.forEach((p) => {
         permissions.add(p.code);
       });
     }
@@ -64,10 +61,10 @@ exports.authMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error("Auth Middleware Error:", error);
+    console.error('Auth Middleware Error:', error);
 
     return res.status(401).json({
-      message: "Invalid or expired token",
+      message: 'Invalid or expired token',
     });
   }
 };

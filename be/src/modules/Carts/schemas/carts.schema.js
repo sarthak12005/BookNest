@@ -28,7 +28,6 @@ const cartItemSchema = new mongoose.Schema(
   { _id: false }
 );
 
-
 const cartSchema = new mongoose.Schema(
   {
     user: {
@@ -71,14 +70,13 @@ const cartSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 // 🔥 AUTO CALCULATE TOTALS
 cartSchema.pre('save', function (next) {
   let totalItems = 0;
   let totalAmount = 0;
   let totalDiscount = 0;
 
-  this.items.forEach(item => {
+  this.items.forEach((item) => {
     totalItems += item.quantity;
 
     const itemPrice = item.discountPrice || item.price;
@@ -95,6 +93,5 @@ cartSchema.pre('save', function (next) {
 
   next();
 });
-
 
 module.exports = mongoose.model('Cart', cartSchema);

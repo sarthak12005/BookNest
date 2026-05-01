@@ -1,29 +1,28 @@
-const redisClient = require("../config/redis");
+const redisClient = require('../config/redis');
 
 const cache = (keyPrefix) => {
-    return async (req, res, next) => {
-        try {
-            const key = keyPrefix + JSON.stringify(req.params);
+  return async (req, res, next) => {
+    try {
+      const key = keyPrefix + JSON.stringify(req.params);
 
-            const cachedData = await redisClient.get(key);
+      const cachedData = await redisClient.get(key);
 
-            if (cachedData) {
-                console.log("data comming from cache")
-                return res.json(JSON.parse(cachedData));
-            }
+      if (cachedData) {
+        return res.json(JSON.parse(cachedData));
+      }
 
-            const originalSend = res.json.bind(res);
-            res.json = async (data) => {
-                await redisClient.setEx(key, 60, JSON.stringify(data));
-                originalSend(data);
-            };
+      const originalSend = res.json.bind(res);
+      res.json = async (data) => {
+        await redisClient.setEx(key, 60, JSON.stringify(data));
+        originalSend(data);
+      };
 
-            next();
-        } catch (error) {
-            console.error("❌ Error in cache middleware:", error);
-            next(); 
-        }
-    };
+      next();
+    } catch (error) {
+      console.error('❌ Error in cache middleware:', error);
+      next();
+    }
+  };
 };
 
 module.exports = { cache };

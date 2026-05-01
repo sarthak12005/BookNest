@@ -72,7 +72,6 @@ const reviewSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 // 🔥 PREVENT DUPLICATE REVIEWS
 reviewSchema.index({ user: 1, book: 1 }, { unique: true });
 
