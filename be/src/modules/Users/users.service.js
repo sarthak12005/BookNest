@@ -17,7 +17,7 @@ exports.register = async ({ fullName, email, username, password }) => {
   if (existingUser) {
     throw {
       statusCode: 400,
-      message: 'Validation Error',
+      message: 'User already exists!',
       errors: [
         {
           field: 'email or username',
