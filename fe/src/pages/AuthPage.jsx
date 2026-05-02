@@ -73,7 +73,7 @@ export default function AuthPage() {
         password,
       });
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         toast.success("Registration successful! Please Login");
         setActiveTab("login");
       }
