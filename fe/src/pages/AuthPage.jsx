@@ -66,7 +66,7 @@ export default function AuthPage() {
     try {
       const { name, email, password, username } = data;
 
-      const res = await axios.post(`${API_URL}/auth/signup`, {
+      const res = await axios.post(`${API_URL}/auth/register`, {
         fullName: name,
         email,
         username,
