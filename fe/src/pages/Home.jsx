@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchBooks, fetchCategory } from "../lib/api";
 import HeroSection from "../components/Home/HeroSection";
 import CategorySection from "../components/Home/CategorySection";
+import BestsellingBooks from "../components/Home/BestSellingBooks";
 
 
 const Home = () => {
@@ -53,6 +54,7 @@ const Home = () => {
     <div>
       <HeroSection />
       <CategorySection categories={categories} />
+      <BestsellingBooks/>
     </div>
   )
 }

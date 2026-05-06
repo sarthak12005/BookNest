@@ -75,7 +75,6 @@ exports.getMe = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    console.log("request come here");
     res.clearCookie("jwt", {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'deployment',

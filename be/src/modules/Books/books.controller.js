@@ -3,27 +3,26 @@ const cloudinary = require('../../config/Cloudinary');
 
 exports.addBook = async (req, res) => {
   try {
-    const {
-      title,
-      author,
-      description,
-      isbn,
-      publisher,
-      publicationDate,
-      language,
-      category,
-      price,
-      discountPrice,
-      stock,
-      available,
-      coverImages,
-      pdfUrl,
-      pages,
-    } = req.body;
-
-    if (!title || !author || !category || !price || !coverImages) {
-      return res.status(400).json({ message: 'Credentials required' });
-    }
+   const {
+  title,
+  author,
+  description,
+  shortDescription,
+  isbn,
+  publisher,
+  publicationDate,
+  language,
+  category,
+  tags,
+  price,
+  discountPrice,
+  currency,
+  stock,
+  coverImages,
+  pdfUrl,
+  status,
+  isFeatured,
+} = req.body;
 
     const existingBook = await Book.findOne({ title, isbn });
 
