@@ -109,6 +109,12 @@ const bookSchema = new mongoose.Schema(
 
     pages: Number,
 
+    openCount: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+
     // ⭐ Ratings (optimized)
     averageRating: {
       type: Number,

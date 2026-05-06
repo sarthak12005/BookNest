@@ -6,18 +6,19 @@ const {
   getBookById,
   getAllBooks,
   deleteBookById,
-} = require('../controllers/book.controller');
+} = require('./books.controller');
 const { cache } = require('../../middlewares/cache.middleware');
 const permission = require('../../middlewares/permissionMiddleware');
 const { PERMISSION_COLLECTION } = require('../../common/collection/permission.collection');
+const createBookZodSchema = require('./zod/create-book.zod');
 
 
 
 router.post(
   '/book',
   authMiddleware,
-  checkPermission(PERMISSION_COLLECTION.SYSTEM_ALL),
-  validate(searchingCategoryZodSchema, 'query'),
+  permission.checkPermission(PERMISSION_COLLECTION.SYSTEM_ALL),
+  validate(createBookZodSchema, 'body'),
   addBook
 );
 

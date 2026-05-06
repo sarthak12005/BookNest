@@ -48,11 +48,9 @@ const Sidebar = () => {
     try {
       await logout();
       setUser(null);
-      console.log("logout successfully");
       localStorage.removeItem("token"); // if you also store token
       navigate("/auth");
     } catch (error) {
-      console.error(error);
     }
   };
 
