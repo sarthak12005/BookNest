@@ -1,28 +1,51 @@
-const redisClient = require('../config/redis');
+const redisClient = require("../config/redis");
 
-const cache = (keyPrefix) => {
+const cache = ({
+  keyPrefix = "cache",
+  ttl = 60,
+} = {}) => {
   return async (req, res, next) => {
     try {
-      const key = keyPrefix + JSON.stringify(req.params);
 
-      const cachedData = await redisClient.get(key);
+      // create unique cache key
+      const cacheKey = `${keyPrefix}:${req.originalUrl}`;
+
+      // check cache
+      const cachedData = await redisClient.get(cacheKey);
 
       if (cachedData) {
-        return res.json(JSON.parse(cachedData));
-      }
 
-      const originalSend = res.json.bind(res);
+        return res.status(200).json({
+          success: true,
+          source: "redis-cache",
+          data: JSON.parse(cachedData),
+        });
+      }
+      // store original json method
+      const originalJson = res.json.bind(res);
+
+      // override res.json
       res.json = async (data) => {
-        await redisClient.setEx(key, 60, JSON.stringify(data));
-        originalSend(data);
+        try {
+          await redisClient.setEx(
+            cacheKey,
+            ttl,
+            JSON.stringify(data)
+          );
+        } catch (err) {
+          console.error("Redis SET Error:", err);
+        }
+
+        return originalJson(data);
       };
 
       next();
+
     } catch (error) {
-      console.error('❌ Error in cache middleware:', error);
+      console.error("❌ Cache Middleware Error:", error);
       next();
     }
   };
 };
 
-module.exports = { cache };
+module.exports = cache;

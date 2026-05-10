@@ -1,0 +1,124 @@
+const buildBookQuery = (filters) => {
+
+  const {
+    search,
+    category,
+    minPrice,
+    maxPrice,
+    language,
+    status,
+    isFeatured,
+    minRating,
+    inStock,
+  } = filters;
+
+  const query = {
+    isDeleted: false,
+  };
+
+  // 🔍 Search
+  if (search) {
+
+    query.$or = [
+
+      {
+        title: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+
+      {
+        author: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+
+      {
+        description: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+
+      {
+        shortDescription: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+
+      {
+        tags: {
+          $elemMatch: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      },
+
+      {
+        searchKeywords: {
+          $elemMatch: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      },
+
+    ];
+  }
+
+  // 📚 Category
+  if (category) {
+    query.category = category;
+  }
+
+  // 💰 Price
+  if (minPrice || maxPrice) {
+
+    query.price = {};
+
+    if (minPrice) {
+      query.price.$gte = minPrice;
+    }
+
+    if (maxPrice) {
+      query.price.$lte = maxPrice;
+    }
+  }
+
+  // 🌍 Language
+  if (language) {
+    query.language = language;
+  }
+
+  // 📊 Status
+  if (status) {
+    query.status = status;
+  }
+
+  // ⭐ Featured
+  if (isFeatured !== undefined) {
+    query.isFeatured = isFeatured;
+  }
+
+  // ⭐ Rating
+  if (minRating) {
+    query.averageRating = {
+      $gte: minRating,
+    };
+  }
+
+  // 📦 Stock
+  if (inStock === true) {
+    query.stock = {
+      $gt: 0,
+    };
+  }
+
+  return query;
+};
+
+module.exports = buildBookQuery;

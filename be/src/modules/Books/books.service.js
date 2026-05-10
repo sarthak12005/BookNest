@@ -3,6 +3,7 @@ const bookRepo = require('./books.repo');
 const categoryRepo = require('../Categories/categories.repo')
 const { throwBadRequestException, throwNotFoundException } = require('../../utils/errorResponse');
 const { Types } = require('mongoose');
+const buildBookQuery = require('../../utils/buildBooksQuery');
 exports.addBook = async (body, userId) => {
   try {
 
@@ -62,4 +63,58 @@ exports.addBook = async (body, userId) => {
   } catch (error) {
     throw error;
   }
+};
+
+exports.getBooks = async (filters,userId) => {
+
+  const {
+    page = 1,
+    limit = 10,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+  } = filters;
+
+  // build mongo query
+  const query = buildBookQuery(filters);
+
+  // sorting
+  const sort = {
+    [sortBy]: sortOrder === "asc" ? 1 : -1,
+  };
+
+  // pagination
+  const skip = (page - 1) * limit;
+
+  // repository call
+  const {
+    books,
+    totalBooks,
+  } = await bookRepo.getBooks({
+    query,
+    sort,
+    skip,
+    limit,
+    userId
+  });
+
+  // total pages
+  const totalPages = Math.ceil(
+    totalBooks / limit
+  );
+
+  // pagination object
+  const pagination = {
+    total: totalBooks,
+    page,
+    limit,
+    totalPages,
+    hasNextPage: page < totalPages,
+    hasPrevPage: page > 1,
+  };
+
+  return {
+    message: "Books fetched successfully",
+    data: books,
+    pagination,
+  };
 };

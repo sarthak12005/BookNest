@@ -8,13 +8,15 @@
     "dev": "vite build && vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.12.2",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.544.0",
+    "prettier": "^3.8.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
