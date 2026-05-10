@@ -1,29 +1,29 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
-import { useUser } from "../context/useUser";
-import { useEffect } from "react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
+import { useUser } from '../context/useUser';
+import { useEffect } from 'react';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AuthPage() {
   const navigate = useNavigate();
-  const {user, setUser} = useUser();
-  const [activeTab, setActiveTab] = useState("login");
+  const { user, setUser } = useUser();
+  const [activeTab, setActiveTab] = useState('login');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    username: "",
-    email: "",
-    password: "",
+    name: '',
+    username: '',
+    email: '',
+    password: '',
   });
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate('/');
     }
   }, [user, navigate]);
 
@@ -46,19 +46,16 @@ export default function AuthPage() {
         },
         {
           withCredentials: true, // 🔥 THIS LINE FIXES EVERYTHING
-        },
+        }
       );
 
       if (res.status === 200) {
         toast.success(res.data.message);
-        console.log("login successfull");
-        setUser(res.data.data.user);
-        navigate("/");
+        console.log('login successfull');
+        navigate('/');
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.errors[0].message || "Login failed. Please try again.",
-      );
+      toast.error(error.response?.data?.errors[0].message || 'Login failed. Please try again.');
     }
   };
 
@@ -74,20 +71,17 @@ export default function AuthPage() {
       });
 
       if (res.status === 201) {
-        toast.success("Registration successful! Please Login");
-        setActiveTab("login");
+        toast.success('Registration successful! Please Login');
+        setActiveTab('login');
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      toast.error(
-        error.response?.data?.message ||
-          "Registration failed. Please try again.",
-      );
+      console.error('Registration error:', error);
+      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
     }
   };
 
   const handleSubmit = () => {
-    if (activeTab === "login") {
+    if (activeTab === 'login') {
       handleLoginSubmit(formData);
     } else {
       handleRegisterSubmit(formData);
@@ -103,21 +97,21 @@ export default function AuthPage() {
           <div className="w-full max-w-sm bg-white/20 backdrop-blur-sm rounded-xl flex p-1 mb-8">
             <button
               className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                activeTab === "login"
-                  ? "bg-white text-blue-600 shadow-lg"
-                  : "text-black hover:bg-white/10"
+                activeTab === 'login'
+                  ? 'bg-white text-blue-600 shadow-lg'
+                  : 'text-black hover:bg-white/10'
               }`}
-              onClick={() => setActiveTab("login")}
+              onClick={() => setActiveTab('login')}
             >
               Login
             </button>
             <button
               className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                activeTab === "register"
-                  ? "bg-white text-blue-600 shadow-lg"
-                  : "text-black hover:bg-white/10"
+                activeTab === 'register'
+                  ? 'bg-white text-blue-600 shadow-lg'
+                  : 'text-black hover:bg-white/10'
               }`}
-              onClick={() => setActiveTab("register")}
+              onClick={() => setActiveTab('register')}
             >
               Register
             </button>
@@ -127,18 +121,18 @@ export default function AuthPage() {
           <div className="w-full max-w-sm bg-white py-8 px-8 rounded-2xl shadow-xl">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                {activeTab === "login" ? "Welcome Back!" : "Create Account"}
+                {activeTab === 'login' ? 'Welcome Back!' : 'Create Account'}
               </h2>
               <p className="text-sm text-gray-500">
-                {activeTab === "login"
-                  ? "Enter your credentials to access your account"
-                  : "Sign up to get started with your account"}
+                {activeTab === 'login'
+                  ? 'Enter your credentials to access your account'
+                  : 'Sign up to get started with your account'}
               </p>
             </div>
 
             <div className="space-y-4">
               {/* Name Field (Register only) */}
-              {activeTab === "register" && (
+              {activeTab === 'register' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">
                     Full Name
@@ -158,11 +152,9 @@ export default function AuthPage() {
               )}
 
               {/* username field */}
-              {activeTab === "register" && (
+              {activeTab === 'register' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Username
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Username</label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
@@ -198,10 +190,8 @@ export default function AuthPage() {
               {/* Password Field */}
               <div>
                 <div className="flex justify-between items-center mb-1.5">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
-                  {activeTab === "login" && (
+                  <label className="block text-sm font-medium text-gray-700">Password</label>
+                  {activeTab === 'login' && (
                     <button
                       type="button"
                       className="text-xs text-blue-600 hover:text-blue-700 font-medium"
@@ -214,7 +204,7 @@ export default function AuthPage() {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
@@ -226,17 +216,13 @@ export default function AuthPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? (
-                      <EyeOff className="w-5 h-5" />
-                    ) : (
-                      <Eye className="w-5 h-5" />
-                    )}
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
               </div>
 
               {/* Remember Me (Login only) */}
-              {activeTab === "login" && (
+              {activeTab === 'login' && (
                 <div className="flex items-center">
                   <input
                     type="checkbox"
@@ -245,10 +231,7 @@ export default function AuthPage() {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label
-                    htmlFor="remember"
-                    className="ml-2 text-sm text-gray-700"
-                  >
+                  <label htmlFor="remember" className="ml-2 text-sm text-gray-700">
                     Remember me for 30 days
                   </label>
                 </div>
@@ -259,16 +242,14 @@ export default function AuthPage() {
                 onClick={handleSubmit}
                 className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
-                {activeTab === "login" ? "Sign In" : "Create Account"}
+                {activeTab === 'login' ? 'Sign In' : 'Create Account'}
               </button>
             </div>
 
             {/* Divider */}
             <div className="flex items-center my-6">
               <div className="flex-1 border-t border-gray-300"></div>
-              <span className="px-3 text-xs text-gray-500">
-                Or continue with
-              </span>
+              <span className="px-3 text-xs text-gray-500">Or continue with</span>
               <div className="flex-1 border-t border-gray-300"></div>
             </div>
 
@@ -308,17 +289,13 @@ export default function AuthPage() {
 
             {/* Toggle Link */}
             <p className="text-sm text-gray-600 text-center mt-6">
-              {activeTab === "login"
-                ? "Don't have an account? "
-                : "Already have an account? "}
+              {activeTab === 'login' ? "Don't have an account? " : 'Already have an account? '}
               <button
                 type="button"
-                onClick={() =>
-                  setActiveTab(activeTab === "login" ? "register" : "login")
-                }
+                onClick={() => setActiveTab(activeTab === 'login' ? 'register' : 'login')}
                 className="text-blue-600 hover:text-blue-700 font-semibold"
               >
-                {activeTab === "login" ? "Sign up" : "Sign in"}
+                {activeTab === 'login' ? 'Sign up' : 'Sign in'}
               </button>
             </p>
           </div>
@@ -341,13 +318,10 @@ export default function AuthPage() {
                                 </svg>
                             </div>
                         </div> */}
-            <h3 className="text-2xl font-bold mb-3">
-              Secure & Simple Authentication
-            </h3>
+            <h3 className="text-2xl font-bold mb-3">Secure & Simple Authentication</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Join thousands of users who trust our platform for secure access
-              to their accounts. Get started in seconds with email or social
-              login.
+              Join thousands of users who trust our platform for secure access to their accounts.
+              Get started in seconds with email or social login.
             </p>
             <div className="mt-8 flex justify-center gap-2">
               <div className="w-2 h-2 bg-white rounded-full"></div>

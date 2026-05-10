@@ -1,6 +1,9 @@
-const { ApiSuccessResponse } = require('../../utils/ApiSuccessResponse');
+const {
+  ApiSuccessResponse,
+  ApiPaginationSuccessResponse,
+} = require('../../utils/ApiSuccessResponse');
+const { throwNotFoundException } = require('../../utils/errorResponse');
 const bookService = require('./books.service');
-
 
 exports.addBook = async (req, res) => {
   const body = req.body;
@@ -15,20 +18,30 @@ exports.addBook = async (req, res) => {
   });
 };
 
-// exports.getAllBooks = async (req, res) => {
-//   try {
-//     const books = await Book.find();
+exports.getAllBooks = async (req, res) => {
+  const query = req.query;
+  const {userId} = req.user;
 
-//     if (!books) {
-//       return res.status(404).json({ message: 'No books found' });
-//     }
 
-//     res.status(200).json(books);
-//   } catch (error) {
-//     console.error('error in fetching books', error);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// };
+  const response = await bookService.getBooks(query, userId);
+
+  if (!response.data.length) {
+    return throwNotFoundException('No books found', [
+      {
+        field: 'books',
+        message: 'No books found',
+      },
+    ]);
+  }
+
+  return ApiPaginationSuccessResponse(
+    res,
+    200,
+    'Fetched books successfully',
+    response.data,
+    response.pagination
+  );
+};
 
 // exports.getBookById = async (req, res) => {
 //   try {

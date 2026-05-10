@@ -14,7 +14,7 @@ exports.loginUser = async (req, res) => {
   res.cookie('jwt', response.token, {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: 'none', // ✅ FIXED
+    sameSite: process.env.NODE_ENV === 'deployment' ? 'none' : "lax", // ✅ FIXED
     secure: process.env.NODE_ENV === 'deployment',
   });
 

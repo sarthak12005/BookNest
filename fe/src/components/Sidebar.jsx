@@ -1,23 +1,16 @@
-import React from "react";
-import {
-  HeartIcon,
-  LogOut,
-  Search,
-  SearchIcon,
-  ShoppingCart,
-  User,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
-import { useUser } from "../context/useUser";
-import { logout } from "../lib/api";
+import React from 'react';
+import { HeartIcon, LogOut, Search, SearchIcon, ShoppingCart, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import { useUser } from '../context/useUser';
+import { logout } from '../lib/api';
 
 const Sidebar = () => {
   const [openProfile, setOpenProfile] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const profileRef = useRef();
   const navigate = useNavigate();
   const { user, setUser } = useUser();
@@ -29,48 +22,43 @@ const Sidebar = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (!e.target.closest(".search-container")) {
+      if (!e.target.closest('.search-container')) {
         setOpenSearch(false);
       }
     };
 
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, []);
 
   const handleLogout = async () => {
     try {
       await logout();
       setUser(null);
-      localStorage.removeItem("token"); // if you also store token
-      navigate("/auth");
-    } catch (error) {
-    }
+      localStorage.removeItem('token'); // if you also store token
+      navigate('/auth');
+    } catch (error) {}
   };
 
   const menuItems = [
-    { name: "Home", link: "/" },
-    { name: "Books", link: "/books" },
-    { name: "Categories", link: "/categories" },
-    { name: "About", link: "/about" },
-    { name: "Contact", link: "/contact" },
+    { name: 'Home', link: '/' },
+    { name: 'Books', link: '/books' },
+    { name: 'Categories', link: '/categories' },
+    { name: 'About', link: '/about' },
+    { name: 'Contact', link: '/contact' },
   ];
 
   return (
     <header>
       <nav className="max-w-screen p-4 border-0 border-b-black flex justify-between items-center px-20 ">
         <div className="font-bold text-2xl">
-          <img
-            src="/BookNestLogo.png"
-            alt="BookNest Logo"
-            className="w-30 object-center"
-          />
+          <img src="/BookNestLogo.png" alt="BookNest Logo" className="w-30 object-center" />
         </div>
         <ul className="flex gap-6 text-black/70 font-semibold">
           {menuItems.map((item) => (
@@ -95,7 +83,7 @@ const Sidebar = () => {
             {/* 🔎 SEARCH INPUT */}
             <div
               className={`absolute right-0 flex items-center bg-white border border-slate-200 rounded-full shadow-md overflow-hidden transition-all duration-300
-    ${openSearch ? "w-64 px-3 py-1 opacity-100" : "w-0 px-0 py-0 opacity-0"}
+    ${openSearch ? 'w-64 px-3 py-1 opacity-100' : 'w-0 px-0 py-0 opacity-0'}
     `}
             >
               <input
@@ -104,7 +92,7 @@ const Sidebar = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
+                  if (e.key === 'Enter') {
                     // navigate(`/books?search=${searchQuery}`);
                     setOpenSearch(false);
                   }
@@ -149,7 +137,7 @@ const Sidebar = () => {
                 />
               ) : (
                 <span className="text-white text-xs font-semibold tracking-wide">
-                  {user?.username?.slice(0, 2).toUpperCase() ?? "JD"}
+                  {user?.username?.slice(0, 2).toUpperCase() ?? 'JD'}
                 </span>
               )}
             </button>
@@ -174,16 +162,16 @@ const Sidebar = () => {
                       />
                     ) : (
                       <span className="text-white text-[11px] font-semibold">
-                        {user?.username?.slice(0, 2).toUpperCase() ?? "JD"}
+                        {user?.username?.slice(0, 2).toUpperCase() ?? 'JD'}
                       </span>
                     )}
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-800 leading-tight">
-                      {user?.username ?? "John Doe"}
+                      {user?.username ?? 'John Doe'}
                     </p>
                     <p className="text-[11px] text-slate-400">
-                      {user?.email ?? "john@example.com"}
+                      {user?.email ?? 'john@example.com'}
                     </p>
                   </div>
                 </div>

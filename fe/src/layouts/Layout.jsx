@@ -1,17 +1,15 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
-import Footer from '../components/Footer'
+import React from 'react';
+import Sidebar from '../components/Sidebar';
+import Footer from '../components/Footer';
 
 const Layout = ({ children }) => {
-    return (
-        <>
-            <Sidebar />
-            <div>
-                {children}
-            </div>
-            <Footer />
-        </>
-    )
-}
+  return (
+    <>
+      <Sidebar />
+      <div>{children}</div>
+      <Footer />
+    </>
+  );
+};
 
-export default Layout
+export default Layout;
