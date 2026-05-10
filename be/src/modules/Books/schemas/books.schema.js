@@ -109,10 +109,10 @@ const bookSchema = new mongoose.Schema(
 
     pages: Number,
 
-    openCount: {
+    viewCount: {
       type: Number,
       default: 0,
-      min: 0
+      min: 0,
     },
 
     // ⭐ Ratings (optimized)
@@ -144,6 +144,11 @@ const bookSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+
+    createdBy: {
+       type: mongoose.Types.ObjectId,
+       ref: "User",
     },
 
     // 🔍 SEO

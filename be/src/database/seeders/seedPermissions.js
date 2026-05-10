@@ -6,7 +6,7 @@ const Permission = require('../../modules/Permissions/schemas/permissions.schema
 
 // ✅ DB CONNECT
 async function connectDB() {
-  console.log(process.env.MONGO_URI)
+  console.log(process.env.MONGO_URI);
   await mongoose.connect(process.env.MONGO_URI);
   console.log('✅ DB Connected');
 }

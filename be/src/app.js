@@ -39,8 +39,13 @@ app.get('/api/server', (req, res) => {
 
 const authRoutes = require('./modules/Auth/auth.routes'); // auth routes
 const categoriesRoutes = require('./modules/Categories/categories.routes'); // category routes
+const booksRoutes = require('./modules/Books/books.routes'); // books routes 
+const errorMiddleware = require('./middlewares/error.middleware');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/category', categoriesRoutes);
+app.use('/api/books', booksRoutes);
+
+app.use(errorMiddleware);
 
 module.exports = app;

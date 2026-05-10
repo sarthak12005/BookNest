@@ -22,7 +22,7 @@ exports.loginUser = async (req, res) => {
     token: response.token,
     _id: response.user._id,
     email: response.user.email,
-    user: response.user
+    user: response.user,
   });
 };
 
@@ -75,14 +75,14 @@ exports.getMe = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    res.clearCookie("jwt", {
+    res.clearCookie('jwt', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'deployment',
-      sameSite: "none",
+      sameSite: 'none',
     });
 
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server encountered a critical error when logout user.' });
   }
-}
+};
