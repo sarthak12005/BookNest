@@ -1,4 +1,3 @@
-const { ApiSuccessResponse } = require('../../utils/ApiSuccessResponse');
 const {
   InternalServerError,
   BadRequestException,
@@ -62,7 +61,7 @@ exports.login = async ({ email, password }) => {
 
     if (!user) {
       throwBadRequestException('User not found', [
-        { field: email, message: 'user not exists with this email' },
+        { field: "email", message: 'user not exists with this email' },
       ]);
     }
 
@@ -99,7 +98,7 @@ exports.login = async ({ email, password }) => {
         profilePic: user.profilePic,
         role: user.role,
         isVerified: user.isVerified,
-      }
+      },
     };
   } catch (error) {
     throw error; // ✅ pass to controller

@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"No tests yet\"",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "be": "nodemon src/index.js",
     "seed": "node src/database/seeders/seed.js",
     "seed:permission": "node src/database/seeders/seedPermissions.js",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "lint": "echo \"No lint tests \""
   },
   "keywords": [],
   "author": "",
