@@ -47,6 +47,8 @@ exports.addCategory = async (req, res) => {
 
 exports.getCategory = async (req, res) => {
   try {
+
+    console.log("request come here");
     // 👉 get from query (already validated via Zod ideally)
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 5;

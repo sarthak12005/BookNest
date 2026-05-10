@@ -1,14 +1,14 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import Layout from "./layouts/Layout";
-import Home from "./pages/Home";
-import Books from "./pages/Books";
-import Categories from "./pages/Categories";
-import AuthPage from "./pages/AuthPage";
-import toast, { Toaster } from "react-hot-toast";
-import "./App.css";
-import Contact from "./pages/Contact";
-import About from "./pages/About";
-import { useUser } from "./context/useUser";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './layouts/Layout';
+import Home from './pages/Home';
+import Books from './pages/Books';
+import Categories from './pages/Categories';
+import AuthPage from './pages/AuthPage';
+import toast, { Toaster } from 'react-hot-toast';
+import './App.css';
+import Contact from './pages/Contact';
+import About from './pages/About';
+import { useUser } from './context/useUser';
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -30,7 +30,7 @@ function App() {
 
   const routes = [
     {
-      path: "/",
+      path: '/',
       element: (
         <ProtectedRoute>
           <Layout>
@@ -40,7 +40,7 @@ function App() {
       ),
     },
     {
-      path: "/books",
+      path: '/books',
       element: (
         <ProtectedRoute>
           <Layout>
@@ -50,7 +50,7 @@ function App() {
       ),
     },
     {
-      path: "/categories",
+      path: '/categories',
       element: (
         <ProtectedRoute>
           <Layout>
@@ -60,7 +60,7 @@ function App() {
       ),
     },
     {
-      path: "/contact",
+      path: '/contact',
       element: (
         <ProtectedRoute>
           <Layout>
@@ -70,7 +70,7 @@ function App() {
       ),
     },
     {
-      path: "/about",
+      path: '/about',
       element: (
         <ProtectedRoute>
           <Layout>
@@ -89,7 +89,7 @@ function App() {
           {routes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
-          <Route path={"/auth"} element={<AuthPage />} />
+          <Route path={'/auth'} element={<AuthPage />} />
         </Routes>
 
         {/* initializing the toaster  */}

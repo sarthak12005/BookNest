@@ -115,6 +115,12 @@ const bookSchema = new mongoose.Schema(
       min: 0,
     },
 
+    wishlistCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
     // ⭐ Ratings (optimized)
     averageRating: {
       type: Number,

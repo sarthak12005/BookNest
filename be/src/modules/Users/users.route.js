@@ -1,11 +1,21 @@
 const express = require('express');
-const { authMiddleware } = require('../middlewares/authMiddleware');
-const permission = require('../middlewares/permissionMiddleware');
-const { getUsers, createUser, getUserById } = require('../controllers/user.controller');
+const validate = require('../../middlewares/validate.middleware');
+const { checkPermission } = require('../../middlewares/permissionMiddleware');
+const { PERMISSION_COLLECTION } = require('../../common/collection/permission.collection');
+const IdParamsSchema = require('../../common/zod/idParamsSchema.zod');
+const { addToWishlist } = require('./users.controller');
+const { authMiddleware } = require('../../middlewares/authMiddleware');
 const router = express.Router();
 
-router.use(authMiddleware);
+// router.get('/user', permission('manage', 'all'), cache('Users'), getUsers);
+// router.post('/user', permission('manage', 'all'), createUser);
+// router.get('/user/:id', permission('manage', 'all'), getUserById);
+router.patch(
+  '/wishlist/:bookId',
+  authMiddleware,
+  checkPermission(PERMISSION_COLLECTION.ADD_TO_WISHLIST),
+  validate(IdParamsSchema("bookId"), "params"),
+  addToWishlist
+);
 
-router.get('/user', permission('manage', 'all'), cache('Users'), getUsers);
-router.post('/user', permission('manage', 'all'), createUser);
-router.get('/user/:id', permission('manage', 'all'), getUserById);
+module.exports = router;

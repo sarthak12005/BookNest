@@ -1,52 +1,53 @@
-import { useState, useEffect, useRef } from "react";
-import toast from "react-hot-toast";
+import { useState, useEffect, useRef } from 'react';
+import toast from 'react-hot-toast';
+import { addToWishList, fetchBestsellingBooks } from '../../lib/api';
 
 // ── API helper ────────────────────────────────────────────────────────────────
 const TAB_TYPES = {
-  Bestsellers: "bestselling",
-  Trending: "top",
-  "Editor's Picks": "editor_choice",
+  Bestsellers: 'bestselling',
+  Trending: 'top',
+  "Editor's Picks": 'editor_choice',
 };
 
 const DUMMY_BOOKS = [
   {
-    _id: "1",
-    title: "The Blue Horizon",
-    author: "Sarah Mitchell",
-    image: "https://covers.openlibrary.org/b/id/8739161-L.jpg",
+    _id: '1',
+    title: 'The Blue Horizon',
+    author: 'Sarah Mitchell',
+    image: 'https://covers.openlibrary.org/b/id/8739161-L.jpg',
     price: 599,
     originalPrice: 749,
     rating: 4,
     reviewCount: 1200,
-    badge: "sale",
+    badge: 'sale',
   },
   {
-    _id: "2",
-    title: "Learning React the Fun Way",
-    author: "Alex Thompson",
-    image: "https://covers.openlibrary.org/b/id/8091016-L.jpg",
+    _id: '2',
+    title: 'Learning React the Fun Way',
+    author: 'Alex Thompson',
+    image: 'https://covers.openlibrary.org/b/id/8091016-L.jpg',
     price: 1299,
     originalPrice: null,
     rating: 4,
     reviewCount: 858,
-    badge: "new",
+    badge: 'new',
   },
   {
-    _id: "3",
-    title: "Midnight Library",
-    author: "Matt Haig",
-    image: "https://covers.openlibrary.org/b/id/10527843-L.jpg",
+    _id: '3',
+    title: 'Midnight Library',
+    author: 'Matt Haig',
+    image: 'https://covers.openlibrary.org/b/id/10527843-L.jpg',
     price: 449,
     originalPrice: null,
     rating: 4,
     reviewCount: 2300,
-    badge: "hot",
+    badge: 'hot',
   },
   {
-    _id: "4",
-    title: "Designing with Motion",
-    author: "Rachel Nabors",
-    image: "https://covers.openlibrary.org/b/id/8228571-L.jpg",
+    _id: '4',
+    title: 'Designing with Motion',
+    author: 'Rachel Nabors',
+    image: 'https://covers.openlibrary.org/b/id/8228571-L.jpg',
     price: 899,
     originalPrice: null,
     rating: 4,
@@ -54,21 +55,21 @@ const DUMMY_BOOKS = [
     badge: null,
   },
   {
-    _id: "5",
-    title: "Atomic Habits",
-    author: "James Clear",
-    image: "https://covers.openlibrary.org/b/id/10130531-L.jpg",
+    _id: '5',
+    title: 'Atomic Habits',
+    author: 'James Clear',
+    image: 'https://covers.openlibrary.org/b/id/10130531-L.jpg',
     price: 509,
     originalPrice: 599,
     rating: 5,
     reviewCount: 3400,
-    badge: "sale",
+    badge: 'sale',
   },
   {
-    _id: "6",
-    title: "Good Strategy Bad Strategy",
-    author: "Richard Rumelt",
-    image: "https://covers.openlibrary.org/b/id/7984916-L.jpg",
+    _id: '6',
+    title: 'Good Strategy Bad Strategy',
+    author: 'Richard Rumelt',
+    image: 'https://covers.openlibrary.org/b/id/7984916-L.jpg',
     price: 799,
     originalPrice: null,
     rating: 3,
@@ -76,34 +77,28 @@ const DUMMY_BOOKS = [
     badge: null,
   },
   {
-    _id: "7",
-    title: "The Starless Crown",
-    author: "James Rollins",
-    image: "https://covers.openlibrary.org/b/id/12385525-L.jpg",
+    _id: '7',
+    title: 'The Starless Crown',
+    author: 'James Rollins',
+    image: 'https://covers.openlibrary.org/b/id/12385525-L.jpg',
     price: 699,
     originalPrice: null,
     rating: 4,
     reviewCount: 1800,
-    badge: "new",
+    badge: 'new',
   },
   {
-    _id: "8",
-    title: "The Power of Now",
-    author: "Eckhart Tolle",
-    image: "https://covers.openlibrary.org/b/id/8267396-L.jpg",
+    _id: '8',
+    title: 'The Power of Now',
+    author: 'Eckhart Tolle',
+    image: 'https://covers.openlibrary.org/b/id/8267396-L.jpg',
     price: 374,
     originalPrice: 449,
     rating: 5,
     reviewCount: 2700,
-    badge: "sale",
+    badge: 'sale',
   },
 ];
-
-const fetchBestsellingBooks = async (type = "bestselling") => {
-  const res = await fetch(`/api/v1/books?type=${type}&limit=8`);
-  if (!res.ok) throw new Error("Failed to fetch books");
-  return res.json();
-};
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -114,7 +109,7 @@ const StarRating = ({ rating }) => {
         <svg
           key={star}
           className={`w-3.5 h-3.5 ${
-            star <= Math.round(rating) ? "text-amber-400" : "text-gray-200"
+            star <= Math.round(rating) ? 'text-amber-400' : 'text-gray-200'
           }`}
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -128,9 +123,9 @@ const StarRating = ({ rating }) => {
 
 const BadgeLabel = ({ type }) => {
   const config = {
-    sale: { label: "Sale", classes: "bg-red-500 text-white" },
-    new: { label: "New", classes: "bg-emerald-500 text-white" },
-    hot: { label: "Hot", classes: "bg-orange-500 text-white" },
+    sale: { label: 'Sale', classes: 'bg-red-500 text-white' },
+    new: { label: 'New', classes: 'bg-emerald-500 text-white' },
+    hot: { label: 'Hot', classes: 'bg-orange-500 text-white' },
   };
   if (!type || !config[type]) return null;
   const { label, classes } = config[type];
@@ -146,6 +141,9 @@ const BadgeLabel = ({ type }) => {
 const BookCard = ({ book, onAddToCart }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [wishlisted, setWishlisted] = useState(
+  book?.wishlisted || false
+);
 
   const handleAdd = async () => {
     setAdding(true);
@@ -154,22 +152,59 @@ const BookCard = ({ book, onAddToCart }) => {
   };
 
   const discount =
-    book.originalPrice && book.price
-      ? Math.round(
-          ((book.originalPrice - book.price) / book.originalPrice) * 100,
-        )
+    book.discountPrice && book.price
+      ? Math.round(((book.price - book.discountPrice) / book.price) * 100)
       : null;
+
+  const handleWishlist = async (bookId) => {
+    try {
+      const res = await addToWishList(bookId);
+
+      // success
+      if (res?.status === 200) {
+        toast.success(res?.data?.message);
+
+
+
+        // update local UI state
+        setWishlisted(res?.data?.data?.wishlisted);
+
+        console.log(res.data.wishlisted);
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast.error(error?.response?.data?.message || 'Failed to update wishlist');
+    }
+  };
 
   return (
     <div className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
       {/* Badge */}
-      <BadgeLabel type={book.badge} />
+      <BadgeLabel type={book?.badge || 'sale'} />
 
       {/* Wishlist */}
-      <button className="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm hover:bg-red-50 hover:text-red-500 text-gray-400 transition-colors duration-200 shadow-sm">
+      <button
+        onClick={() => handleWishlist(book._id)}
+        className={`
+    absolute top-2 right-2 z-10
+    w-7 h-7
+    flex items-center justify-center
+    rounded-full
+    backdrop-blur-sm
+    transition-all duration-200
+    shadow-sm
+
+    ${
+      wishlisted
+        ? 'bg-red-100 text-red-500 hover:bg-red-200'
+        : 'bg-white/80 text-gray-400 hover:bg-red-50 hover:text-red-500'
+    }
+  `}
+      >
         <svg
           className="w-4 h-4"
-          fill="none"
+          fill={book?.wishlisted ? 'currentColor' : 'none'}
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
@@ -188,11 +223,11 @@ const BookCard = ({ book, onAddToCart }) => {
           <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%]" />
         )}
         <img
-          src={book.image || book.coverImage || book.thumbnail}
+          src={book.image || book.coverImages[0] || book.thumbnail}
           alt={book.title}
           onLoad={() => setImgLoaded(true)}
           className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
-            imgLoaded ? "opacity-100" : "opacity-0"
+            imgLoaded ? 'opacity-100' : 'opacity-0'
           }`}
         />
 
@@ -202,7 +237,7 @@ const BookCard = ({ book, onAddToCart }) => {
         {/* Discount badge */}
         {discount && (
           <span className="absolute bottom-2 left-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-            -{discount}%
+            {discount}%
           </span>
         )}
       </div>
@@ -213,29 +248,27 @@ const BookCard = ({ book, onAddToCart }) => {
           <h3 className="font-semibold text-gray-900 text-sm leading-snug line-clamp-1 group-hover:text-blue-600 transition-colors duration-200">
             {book.title}
           </h3>
-          <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
-            {book.author}
-          </p>
+          <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{book.author}</p>
         </div>
 
         <div className="flex items-center gap-1.5">
-          <StarRating rating={book.rating} />
+          <StarRating rating={book.averageRating} />
           <span className="text-[11px] text-gray-400">
             (
-            {book.reviewCount >= 1000
-              ? `${(book.reviewCount / 1000).toFixed(1)}k`
-              : book.reviewCount}
+            {book.totalReviews >= 1000
+              ? `${(book.totalReviews / 1000).toFixed(1)}k`
+              : book.totalReviews}
             )
           </span>
         </div>
 
         <div className="flex items-center gap-2 mt-auto">
           <span className="text-base font-bold text-gray-900">
-            ₹{book.price?.toLocaleString("en-IN")}
+            ₹{book.discountPrice?.toLocaleString('en-IN')}
           </span>
-          {book.originalPrice && (
+          {book.price && (
             <span className="text-xs text-gray-400 line-through">
-              ₹{book.originalPrice?.toLocaleString("en-IN")}
+              ₹{book.price?.toLocaleString('en-IN')}
             </span>
           )}
         </div>
@@ -247,11 +280,7 @@ const BookCard = ({ book, onAddToCart }) => {
         >
           {adding ? (
             <span className="flex items-center justify-center gap-1.5">
-              <svg
-                className="w-3.5 h-3.5 animate-spin"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle
                   className="opacity-25"
                   cx="12"
@@ -260,16 +289,12 @@ const BookCard = ({ book, onAddToCart }) => {
                   stroke="currentColor"
                   strokeWidth="4"
                 />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8H4z"
-                />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
               </svg>
               Adding...
             </span>
           ) : (
-            "Add to Cart"
+            'Add to Cart'
           )}
         </button>
       </div>
@@ -293,37 +318,28 @@ const SkeletonCard = () => (
 // ── Main Component ────────────────────────────────────────────────────────────
 
 const BestsellingBooks = () => {
-  const [activeTab, setActiveTab] = useState("Bestsellers");
+  const [activeTab, setActiveTab] = useState('Bestsellers');
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const abortRef = useRef(null);
 
   // TODO: fix this after the api is completed
-  //   const loadBooks = async (tab) => {
-  //     if (abortRef.current) abortRef.current.abort();
-  //     abortRef.current = new AbortController();
-
-  //     setLoading(true);
-  //     try {
-  //       const type = TAB_TYPES[tab];
-  //       const data = await fetchBestsellingBooks(type);
-  //       // Support both { books: [...] } and [...] response shapes
-  //       setBooks(Array.isArray(data) ? data : data.books ?? []);
-  //     } catch (err) {
-  //       if (err.name !== "AbortError") {
-  //         toast.error("Failed to load books. Please try again.");
-  //       }
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
   const loadBooks = async (tab) => {
+    if (abortRef.current) abortRef.current.abort();
+    abortRef.current = new AbortController();
+
     setLoading(true);
-    // TODO: remove this block when API is ready
-    await new Promise((r) => setTimeout(r, 600)); // fake loading delay
-    setBooks(DUMMY_BOOKS);
-    setLoading(false);
+    try {
+      const type = TAB_TYPES[tab];
+      const data = await fetchBestsellingBooks(type);
+      setBooks(Array.isArray(data) ? data : (data.data ?? []));
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        toast.error('Failed to load books. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     loadBooks(activeTab);
@@ -336,7 +352,7 @@ const BestsellingBooks = () => {
       // await addToCart(book._id);
       toast.success(`"${book.title}" added to cart!`);
     } catch {
-      toast.error("Could not add to cart. Try again.");
+      toast.error('Could not add to cart. Try again.');
     }
   };
 
@@ -347,9 +363,7 @@ const BestsellingBooks = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7">
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
-            Bestselling Books
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Bestselling Books</h2>
 
           {/* Tab switcher */}
           <div className="flex items-center gap-1 bg-white rounded-full p-1 shadow-sm border border-gray-100 self-start sm:self-auto">
@@ -359,8 +373,8 @@ const BestsellingBooks = () => {
                 onClick={() => setActiveTab(tab)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                   activeTab === tab
-                    ? "bg-blue-600 text-white shadow"
-                    : "text-gray-500 hover:text-gray-800"
+                    ? 'bg-blue-600 text-white shadow'
+                    : 'text-gray-500 hover:text-gray-800'
                 }`}
               >
                 {tab}

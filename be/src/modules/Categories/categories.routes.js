@@ -6,7 +6,7 @@ const {
   getCategoryById,
   deleteCategoryById,
 } = require('./categories.controller');
-const { cache } = require('../../middlewares/cache.middleware');
+const  cache  = require('../../middlewares/cache.middleware');
 const validate = require('../../middlewares/validate.middleware');
 const searchingCategoryZodSchema = require('./zod/searching.zod');
 const { authMiddleware } = require('../../middlewares/authMiddleware');
@@ -18,7 +18,10 @@ router.get(
   '/',
   authMiddleware,
   checkPermission(PERMISSION_COLLECTION.READ_CATEGORIES),
-  cache('categories'),
+  cache({
+    keyPrefix: 'categories',
+    ttl: 60,
+  }),
   validate(searchingCategoryZodSchema, 'query'),
   getCategory
 );
