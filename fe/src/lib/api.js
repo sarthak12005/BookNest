@@ -106,3 +106,13 @@ export const addToWishList = async (bookId) => {
     console.log(error);
   }
 };
+
+export const fetchNewArrivals = async () => {
+  try {
+     const res = await axiosInstance.get(`/books/new-arrivals?limit=${10}`);
+  if (!res.status === 200) throw new Error("Failed to fetch");
+  return res.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

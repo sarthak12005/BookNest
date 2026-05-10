@@ -74,6 +74,8 @@ exports.getBooks = async (filters,userId) => {
     sortOrder = "desc",
   } = filters;
 
+  console.log(filters);
+
   // build mongo query
   const query = buildBookQuery(filters);
 

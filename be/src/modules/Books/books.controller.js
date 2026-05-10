@@ -4,9 +4,11 @@ const {
 } = require('../../utils/ApiSuccessResponse');
 const { throwNotFoundException } = require('../../utils/errorResponse');
 const bookService = require('./books.service');
+const createBookZodSchema = require('./zod/create-book.zod');
+const getBooksQueryZodSchema = require('./zod/get-books.zod');
 
 exports.addBook = async (req, res) => {
-  const body = req.body;
+  const body = createBookZodSchema.parse(req.body);
 
   const { userId } = req.user;
 
@@ -19,11 +21,35 @@ exports.addBook = async (req, res) => {
 };
 
 exports.getAllBooks = async (req, res) => {
-  const query = req.query;
-  const {userId} = req.user;
-
+  const query = getBooksQueryZodSchema.parse(req.query);
+  const { userId } = req.user;
 
   const response = await bookService.getBooks(query, userId);
+
+  if (!response.data.length) {
+    return throwNotFoundException('No books found', [
+      {
+        field: 'books',
+        message: 'No books found',
+      },
+    ]);
+  }
+
+  return ApiPaginationSuccessResponse(
+    res,
+    200,
+    'Fetched books successfully',
+    response.data,
+    response.pagination
+  );
+};
+exports.getAllNewArrivals = async (req, res) => {
+  const query = getBooksQueryZodSchema.parse(req.query);
+  const { userId } = req.user;
+
+  const response = await bookService.getBooks({ ...query, newArrival: true }, userId);
+
+  console.log(response);
 
   if (!response.data.length) {
     return throwNotFoundException('No books found', [
