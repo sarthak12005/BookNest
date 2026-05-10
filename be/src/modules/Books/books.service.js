@@ -47,7 +47,6 @@ exports.addBook = async (body, userId) => {
       title: normalizedTitle,
       isbn: normalizedIsbn,
       category: new Types.ObjectId(body.category),
-
       createdBy: userId,
     };
 

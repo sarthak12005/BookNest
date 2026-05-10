@@ -146,6 +146,11 @@ const bookSchema = new mongoose.Schema(
       default: false,
     },
 
+    createdBy: {
+       type: mongoose.Types.ObjectId,
+       ref: "User",
+    },
+
     // 🔍 SEO
     metaTitle: String,
     metaDescription: String,
