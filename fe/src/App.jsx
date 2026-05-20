@@ -9,6 +9,7 @@ import './App.css';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import { useUser } from './context/useUser';
+import SingleBookPage from './pages/SingleBookPage';
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -75,6 +76,16 @@ function App() {
         <ProtectedRoute>
           <Layout>
             <About />
+          </Layout>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: '/books/:bookId',
+      element: (
+        <ProtectedRoute>
+          <Layout>
+            <SingleBookPage />
           </Layout>
         </ProtectedRoute>
       ),

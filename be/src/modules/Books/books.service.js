@@ -4,6 +4,8 @@ const categoryRepo = require('../Categories/categories.repo')
 const { throwBadRequestException, throwNotFoundException } = require('../../utils/errorResponse');
 const { Types } = require('mongoose');
 const buildBookQuery = require('../../utils/buildBooksQuery');
+const id = require('zod/v4/locales/id.cjs');
+const { getSingleBookAggregationPipeline } = require('./books.aggregation');
 exports.addBook = async (body, userId) => {
   try {
 
@@ -118,3 +120,29 @@ exports.getBooks = async (filters,userId) => {
     pagination,
   };
 };
+
+exports.getBookById = async (id, userId) => {
+   try {
+     const checkBook = await bookRepo.checkBookExists(id);
+
+     if (!checkBook) {
+        throwNotFoundException("Book not found");
+     }
+
+    const book = await bookRepo.getBookById(id, userId);
+
+    if (!book) {
+       throwNotFoundException("Book not found");
+    }
+
+    const updateCount = await bookRepo.updateVeiwCount(id);
+
+    if (!updateCount) {
+       throwBadRequestException("failed to update count");
+    }
+
+    return book;
+   } catch (error) {
+     throw error;
+   }
+}

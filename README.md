@@ -1,4 +1,3 @@
-````md id="a7m2k9"
 # 📚 BookStore Application
 
 A full-stack BookStore application built using the MERN stack.  
