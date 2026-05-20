@@ -4,9 +4,11 @@ const {
 } = require('../../utils/ApiSuccessResponse');
 const { throwNotFoundException } = require('../../utils/errorResponse');
 const bookService = require('./books.service');
+const createBookZodSchema = require('./zod/create-book.zod');
+const getBooksQueryZodSchema = require('./zod/get-books.zod');
 
 exports.addBook = async (req, res) => {
-  const body = req.body;
+  const body = createBookZodSchema.parse(req.body);
 
   const { userId } = req.user;
 
@@ -19,9 +21,8 @@ exports.addBook = async (req, res) => {
 };
 
 exports.getAllBooks = async (req, res) => {
-  const query = req.query;
-  const {userId} = req.user;
-
+  const query = getBooksQueryZodSchema.parse(req.query);
+  const { userId } = req.user;
 
   const response = await bookService.getBooks(query, userId);
 
@@ -42,27 +43,35 @@ exports.getAllBooks = async (req, res) => {
     response.pagination
   );
 };
+exports.getAllNewArrivals = async (req, res) => {
+  const query = getBooksQueryZodSchema.parse(req.query);
+  const { userId } = req.user;
 
-// exports.getBookById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
+  const response = await bookService.getBooks({ ...query}, userId);
 
-//     if (!id) {
-//       return res.status(400).json({ message: 'Book ID is required' });
-//     }
+  if (!response.data.length) {
+    return throwNotFoundException('No books found', [
+      {
+        field: 'books',
+        message: 'No books found',
+      },
+    ]);
+  }
 
-//     const book = await Book.findById(id);
+  return ApiPaginationSuccessResponse(
+    res,
+    200,
+    'Fetched books successfully',
+    response.data,
+    response.pagination
+  );
+};
 
-//     if (!book) {
-//       return res.status(404).json({ message: 'Book not found' });
-//     }
-
-//     res.status(200).json({ message: 'Book fetched successfully', book });
-//   } catch (err) {
-//     console.error('error in fetching book by id', err);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// };
+exports.getBookById = async (req, res) => {
+  const { bookId } = req.params;
+  const book = await bookService.getBookById(bookId, req.user.userId.toString());
+  return ApiSuccessResponse(res, 200, 'book fetched successfully', book);
+};
 
 // exports.deleteBookById = async (req, res) => {
 //   try {

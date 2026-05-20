@@ -1,5 +1,5 @@
 const { default: mongoose } = require('mongoose');
-const { getAllBooksAggregationPipeline } = require('./books.aggregation');
+const { getAllBooksAggregationPipeline, getSingleBookAggregationPipeline } = require('./books.aggregation');
 const Book = require('./schemas/books.schema');
 const { toObjectIdOrThrow } = require('../../common/helper/toObjectId');
 
@@ -30,7 +30,7 @@ exports.getBooks = async ({ query, sort, skip, limit = 10, userId }) => {
   };
 };
 
-exports.getBookById = async (bookId) => {
+exports.checkBookExists = async (bookId) => {
   const bookObjectId = await toObjectIdOrThrow(bookId);
   const book = await Book.findOne({ _id: bookObjectId, isDeleted: false });
   return book;
@@ -56,3 +56,29 @@ exports.handleWishListCount = async (bookId, incBy = 1) => {
 
   return book;
 };
+
+exports.updateVeiwCount = async (bookId, incBy = 1) => {
+  const bookObjectId = await toObjectIdOrThrow(bookId);
+  const book = await Book.findOneAndUpdate(
+    {
+      _id: bookObjectId,
+      isDeleted: false,
+    },
+    {
+      $inc: {
+        viewCount: incBy,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  return book;
+}
+
+exports.getBookById = async (bookId, userId) =>  {
+  const pipeline = getSingleBookAggregationPipeline(bookId, userId);
+  const book = await Book.aggregate(pipeline);
+  return book[0] || null;
+}

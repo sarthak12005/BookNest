@@ -5,6 +5,9 @@ import { fetchBooks, fetchCategory } from '../lib/api';
 import HeroSection from '../components/Home/HeroSection';
 import CategorySection from '../components/Home/CategorySection';
 import BestsellingBooks from '../components/Home/BestSellingBooks';
+import NewArrivals from '../components/Home/NewArrivals';
+import ReviewsSection from '../components/Home/Reviews';
+import NewsletterAndAppSection from '../components/Home/Newsletterandappsection';
 
 const Home = () => {
   const { user } = useUser();
@@ -50,6 +53,9 @@ const Home = () => {
       <HeroSection />
       <CategorySection categories={categories} />
       <BestsellingBooks />
+      <NewArrivals/>
+      <ReviewsSection/>
+      <NewsletterAndAppSection/>
     </div>
   );
 };

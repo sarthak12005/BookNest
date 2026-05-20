@@ -1,5 +1,4 @@
 const buildBookQuery = (filters) => {
-
   const {
     search,
     category,
@@ -10,6 +9,7 @@ const buildBookQuery = (filters) => {
     isFeatured,
     minRating,
     inStock,
+    newArrival = false, // ✅ added
   } = filters;
 
   const query = {
@@ -18,34 +18,32 @@ const buildBookQuery = (filters) => {
 
   // 🔍 Search
   if (search) {
-
     query.$or = [
-
       {
         title: {
           $regex: search,
-          $options: "i",
+          $options: 'i',
         },
       },
 
       {
         author: {
           $regex: search,
-          $options: "i",
+          $options: 'i',
         },
       },
 
       {
         description: {
           $regex: search,
-          $options: "i",
+          $options: 'i',
         },
       },
 
       {
         shortDescription: {
           $regex: search,
-          $options: "i",
+          $options: 'i',
         },
       },
 
@@ -53,7 +51,7 @@ const buildBookQuery = (filters) => {
         tags: {
           $elemMatch: {
             $regex: search,
-            $options: "i",
+            $options: 'i',
           },
         },
       },
@@ -62,11 +60,10 @@ const buildBookQuery = (filters) => {
         searchKeywords: {
           $elemMatch: {
             $regex: search,
-            $options: "i",
+            $options: 'i',
           },
         },
       },
-
     ];
   }
 
@@ -77,7 +74,6 @@ const buildBookQuery = (filters) => {
 
   // 💰 Price
   if (minPrice || maxPrice) {
-
     query.price = {};
 
     if (minPrice) {
@@ -115,6 +111,15 @@ const buildBookQuery = (filters) => {
   if (inStock === true) {
     query.stock = {
       $gt: 0,
+    };
+  }
+
+  // 🆕 New Arrival
+  if (newArrival === 'true' || newArrival === true) {
+    const twoAndHalfDaysAgo = new Date(Date.now() - 2.5 * 24 * 60 * 60 * 1000);
+
+    query.createdAt = {
+      $gte: twoAndHalfDaysAgo,
     };
   }
 

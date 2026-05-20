@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { addToWishList, fetchBestsellingBooks } from '../../lib/api';
+import { calculateDiscount } from '../../lib/helper';
 
 // ── API helper ────────────────────────────────────────────────────────────────
 const TAB_TYPES = {
@@ -151,10 +152,12 @@ const BookCard = ({ book, onAddToCart }) => {
     setAdding(false);
   };
 
-  const discount =
-    book.discountPrice && book.price
-      ? Math.round(((book.price - book.discountPrice) / book.price) * 100)
-      : null;
+  // const discount =
+  //   book.discountPrice && book.price
+  //     ? Math.round(((book.price - book.discountPrice) / book.price) * 100)
+  //     : null;
+
+  const discount = calculateDiscount(book.price, book.discountPrice);
 
   const handleWishlist = async (bookId) => {
     try {
@@ -163,9 +166,6 @@ const BookCard = ({ book, onAddToCart }) => {
       // success
       if (res?.status === 200) {
         toast.success(res?.data?.message);
-
-
-
         // update local UI state
         setWishlisted(res?.data?.data?.wishlisted);
 
