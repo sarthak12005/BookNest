@@ -47,9 +47,7 @@ exports.getAllNewArrivals = async (req, res) => {
   const query = getBooksQueryZodSchema.parse(req.query);
   const { userId } = req.user;
 
-  const response = await bookService.getBooks({ ...query, newArrival: true }, userId);
-
-  console.log(response);
+  const response = await bookService.getBooks({ ...query}, userId);
 
   if (!response.data.length) {
     return throwNotFoundException('No books found', [
@@ -69,26 +67,11 @@ exports.getAllNewArrivals = async (req, res) => {
   );
 };
 
-// exports.getBookById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     if (!id) {
-//       return res.status(400).json({ message: 'Book ID is required' });
-//     }
-
-//     const book = await Book.findById(id);
-
-//     if (!book) {
-//       return res.status(404).json({ message: 'Book not found' });
-//     }
-
-//     res.status(200).json({ message: 'Book fetched successfully', book });
-//   } catch (err) {
-//     console.error('error in fetching book by id', err);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// };
+exports.getBookById = async (req, res) => {
+  const { bookId } = req.params;
+  const book = await bookService.getBookById(bookId, req.user.userId.toString());
+  return ApiSuccessResponse(res, 200, 'book fetched successfully', book);
+};
 
 // exports.deleteBookById = async (req, res) => {
 //   try {

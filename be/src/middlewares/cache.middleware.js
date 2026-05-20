@@ -14,7 +14,6 @@ const cache = ({
       const cachedData = await redisClient.get(cacheKey);
 
       if (cachedData) {
-
         return res.status(200).json({
           success: true,
           source: "redis-cache",
