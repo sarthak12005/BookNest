@@ -5,8 +5,8 @@ const logger = require('./utils/logger');
 const runSeeder = require('./database/seeders/seedRequired');
 const PORT = process.env.PORT;
 
-connectDB();
 runSeeder();
+connectDB();
 
 app.listen(PORT, () => {
   logger.info(`Server is running on ${PORT}`);
