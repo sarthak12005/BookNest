@@ -1,17 +1,14 @@
 const mongoose = require('mongoose');
-
-const connectDB = require('../../config/db');
-
 const seedPermissions = require('./seedPermissions');
 const seedRoles = require('./seedRoles');
 const seedSuperAdmin = require('./seedSuperAdmin');
+const connectDB = require('../../config/db');
 
 const runSeeder = async () => {
   let session;
 
   try {
-    await connectDB();
-
+    connectDB();
     // start transaction
     session = await mongoose.startSession();
 
@@ -54,4 +51,4 @@ const runSeeder = async () => {
   }
 };
 
-runSeeder();
+module.exports = runSeeder;

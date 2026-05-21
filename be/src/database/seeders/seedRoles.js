@@ -41,8 +41,6 @@ const seedRoles = async (session) => {
     const allPermissions = await Permission.find()
       .session(session);
 
-    console.log(allPermissions);
-
     const AdminRole = await Role.findOneAndUpdate(
       { code: roleName },
       {
