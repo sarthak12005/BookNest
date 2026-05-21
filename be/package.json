@@ -9,7 +9,7 @@
     "dev": "nodemon src/index.js",
     "be": "nodemon src/index.js",
     "seed": "node src/database/seeders/seed.js",
-    "seed:permission": "node src/database/seeders/seedPermissions.js",
+    "seed:all": "node src/database/seeders/seedRequired.js",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "lint": "echo \"No lint tests \"",
     "build": "node --check src/index.js"

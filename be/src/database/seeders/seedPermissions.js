@@ -1,19 +1,9 @@
-const mongoose = require('mongoose');
 require('dotenv').config();
-
-// ✅ IMPORT MODEL (VERY IMPORTANT)
 const Permission = require('../../modules/Permissions/schemas/permissions.schema');
-
-// ✅ DB CONNECT
-async function connectDB() {
-  await mongoose.connect(process.env.MONGO_URI);
-  console.log('✅ DB Connected');
-}
 
 // ✅ PERMISSIONS LIST
 const permissions = [
 
-  // 🔥 System
   { name: 'SYSTEM ALL', code: 'SYSTEM_ALL' },
 
   // 📚 Books
@@ -111,25 +101,25 @@ const permissions = [
 ];
 
 // ✅ SEED FUNCTION
-async function seedPermissions() {
+async function seedPermissions(session) {
   try {
-    await connectDB();
 
     for (const perm of permissions) {
       await Permission.updateOne(
         { code: perm.code }, // check by code
         { $set: perm },
-        { upsert: true } // insert if not exists
+        { upsert: true, session } // insert if not exists
       );
     }
 
     console.log('✅ Permissions seeded successfully');
-    process.exit();
+
   } catch (error) {
     console.error('❌ Error seeding permissions:', error);
-    process.exit(1);
   }
 }
 
+
+
 // RUN
-seedPermissions();
+module.exports = seedPermissions;
