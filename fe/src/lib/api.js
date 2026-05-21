@@ -120,7 +120,7 @@ export const fetchNewArrivals = async () => {
 export const fetchSingleBookById = async (id) => {
   try {
     const res = await axiosInstance.get(`/books/${id}`);
-    return res?.data?.data?.data || null;
+    return res?.data?.data || null;
   } catch (error) {
     console.log(error);
     throw error;
