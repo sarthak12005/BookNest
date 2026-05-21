@@ -1,12 +1,15 @@
 // src/config/db.js
 
 const mongoose = require('mongoose');
+const { syncAllIndexes } = require('../utils/syncIndexes');
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       dbName: process.env.DB_NAME || 'myApp',
     });
+
+    await syncAllIndexes(conn.connection)
 
     console.log(`✅ MongoDB Connected!`);
   } catch (error) {
