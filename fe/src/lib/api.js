@@ -120,7 +120,7 @@ export const fetchNewArrivals = async () => {
 export const fetchSingleBookById = async (id) => {
   try {
     const res  = await axiosInstance.get(`/books/${id}`);
-    if (!res.status === 200) throw new Error("Failed to fetch");
+    if (!res) return null;
     return res.data.data.data;
   } catch (error) {
     console.log(error);
