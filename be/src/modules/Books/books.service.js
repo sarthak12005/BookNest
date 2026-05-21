@@ -123,17 +123,11 @@ exports.getBooks = async (filters,userId) => {
 
 exports.getBookById = async (id, userId) => {
    try {
-
-    console.log(
-      "before check the ", id, userId
-    )
      const checkBook = await bookRepo.checkBookExists(id);
 
      if (!checkBook) {
         throwNotFoundException("Book not found");
      }
-
-     console.log("checked the book exists and available")
 
     const book = await bookRepo.getBookById(id, userId);
 
@@ -141,13 +135,15 @@ exports.getBookById = async (id, userId) => {
        throwNotFoundException("Book not found");
     }
 
-    console.log("after fetching the book: ", book);
-
     const updateCount = await bookRepo.updateVeiwCount(id);
 
     if (!updateCount) {
        throwBadRequestException("failed to update count");
     }
+
+    // TODO: Add related products get api for get single book by id 
+
+    // TODO: implement logic of the book bundle 
 
     return book;
    } catch (error) {

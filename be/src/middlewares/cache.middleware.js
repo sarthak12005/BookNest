@@ -12,12 +12,14 @@ const cache = ({
 
       // check cache
       const cachedData = await redisClient.get(cacheKey);
+      const cachedDataJson = JSON.parse(cachedData);
 
       if (cachedData) {
         return res.status(200).json({
           success: true,
           source: "redis-cache",
-          data: JSON.parse(cachedData),
+          message: cachedDataJson.message,
+          data: cachedDataJson.data,
         });
       }
       // store original json method
