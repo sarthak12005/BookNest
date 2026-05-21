@@ -109,9 +109,9 @@ export const addToWishList = async (bookId) => {
 
 export const fetchNewArrivals = async () => {
   try {
-     const res = await axiosInstance.get(`/books/new-arrivals?limit=${10}`);
-  if (!res.status === 200) throw new Error("Failed to fetch");
-  return res.data.data;
+    const res = await axiosInstance.get(`/books/new-arrivals?limit=${10}`);
+    if (!res.status === 200) throw new Error('Failed to fetch');
+    return res.data.data;
   } catch (error) {
     console.log(error);
   }
@@ -119,10 +119,10 @@ export const fetchNewArrivals = async () => {
 
 export const fetchSingleBookById = async (id) => {
   try {
-    const res  = await axiosInstance.get(`/books/${id}`);
-    if (!res.status === 200) throw new Error("Failed to fetch");
-    return res.data.data.data;
+    const res = await axiosInstance.get(`/books/${id}`);
+    return res?.data?.data?.data || null;
   } catch (error) {
     console.log(error);
+    throw error;
   }
-}
+};

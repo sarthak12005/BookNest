@@ -123,17 +123,25 @@ exports.getBooks = async (filters,userId) => {
 
 exports.getBookById = async (id, userId) => {
    try {
+
+    console.log(
+      "before check the ", id, userId
+    )
      const checkBook = await bookRepo.checkBookExists(id);
 
      if (!checkBook) {
         throwNotFoundException("Book not found");
      }
 
+     console.log("checked the book exists and available")
+
     const book = await bookRepo.getBookById(id, userId);
 
     if (!book) {
        throwNotFoundException("Book not found");
     }
+
+    console.log("after fetching the book: ", book);
 
     const updateCount = await bookRepo.updateVeiwCount(id);
 

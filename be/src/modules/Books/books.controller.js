@@ -68,6 +68,7 @@ exports.getAllNewArrivals = async (req, res) => {
 };
 
 exports.getBookById = async (req, res) => {
+  console.log("request come here");
   const { bookId } = req.params;
   const book = await bookService.getBookById(bookId, req.user.userId.toString());
   return ApiSuccessResponse(res, 200, 'book fetched successfully', book);
