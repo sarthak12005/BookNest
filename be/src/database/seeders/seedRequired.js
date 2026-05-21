@@ -26,8 +26,6 @@ const runSeeder = async () => {
 
     console.log('✅ All Seeders Executed Successfully');
 
-    process.exit(0);
-
   } catch (error) {
 
     console.log('❌ Seeder Failed');
@@ -39,8 +37,6 @@ const runSeeder = async () => {
     }
 
     console.log('🔄 Rolled Back All Changes');
-
-    process.exit(1);
 
   } finally {
 
