@@ -7,6 +7,7 @@ import RelatedBooks from "../components/books_id/RelatedBooks";
 import BundleSection from "../components/books_id/BundleSection";
 import { useParams } from "react-router-dom";
 import { fetchSingleBookById } from "../lib/api";
+import BookPageSkeleton from "../components/books_id/skeletons/BookSkeleton";
 
 // const BOOK_DATA = {
 //   id: "atomic-habits",
@@ -148,15 +149,7 @@ const SingleBookPage = () => {
   // =========================
   if (loading) {
 
-    return (
-
-      <div className="min-h-screen flex items-center justify-center">
-        <h1 className="text-lg font-semibold">
-          Loading...
-        </h1>
-      </div>
-
-    );
+    return <BookPageSkeleton/>;
 
   }
 
