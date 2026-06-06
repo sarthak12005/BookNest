@@ -93,7 +93,7 @@ const Sidebar = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    // navigate(`/books?search=${searchQuery}`);
+                    navigate(`/books?search=${searchQuery}`);
                     setOpenSearch(false);
                   }
                 }}
@@ -102,7 +102,7 @@ const Sidebar = () => {
 
               <button
                 onClick={() => {
-                  // navigate(`/books?search=${searchQuery}`);
+                  navigate(`/books?search=${searchQuery}`);
                   setOpenSearch(false);
                 }}
                 className="text-blue-500 hover:text-blue-600"

@@ -16,10 +16,9 @@ const cache = ({
 
       if (cachedData) {
         return res.status(200).json({
+          ...cachedDataJson,
           success: true,
           source: "redis-cache",
-          message: cachedDataJson.message,
-          data: cachedDataJson.data,
         });
       }
       // store original json method

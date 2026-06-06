@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const buildBookQuery = (filters) => {
   const {
     search,
@@ -26,12 +28,6 @@ const buildBookQuery = (filters) => {
         },
       },
 
-      {
-        author: {
-          $regex: search,
-          $options: 'i',
-        },
-      },
 
       {
         description: {
@@ -49,19 +45,15 @@ const buildBookQuery = (filters) => {
 
       {
         tags: {
-          $elemMatch: {
-            $regex: search,
-            $options: 'i',
-          },
+          $regex: search,
+          $options: 'i',
         },
       },
 
       {
         searchKeywords: {
-          $elemMatch: {
-            $regex: search,
-            $options: 'i',
-          },
+          $regex: search,
+          $options: 'i',
         },
       },
     ];
@@ -69,7 +61,7 @@ const buildBookQuery = (filters) => {
 
   // 📚 Category
   if (category) {
-    query.category = category;
+    query.category = new mongoose.Types.ObjectId(category);
   }
 
   // 💰 Price

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { addToWishList, fetchBestsellingBooks } from '../../lib/api';
 import { calculateDiscount } from '../../lib/helper';
+import { useNavigate } from 'react-router-dom';
 
 // ── API helper ────────────────────────────────────────────────────────────────
 const TAB_TYPES = {
@@ -142,9 +143,9 @@ const BadgeLabel = ({ type }) => {
 const BookCard = ({ book, onAddToCart }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [adding, setAdding] = useState(false);
-  const [wishlisted, setWishlisted] = useState(
-  book?.wishlisted || false
-);
+  const [wishlisted, setWishlisted] = useState(book?.wishlisted || false);
+
+  const navigate = useNavigate();
 
   const handleAdd = async () => {
     setAdding(true);
@@ -218,7 +219,7 @@ const BookCard = ({ book, onAddToCart }) => {
       </button>
 
       {/* Cover image */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 aspect-[4/3]">
+      <div className="relative overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 aspect-[4/3]"onClick={() => navigate(`/books/${book._id}`)}>
         {!imgLoaded && (
           <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%]" />
         )}
