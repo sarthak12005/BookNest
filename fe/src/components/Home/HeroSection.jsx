@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { Pyramid, RefreshCcwDotIcon, TruckIcon, UserRoundCheckIcon } from 'lucide-react';
 import FloatingGrid from './FramerGrid';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="w-full bg-gradient-to-br from-[#d4e6fa] to-white">
       {/* ✅ TOP 80vh HEIGHT SECTION */}
@@ -19,10 +21,16 @@ const HeroSection = () => {
             </p>
 
             <div className="flex gap-4">
-              <button className="bg-yellow-500 px-5 py-3 rounded-[17px] text-white font-semibold hover:bg-yellow-600">
+              <button
+                onClick={() => navigate('/books')}
+                className="bg-yellow-500 px-5 py-3 rounded-[17px] text-white font-semibold hover:bg-yellow-600 cursor-pointer"
+              >
                 Shop Bestsellers
               </button>
-              <button className="bg-transparent px-5 py-3 rounded-[17px] text-blue-500 border-2 border-blue-400 hover:bg-blue-400 hover:text-white font-semibold">
+              <button
+                onClick={() => navigate('/categories')}
+                className="bg-transparent px-5 py-3 rounded-[17px] text-blue-500 border-2 border-blue-400 hover:bg-blue-400 hover:text-white font-semibold cursor-pointer"
+              >
                 Browse Categories
               </button>
             </div>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star, ShoppingCart, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { addToCart } from '../../lib/api';
+import { addToCart, addToWishList } from '../../lib/api';
 
 const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating || 5);
@@ -20,8 +20,9 @@ const StarRating = ({ rating }) => {
   );
 };
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, coverAspect = 'aspect-[3/4]', className = '' }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [wishlisted, setWishlisted] = useState(book.wishlisted || false);
   const navigate = useNavigate();
 
   // Price formatting
@@ -45,13 +46,27 @@ const BookCard = ({ book }) => {
     }
   };
 
+  const handleWishlist = async (e) => {
+    e.stopPropagation();
+    try {
+      const res = await addToWishList(book._id);
+      if (res?.status === 200) {
+        toast.success(res?.data?.message || 'Wishlist updated');
+        setWishlisted(res?.data?.data?.wishlisted ?? !wishlisted);
+      }
+    } catch (error) {
+      console.error('Wishlist error:', error);
+      toast.error(error?.response?.data?.message || 'Failed to update wishlist');
+    }
+  };
+
   return (
     <div
       onClick={handleCardClick}
-      className="group bg-white rounded-3xl p-4 flex flex-col cursor-pointer transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100/50 hover:border-slate-200/50"
+      className={`group bg-white rounded-3xl p-4 flex flex-col cursor-pointer transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100/50 hover:border-slate-200/50 ${className}`}
     >
       {/* Cover Image Container */}
-      <div className="relative aspect-[3/4] w-full rounded-2xl bg-[#f8fafd] overflow-hidden flex items-center justify-center p-3 shadow-inner">
+      <div className={`relative ${coverAspect} w-full rounded-2xl bg-[#f8fafd] overflow-hidden flex items-center justify-center p-3 shadow-inner`}>
         {/* Badges Stacked Vertically */}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5 items-start">
           {isBestSeller && (
@@ -70,6 +85,27 @@ const BookCard = ({ book }) => {
           )}
         </div>
 
+        {/* Wishlist Button */}
+        <button
+          onClick={handleWishlist}
+          className={`
+            absolute top-3 right-3 z-10
+            w-8 h-8
+            flex items-center justify-center
+            rounded-full
+            backdrop-blur-sm
+            transition-all duration-200
+            shadow-sm border border-slate-100/50 cursor-pointer active:scale-90
+            ${
+              wishlisted
+                ? 'bg-red-50 text-red-500 hover:bg-red-100'
+                : 'bg-white/80 text-slate-400 hover:bg-red-50 hover:text-red-500'
+            }
+          `}
+        >
+          <Heart size={15} fill={wishlisted ? 'currentColor' : 'none'} />
+        </button>
+
         {/* Skeleton placeholder */}
         {!imgLoaded && (
           <div className="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-50 to-slate-100 animate-pulse" />
@@ -77,9 +113,13 @@ const BookCard = ({ book }) => {
 
         {/* Book Cover */}
         <img
-          src={book.coverImages?.[0] || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500'}
+          src={book.coverImages?.[0] || book.image || book.thumbnail || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500'}
           alt={book.title}
           onLoad={() => setImgLoaded(true)}
+          onError={(e) => {
+            setImgLoaded(true);
+            e.target.src = 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500';
+          }}
           className={`h-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)] transition-transform duration-500 group-hover:scale-[1.04] ${
             imgLoaded ? 'opacity-100' : 'opacity-0'
           }`}
