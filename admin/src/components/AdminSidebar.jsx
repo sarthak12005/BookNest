@@ -18,15 +18,15 @@ import { useAdminUser } from '../context/useAdminUser';
 import { logoutAdmin } from '../lib/api';
 
 const NAV_ITEMS = [
-  { label: 'Dashboard',   path: '/',               icon: LayoutDashboard },
-  { label: 'Books',       path: '/books',           icon: BookOpen },
-  { label: 'Categories',  path: '/categories',      icon: Tag },
-  { label: 'Users',       path: '/users',           icon: Users },
-  { label: 'Orders',      path: '/orders',          icon: ShoppingCart },
-  { label: 'Reviews',     path: '/reviews',         icon: Star },
-  { label: 'Roles',       path: '/roles',           icon: ShieldCheck },
-  { label: 'Permissions', path: '/permissions',     icon: Key },
-  { label: 'Analytics',   path: '/analytics',       icon: BarChart3 },
+  { label: 'Dashboard', path: '/', icon: LayoutDashboard },
+  { label: 'Books', path: '/books', icon: BookOpen },
+  { label: 'Categories', path: '/categories', icon: Tag },
+  { label: 'Users', path: '/users', icon: Users },
+  { label: 'Orders', path: '/orders', icon: ShoppingCart },
+  { label: 'Reviews', path: '/reviews', icon: Star },
+  { label: 'Roles', path: '/roles', icon: ShieldCheck },
+  { label: 'Permissions', path: '/permissions', icon: Key },
+  { label: 'Analytics', path: '/analytics', icon: BarChart3 },
 ];
 
 const AdminSidebar = () => {
@@ -57,8 +57,8 @@ const AdminSidebar = () => {
       {/* Navigation */}
       <ul className="sidebar-menu">
         {NAV_ITEMS.map(({ label, path, icon: Icon }) => {
-          const isActive = location.pathname === path ||
-            (path !== '/' && location.pathname.startsWith(path));
+          const isActive =
+            location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
           return (
             <li
               key={path}

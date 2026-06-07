@@ -39,9 +39,6 @@ const getBooksQueryZodSchema = z.object({
       invalid_type_error: "search must be a string",
     })
     .trim()
-    .min(1, {
-      message: "search cannot be empty",
-    })
     .max(100, {
       message: "search cannot exceed 100 characters",
     })
@@ -179,24 +176,24 @@ const getBooksQueryZodSchema = z.object({
     .optional(),
 
 })
-.strict()
+  .strict()
 
-// 💰 Cross Validation
-.refine(
-  (data) => {
-    if (
-      data.minPrice !== undefined &&
-      data.maxPrice !== undefined
-    ) {
-      return data.minPrice <= data.maxPrice;
+  // 💰 Cross Validation
+  .refine(
+    (data) => {
+      if (
+        data.minPrice !== undefined &&
+        data.maxPrice !== undefined
+      ) {
+        return data.minPrice <= data.maxPrice;
+      }
+
+      return true;
+    },
+    {
+      message: "minPrice cannot be greater than maxPrice",
+      path: ["minPrice"],
     }
-
-    return true;
-  },
-  {
-    message: "minPrice cannot be greater than maxPrice",
-    path: ["minPrice"],
-  }
-);
+  );
 
 module.exports = getBooksQueryZodSchema;

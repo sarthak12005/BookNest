@@ -5,6 +5,7 @@ const {
 const { throwNotFoundException } = require('../../utils/errorResponse');
 const bookService = require('./books.service');
 const createBookZodSchema = require('./zod/create-book.zod');
+const updateBookZodSchema = require('./zod/update-book.zod');
 const getBooksQueryZodSchema = require('./zod/get-books.zod');
 
 exports.addBook = async (req, res) => {
@@ -74,23 +75,21 @@ exports.getBookById = async (req, res) => {
   return ApiSuccessResponse(res, 200, 'book fetched successfully', book);
 };
 
-// exports.deleteBookById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
+exports.updateBook = async (req, res) => {
+  const { bookId } = req.params;
+  const body = updateBookZodSchema.parse(req.body);
+  const response = await bookService.updateBook(bookId, body);
+  return ApiSuccessResponse(res, 200, 'Book updated successfully', response.data);
+};
 
-//     if (!id) {
-//       return res.status(400).json({ message: 'Book ID is required' });
-//     }
+exports.deleteBookById = async (req, res) => {
+  const { bookId } = req.params;
+  const response = await bookService.deleteBook(bookId);
+  return ApiSuccessResponse(res, 200, 'Book deleted successfully', response.data);
+};
 
-//     const book = await Book.findByIdAndDelete(id);
+exports.getAllAuthors = async (req, res) => {
+  const authors = await bookService.getAllAuthors();
+  return ApiSuccessResponse(res, 200, 'Fetched authors successfully', authors);
+};
 
-//     if (!book) {
-//       return res.status(404).json({ message: 'Book not found' });
-//     }
-
-//     res.status(200).json({ message: 'Book deleted successfully', book });
-//   } catch (error) {
-//     console.error('error in deleting book by id', error);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// };

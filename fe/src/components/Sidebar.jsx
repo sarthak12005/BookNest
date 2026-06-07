@@ -339,6 +339,10 @@ const Sidebar = () => {
 
                 {/* Profile */}
                 <button
+                  onClick={() => {
+                    navigate('/profile');
+                    setOpenProfile(false);
+                  }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-[13.5px] text-slate-700 
                    rounded-xl hover:bg-slate-50 transition-colors duration-150"
                 >

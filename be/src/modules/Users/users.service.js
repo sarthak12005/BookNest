@@ -6,6 +6,7 @@ const {
   throwUnauthorizedException,
   throwNotFoundException,
 } = require('../../utils/errorResponse');
+const { Types } = require('mongoose');
 const UserRepo = require('./users.repo');
 const RoleRepo = require('../Roles/roles.repo');
 const { compareHashPass } = require('../../lib/bcrypt');
@@ -168,4 +169,88 @@ exports.addToWishList = async (bookId, userId) => {
 exports.getWishlist = async (userId) => {
   return await UserRepo.getWishlist(userId);
 };
+
+exports.getUsersList = async (filters) => {
+  const { page = 1, limit = 10, search = '' } = filters;
+  
+  const query = { deleted: false };
+  if (search.trim()) {
+    query.$or = [
+      { fullName: new RegExp(search.trim(), 'i') },
+      { username: new RegExp(search.trim(), 'i') },
+      { email: new RegExp(search.trim(), 'i') },
+    ];
+  }
+
+  const skip = (page - 1) * limit;
+  const users = await UserRepo.getUsers({ query, skip, limit });
+  const totalUsers = await UserRepo.countUsers(query);
+  const totalPages = Math.ceil(totalUsers / limit);
+
+  return {
+    users,
+    pagination: {
+      total: totalUsers,
+      page,
+      limit,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    }
+  };
+};
+
+exports.getUserDetails = async (userId) => {
+  const user = await UserRepo.findUserById(userId);
+  if (!user) {
+    throwNotFoundException('User not found');
+  }
+  return user;
+};
+
+exports.updateUser = async (userId, data) => {
+  const checkUser = await UserRepo.findUserById(userId);
+  if (!checkUser) {
+    throwNotFoundException('User not found');
+  }
+
+  // Ensure email and password cannot be updated here
+  delete data.email;
+  delete data.password;
+
+  // Validate username uniqueness if updated
+  if (data.username) {
+    const existingUser = await UserRepo.findByUsernameExcludingUser(data.username, userId);
+    if (existingUser) {
+      throwBadRequestException('Username already taken', [
+        { field: 'username', message: 'This username is already in use' }
+      ]);
+    }
+  }
+
+  // Validate role if updated
+  if (data.role) {
+    const roleExists = await RoleRepo.findById(data.role);
+    if (!roleExists) {
+      throwNotFoundException('Role not found', [
+        { field: 'role', message: 'Role does not exist' }
+      ]);
+    }
+    data.role = new Types.ObjectId(data.role);
+  }
+
+  const updatedUser = await UserRepo.updateUser(userId, data);
+  return updatedUser;
+};
+
+exports.deleteUser = async (userId) => {
+  const checkUser = await UserRepo.findUserById(userId);
+  if (!checkUser) {
+    throwNotFoundException('User not found');
+  }
+
+  const deletedUser = await UserRepo.softDeleteUser(userId);
+  return deletedUser;
+};
+
 

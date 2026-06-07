@@ -1,4 +1,5 @@
 const Book = require('./schemas/books.schema');
+const Author = require('./schemas/author.schema');
 const bookRepo = require('./books.repo');
 const categoryRepo = require('../Categories/categories.repo')
 const { throwBadRequestException, throwNotFoundException } = require('../../utils/errorResponse');
@@ -149,4 +150,60 @@ exports.getBookById = async (id, userId) => {
    } catch (error) {
      throw error;
    }
-}
+};
+
+exports.updateBook = async (bookId, body) => {
+  // Check book exists
+  const checkBook = await bookRepo.checkBookExists(bookId);
+  if (!checkBook) {
+    throwNotFoundException("Book not found");
+  }
+
+  // Validate category if provided
+  if (body.category) {
+    const categoryExists = await categoryRepo.findCategoryById(body.category);
+    if (!categoryExists) {
+      throwNotFoundException("Category not found", [
+        { field: "category", message: "Category does not exist" }
+      ]);
+    }
+  }
+
+  const payload = { ...body };
+  if (body.category) {
+    payload.category = new Types.ObjectId(body.category);
+  }
+  if (body.author) {
+    // If author name or ID is updated, convert if it's an ObjectId or keep as string/ObjectId
+    if (/^[0-9a-fA-F]{24}$/.test(body.author)) {
+      payload.author = new Types.ObjectId(body.author);
+    }
+  }
+
+  const updatedBook = await bookRepo.updateBook(bookId, payload);
+  return {
+    success: true,
+    message: "Book updated successfully",
+    data: updatedBook,
+  };
+};
+
+exports.deleteBook = async (bookId) => {
+  const checkBook = await bookRepo.checkBookExists(bookId);
+  if (!checkBook) {
+    throwNotFoundException("Book not found");
+  }
+
+  const deletedBook = await bookRepo.deleteBook(bookId);
+  return {
+    success: true,
+    message: "Book deleted successfully",
+    data: deletedBook,
+  };
+};
+
+exports.getAllAuthors = async () => {
+  return await Author.find({ isActive: true }).sort({ name: 1 });
+};
+
+
