@@ -1,4 +1,4 @@
-const { addToWishList } = require('./users.service');
+const { addToWishList, getWishlist } = require('./users.service');
 const { ApiSuccessResponse } = require('../../utils/ApiSuccessResponse');
 // TODO: THIS FEATURE IS FOR ADMIN SO WE HAVE TO MOVE THIS TO ADMIN CONTROLLER
 // exports.getUsers = async (req, res) => {
@@ -61,3 +61,9 @@ exports.addToWishlist = async (req, res) => {
 
   return ApiSuccessResponse(res, 200, response.message, {wishlisted: response.wishlisted});
 };
+
+exports.getWishlist = async (req, res) => {
+  const wishlist = await getWishlist(req.user.userId);
+  return ApiSuccessResponse(res, 200, 'Wishlist fetched successfully', wishlist);
+};
+

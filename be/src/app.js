@@ -40,13 +40,17 @@ app.get('/api/server', (req, res) => {
 const authRoutes = require('./modules/Auth/auth.routes'); // auth routes
 const categoriesRoutes = require('./modules/Categories/categories.routes'); // category routes
 const booksRoutes = require('./modules/Books/books.routes'); // books routes 
-const usersRoutes = require('./modules/Users/users.route');// users routes
+const usersRoutes = require('./modules/Users/users.route'); // users routes
+const rolesRoutes = require('./modules/Roles/roles.routes'); // roles routes
+const permissionsRoutes = require('./modules/Permissions/permissions.routes'); // permissions routes
 const errorMiddleware = require('./middlewares/error.middleware');
 
 app.use('/api/auth', authRoutes); 
 app.use('/api/category', categoriesRoutes);
 app.use('/api/books', booksRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/roles', rolesRoutes);
+app.use('/api/permissions', permissionsRoutes);
 
 app.use(errorMiddleware);
 

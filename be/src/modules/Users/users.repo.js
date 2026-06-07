@@ -78,3 +78,11 @@ exports.removeFromWishlist = async (
   );
 
 };
+
+exports.getWishlist = async (userId) => {
+  const user_id = await toObjectIdOrThrow(userId);
+  const user = await User.findOne({ _id: user_id, deleted: false })
+    .populate('wishlist');
+  return user ? user.wishlist : [];
+};
+

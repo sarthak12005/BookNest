@@ -10,6 +10,8 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import { useUser } from './context/useUser';
 import SingleBookPage from './pages/SingleBookPage';
+import CartPage from './pages/CartPage';
+import WishlistPage from './pages/WishlistPage';
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -86,6 +88,26 @@ function App() {
         <ProtectedRoute>
           <Layout>
             <SingleBookPage />
+          </Layout>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: '/cart',
+      element: (
+        <ProtectedRoute>
+          <Layout>
+            <CartPage />
+          </Layout>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: '/wishlist',
+      element: (
+        <ProtectedRoute>
+          <Layout>
+            <WishlistPage />
           </Layout>
         </ProtectedRoute>
       ),

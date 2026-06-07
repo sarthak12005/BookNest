@@ -11,11 +11,15 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "axios": "^1.17.0",
     "lucide-react": "^1.17.0",
     "prettier": "^3.8.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.17.0"
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.17.0",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
