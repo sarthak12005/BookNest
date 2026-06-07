@@ -15,24 +15,19 @@ datasource db {
 model Order {
   id              String   @id @default(uuid())
 
-  // MongoDB User ID
   userId          String
 
   totalItems      Int
 
-  subtotal        Decimal  @db.Decimal(10, 2)
-  totalDiscount   Decimal  @default(0) @db.Decimal(10, 2)
-  tax             Decimal  @default(0) @db.Decimal(10, 2)
-  shippingCharge  Decimal  @default(0) @db.Decimal(10, 2)
-  totalAmount     Decimal  @db.Decimal(10, 2)
+  subtotal        Decimal  @db.Decimal(10,2)
+  totalDiscount   Decimal  @default(0) @db.Decimal(10,2)
+  tax             Decimal  @default(0) @db.Decimal(10,2)
+  shippingCharge  Decimal  @default(0) @db.Decimal(10,2)
+  totalAmount     Decimal  @db.Decimal(10,2)
 
   currency        String   @default("INR")
 
-  paymentMethod   PaymentMethod
   paymentStatus   PaymentStatus @default(PENDING)
-
-  transactionId   String?
-  paymentGateway  String?
   paidAt          DateTime?
 
   orderStatus     OrderStatus @default(PENDING)
@@ -51,6 +46,8 @@ model Order {
 
   items           OrderItem[]
   shippingAddress OrderAddress?
+
+  payments        Payment[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -116,12 +113,7 @@ enum PaymentMethod {
   ONLINE
 }
 
-enum PaymentStatus {
-  PENDING
-  SUCCESS
-  FAILED
-  REFUNDED
-}
+
 
 enum OrderStatus {
   PENDING
@@ -132,4 +124,76 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
   RETURNED
+}
+
+model Payment {
+  id                String   @id @default(uuid())
+
+  userId            String
+
+  orderId           String
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  razorpayOrderId   String   @unique
+  razorpayPaymentId String?  @unique
+
+  amount            Decimal  @db.Decimal(10, 2)
+  currency          String   @default("INR")
+
+  status            PaymentStatus
+  paymentMethod     PaymentMethod?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  audits            PaymentAudit[]
+
+  @@index([userId])
+  @@index([orderId])
+  @@index([status])
+  @@map("payments")
+}
+
+model PaymentAudit {
+  id                String   @id @default(uuid())
+
+  paymentId         String
+  payment           Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  eventType         PaymentAuditEvent
+
+  oldStatus         PaymentStatus?
+  newStatus         PaymentStatus?
+
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+
+  requestPayload    Json?
+  responsePayload   Json?
+
+  remarks           String?
+
+  createdAt         DateTime @default(now())
+
+  @@index([paymentId])
+  @@index([eventType])
+  @@map("payment_audits")
+}
+
+enum PaymentStatus {
+  CREATED
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum PaymentAuditEvent {
+  ORDER_CREATED
+  PAYMENT_ATTEMPTED
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  WEBHOOK_RECEIVED
+  REFUND_INITIATED
+  REFUND_COMPLETED
 }
