@@ -12,6 +12,7 @@ import { useUser } from './context/useUser';
 import SingleBookPage from './pages/SingleBookPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -108,6 +109,16 @@ function App() {
         <ProtectedRoute>
           <Layout>
             <WishlistPage />
+          </Layout>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: '/profile',
+      element: (
+        <ProtectedRoute>
+          <Layout>
+            <ProfilePage />
           </Layout>
         </ProtectedRoute>
       ),

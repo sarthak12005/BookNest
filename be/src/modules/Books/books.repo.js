@@ -82,3 +82,22 @@ exports.getBookById = async (bookId, userId) =>  {
   const book = await Book.aggregate(pipeline);
   return book[0] || null;
 }
+
+exports.updateBook = async (bookId, data) => {
+  const bookObjectId = await toObjectIdOrThrow(bookId);
+  return await Book.findOneAndUpdate(
+    { _id: bookObjectId, isDeleted: false },
+    data,
+    { new: true }
+  );
+};
+
+exports.deleteBook = async (bookId) => {
+  const bookObjectId = await toObjectIdOrThrow(bookId);
+  return await Book.findOneAndUpdate(
+    { _id: bookObjectId, isDeleted: false },
+    { isDeleted: true },
+    { new: true }
+  );
+};
+

@@ -148,6 +148,30 @@ export const fetchWishlist = async () => {
   }
 };
 
+export const fetchProfile = async () => {
+  try {
+    const res = await axiosInstance.get('/users/profile');
+    return res.data?.data;
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    throw error;
+  }
+};
+
+export const updateProfile = async (profileData) => {
+  try {
+    const res = await axiosInstance.patch('/users/profile', profileData);
+    if (res.status === 200) {
+      toast.success('Profile updated successfully!');
+      return res.data?.data;
+    }
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    toast.error(error.response?.data?.message || 'Failed to update profile');
+    throw error;
+  }
+};
+
 
 export const fetchNewArrivals = async () => {
   try {

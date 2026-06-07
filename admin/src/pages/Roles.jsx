@@ -6,7 +6,7 @@ import {
   softDeleteRole,
   fetchPermissions,
   setPermissionsOnRole,
-  assignRoleToUser
+  assignRoleToUser,
 } from '../lib/api';
 import {
   ShieldCheck,
@@ -24,7 +24,7 @@ import {
   ChevronRight,
   ShieldAlert,
   Save,
-  Users
+  Users,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -55,11 +55,11 @@ const Roles = () => {
   const [roleForm, setRoleForm] = useState({ name: '', code: '', isActive: true });
   const [roleErrors, setRoleErrors] = useState({});
   const [submittingRole, setSubmittingRole] = useState(false);
-  
+
   const [assignForm, setAssignForm] = useState({ userId: '', roleId: '' });
   const [assignErrors, setAssignErrors] = useState({});
   const [submittingAssign, setSubmittingAssign] = useState(false);
-  
+
   const [savingPermissions, setSavingPermissions] = useState(false);
 
   const loadRoles = async () => {
@@ -112,7 +112,9 @@ const Roles = () => {
   const handleOpenPermissions = (role) => {
     setSelectedRole(role);
     // Extract mapped IDs from populated permissions array
-    const mappedIds = role.permissions ? role.permissions.map(p => typeof p === 'object' ? p._id : p) : [];
+    const mappedIds = role.permissions
+      ? role.permissions.map((p) => (typeof p === 'object' ? p._id : p))
+      : [];
     setSelectedPermIds(mappedIds);
     setPermPanelOpen(true);
   };
@@ -165,7 +167,7 @@ const Roles = () => {
 
   const handleTogglePermission = (permId) => {
     if (selectedPermIds.includes(permId)) {
-      setSelectedPermIds(selectedPermIds.filter(id => id !== permId));
+      setSelectedPermIds(selectedPermIds.filter((id) => id !== permId));
     } else {
       setSelectedPermIds([...selectedPermIds, permId]);
     }
@@ -304,11 +306,21 @@ const Roles = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50/75 border-b border-slate-100">
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Role Name</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Role Code</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Permissions Count</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Role Name
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Role Code
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Permissions Count
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -488,7 +500,10 @@ const Roles = () => {
                   onChange={(e) => setRoleForm({ ...roleForm, isActive: e.target.checked })}
                   className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
                 />
-                <label htmlFor="isActive" className="text-sm font-semibold text-slate-700 cursor-pointer">
+                <label
+                  htmlFor="isActive"
+                  className="text-sm font-semibold text-slate-700 cursor-pointer"
+                >
                   Role is Active
                 </label>
               </div>
@@ -528,7 +543,8 @@ const Roles = () => {
                   Role Permissions
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Set permissions on role: <span className="font-semibold text-slate-600">{selectedRole.name}</span>
+                  Set permissions on role:{' '}
+                  <span className="font-semibold text-slate-600">{selectedRole.name}</span>
                 </p>
               </div>
               <button
@@ -544,13 +560,19 @@ const Roles = () => {
               {loadingPerms ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-3">
                   <Loader2 className="text-indigo-600 animate-spin" size={28} />
-                  <span className="text-slate-400 text-xs font-semibold">Loading system permissions...</span>
+                  <span className="text-slate-400 text-xs font-semibold">
+                    Loading system permissions...
+                  </span>
                 </div>
               ) : allPermissions.length === 0 ? (
                 <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
                   <ShieldAlert className="mx-auto text-slate-300 mb-2" size={32} />
-                  <p className="text-slate-500 text-xs font-semibold">No permissions created yet.</p>
-                  <p className="text-slate-400 text-[10px] mt-0.5">Create permissions first before assigning them.</p>
+                  <p className="text-slate-500 text-xs font-semibold">
+                    No permissions created yet.
+                  </p>
+                  <p className="text-slate-400 text-[10px] mt-0.5">
+                    Create permissions first before assigning them.
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-2.5">
@@ -561,9 +583,11 @@ const Roles = () => {
                         key={perm._id}
                         onClick={() => handleTogglePermission(perm._id)}
                         className={`flex items-start gap-3.5 p-3.5 rounded-xl border transition-all cursor-pointer select-none
-                          ${isChecked
-                            ? 'bg-indigo-50/40 border-indigo-200/80 shadow-[0_2px_8px_rgba(79,70,229,0.04)]'
-                            : 'bg-white border-slate-100 hover:bg-slate-50/50 hover:border-slate-200'}`}
+                          ${
+                            isChecked
+                              ? 'bg-indigo-50/40 border-indigo-200/80 shadow-[0_2px_8px_rgba(79,70,229,0.04)]'
+                              : 'bg-white border-slate-100 hover:bg-slate-50/50 hover:border-slate-200'
+                          }`}
                       >
                         <div className="mt-0.5 flex-shrink-0 text-indigo-600">
                           {isChecked ? (
@@ -574,13 +598,17 @@ const Roles = () => {
                         </div>
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="font-semibold text-slate-800 text-sm">{perm.name}</span>
+                            <span className="font-semibold text-slate-800 text-sm">
+                              {perm.name}
+                            </span>
                             <span className="font-mono text-[10px] font-bold text-slate-400 uppercase">
                               ({perm.code})
                             </span>
                           </div>
                           {perm.description && (
-                            <p className="text-xs text-slate-400 mt-1 leading-normal">{perm.description}</p>
+                            <p className="text-xs text-slate-400 mt-1 leading-normal">
+                              {perm.description}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -643,10 +671,14 @@ const Roles = () => {
             {/* Body */}
             <form onSubmit={handleAssignSubmit} className="p-6 space-y-4">
               <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Target Role</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  Target Role
+                </span>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="font-bold text-slate-700 text-sm">{selectedRole.name}</span>
-                  <span className="font-mono text-xs text-slate-400 font-bold">({selectedRole.code})</span>
+                  <span className="font-mono text-xs text-slate-400 font-bold">
+                    ({selectedRole.code})
+                  </span>
                 </div>
               </div>
 
@@ -655,7 +687,10 @@ const Roles = () => {
                   User ID (ObjectId)
                 </label>
                 <div className="relative">
-                  <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                  <Users
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+                    size={16}
+                  />
                   <input
                     type="text"
                     placeholder="e.g. 6480f7d54fa5a62e08e6471a"
@@ -671,7 +706,8 @@ const Roles = () => {
                   </p>
                 )}
                 <p className="text-[10px] text-slate-400 mt-1.5">
-                  Enter the 24-character hexadecimal database ID of the user you want to assign this role to.
+                  Enter the 24-character hexadecimal database ID of the user you want to assign this
+                  role to.
                 </p>
               </div>
 

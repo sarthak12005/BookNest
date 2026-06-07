@@ -86,3 +86,44 @@ exports.getWishlist = async (userId) => {
   return user ? user.wishlist : [];
 };
 
+exports.getUsers = async ({ query, skip, limit }) => {
+  return await User.find(query)
+    .populate('role')
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+};
+
+exports.countUsers = async (query) => {
+  return await User.countDocuments(query);
+};
+
+exports.updateUser = async (userId, data) => {
+  const user_id = await toObjectIdOrThrow(userId);
+  return await User.findOneAndUpdate(
+    { _id: user_id, deleted: false },
+    data,
+    { new: true }
+  ).populate('role');
+};
+
+exports.softDeleteUser = async (userId) => {
+  const user_id = await toObjectIdOrThrow(userId);
+  return await User.findOneAndUpdate(
+    { _id: user_id, deleted: false },
+    { deleted: true },
+    { new: true }
+  );
+};
+
+exports.findByUsernameExcludingUser = async (username, userId) => {
+  const user_id = await toObjectIdOrThrow(userId);
+  return await User.findOne({
+    username: username.toLowerCase(),
+    _id: { $ne: user_id },
+    deleted: false,
+  });
+};
+
+
+

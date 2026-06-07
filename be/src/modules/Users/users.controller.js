@@ -1,5 +1,5 @@
-const { addToWishList, getWishlist } = require('./users.service');
-const { ApiSuccessResponse } = require('../../utils/ApiSuccessResponse');
+const { addToWishList, getWishlist, getUsersList, getUserDetails, updateUser, deleteUser } = require('./users.service');
+const { ApiSuccessResponse, ApiPaginationSuccessResponse } = require('../../utils/ApiSuccessResponse');
 // TODO: THIS FEATURE IS FOR ADMIN SO WE HAVE TO MOVE THIS TO ADMIN CONTROLLER
 // exports.getUsers = async (req, res) => {
 //     try {
@@ -66,4 +66,39 @@ exports.getWishlist = async (req, res) => {
   const wishlist = await getWishlist(req.user.userId);
   return ApiSuccessResponse(res, 200, 'Wishlist fetched successfully', wishlist);
 };
+
+exports.getUsers = async (req, res) => {
+  const query = req.query;
+  const result = await getUsersList(query);
+  return ApiPaginationSuccessResponse(res, 200, 'Users fetched successfully', result.users, result.pagination);
+};
+
+exports.getUserById = async (req, res) => {
+  const { id } = req.params;
+  const user = await getUserDetails(id);
+  return ApiSuccessResponse(res, 200, 'User fetched successfully', user);
+};
+
+exports.updateUser = async (req, res) => {
+  const { id } = req.params;
+  const updatedUser = await updateUser(id, req.body);
+  return ApiSuccessResponse(res, 200, 'User updated successfully', updatedUser);
+};
+
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+  const deletedUser = await deleteUser(id);
+  return ApiSuccessResponse(res, 200, 'User deleted successfully', deletedUser);
+};
+
+exports.getMyProfile = async (req, res) => {
+  const user = await getUserDetails(req.user.userId);
+  return ApiSuccessResponse(res, 200, 'Profile fetched successfully', user);
+};
+
+exports.updateMyProfile = async (req, res) => {
+  const updatedUser = await updateUser(req.user.userId, req.body);
+  return ApiSuccessResponse(res, 200, 'Profile updated successfully', updatedUser);
+};
+
 

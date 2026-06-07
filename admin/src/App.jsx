@@ -5,6 +5,9 @@ import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './pages/Dashboard';
 import Roles from './pages/Roles';
 import Permissions from './pages/Permissions';
+import Books from './pages/Books';
+import Categories from './pages/Categories';
+import Users from './pages/Users';
 import Auth from './pages/Auth';
 import { Toaster } from 'react-hot-toast';
 
@@ -55,16 +58,13 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           {/* Scaffolds for other sidebar routes */}
           <Route
             path="/books"
             element={
               <ProtectedRoute>
-                <div className="p-8 bg-white rounded-2xl border border-slate-100 shadow-sm text-center py-20 max-w-4xl mx-auto mt-6">
-                  <h2 className="text-xl font-bold text-slate-800">Books Management</h2>
-                  <p className="text-slate-500 text-sm mt-2">Book catalog controls and stock management is coming soon.</p>
-                </div>
+                <Books />
               </ProtectedRoute>
             }
           />
@@ -72,10 +72,7 @@ function App() {
             path="/categories"
             element={
               <ProtectedRoute>
-                <div className="p-8 bg-white rounded-2xl border border-slate-100 shadow-sm text-center py-20 max-w-4xl mx-auto mt-6">
-                  <h2 className="text-xl font-bold text-slate-800">Categories Settings</h2>
-                  <p className="text-slate-500 text-sm mt-2">Category tags and configuration panels are coming soon.</p>
-                </div>
+                <Categories />
               </ProtectedRoute>
             }
           />
@@ -83,10 +80,7 @@ function App() {
             path="/users"
             element={
               <ProtectedRoute>
-                <div className="p-8 bg-white rounded-2xl border border-slate-100 shadow-sm text-center py-20 max-w-4xl mx-auto mt-6">
-                  <h2 className="text-xl font-bold text-slate-800">Users Directory</h2>
-                  <p className="text-slate-500 text-sm mt-2">Browse registered users, audit profiles, and inspect activity logs.</p>
-                </div>
+                <Users />
               </ProtectedRoute>
             }
           />
@@ -96,7 +90,9 @@ function App() {
               <ProtectedRoute>
                 <div className="p-8 bg-white rounded-2xl border border-slate-100 shadow-sm text-center py-20 max-w-4xl mx-auto mt-6">
                   <h2 className="text-xl font-bold text-slate-800">Orders & Invoices</h2>
-                  <p className="text-slate-500 text-sm mt-2">Track order fulfillment, process refunds, and view transactions.</p>
+                  <p className="text-slate-500 text-sm mt-2">
+                    Track order fulfillment, process refunds, and view transactions.
+                  </p>
                 </div>
               </ProtectedRoute>
             }
@@ -107,7 +103,9 @@ function App() {
               <ProtectedRoute>
                 <div className="p-8 bg-white rounded-2xl border border-slate-100 shadow-sm text-center py-20 max-w-4xl mx-auto mt-6">
                   <h2 className="text-xl font-bold text-slate-800">Reviews & Ratings Moderation</h2>
-                  <p className="text-slate-500 text-sm mt-2">Approve, flag, or inspect customer ratings and written reviews.</p>
+                  <p className="text-slate-500 text-sm mt-2">
+                    Approve, flag, or inspect customer ratings and written reviews.
+                  </p>
                 </div>
               </ProtectedRoute>
             }
@@ -118,7 +116,9 @@ function App() {
               <ProtectedRoute>
                 <div className="p-8 bg-white rounded-2xl border border-slate-100 shadow-sm text-center py-20 max-w-4xl mx-auto mt-6">
                   <h2 className="text-xl font-bold text-slate-800">Sales Analytics & Reports</h2>
-                  <p className="text-slate-500 text-sm mt-2">Track daily sales data, top selling genres, and revenue metrics.</p>
+                  <p className="text-slate-500 text-sm mt-2">
+                    Track daily sales data, top selling genres, and revenue metrics.
+                  </p>
                 </div>
               </ProtectedRoute>
             }
