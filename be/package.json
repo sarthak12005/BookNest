@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"No tests yet\"",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "dev": "prisma generate && nodemon src/index.js",
     "be": "nodemon src/index.js",
     "seed": "node src/database/seeders/seed.js",
     "seed:all": "node src/database/seeders/seedRequired.js",
