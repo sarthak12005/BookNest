@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Order {
+  id              String   @id @default(uuid())
+
+  // MongoDB User ID
+  userId          String
+
+  totalItems      Int
+
+  subtotal        Decimal  @db.Decimal(10, 2)
+  totalDiscount   Decimal  @default(0) @db.Decimal(10, 2)
+  tax             Decimal  @default(0) @db.Decimal(10, 2)
+  shippingCharge  Decimal  @default(0) @db.Decimal(10, 2)
+  totalAmount     Decimal  @db.Decimal(10, 2)
+
+  currency        String   @default("INR")
+
+  paymentMethod   PaymentMethod
+  paymentStatus   PaymentStatus @default(PENDING)
+
+  transactionId   String?
+  paymentGateway  String?
+  paidAt          DateTime?
+
+  orderStatus     OrderStatus @default(PENDING)
+
+  trackingId      String?
+  courierPartner  String?
+
+  orderedAt       DateTime @default(now())
+  deliveredAt     DateTime?
+  cancelledAt     DateTime?
+
+  isCancelled     Boolean @default(false)
+  isReturned      Boolean @default(false)
+
+  orderNotes      String?
+
+  items           OrderItem[]
+  shippingAddress OrderAddress?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([paymentStatus])
+  @@index([orderStatus])
+}
+
+model OrderItem {
+  id              String   @id @default(uuid())
+
+  orderId         String
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  // MongoDB Book ID
+  productId       String?
+
+  // Product Snapshot
+  title           String
+
+  price           Decimal  @db.Decimal(10, 2)
+  discountPrice   Decimal? @db.Decimal(10, 2)
+
+  quantity        Int
+
+  totalPrice      Decimal  @db.Decimal(10, 2)
+
+  coverImage      String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model OrderAddress {
+  id              String   @id @default(uuid())
+
+  orderId         String   @unique
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  fullName        String
+  phone           String
+
+  addressLine1    String
+  addressLine2    String?
+
+  city            String
+  state           String
+  country         String
+
+  pincode         String
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+
+enum PaymentMethod {
+  COD
+  ONLINE
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PACKED
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  RETURNED
+}
