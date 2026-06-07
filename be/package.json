@@ -12,7 +12,7 @@
     "seed:all": "node src/database/seeders/seedRequired.js",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "lint": "echo \"No lint tests \"",
-    "build": "node --check src/index.js"
+    "build": "prisma generate && node --check src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@casl/ability": "^6.7.3",
     "@casl/mongoose": "^8.0.3",
+    "@prisma/client": "^7.8.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
@@ -36,5 +37,8 @@
     "redis": "^5.10.0",
     "winston": "^3.19.0",
     "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "prisma": "^7.8.0"
   }
 }
