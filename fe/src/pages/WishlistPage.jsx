@@ -12,7 +12,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { addToCart, addToWishList } from '../lib/api';
+import { addToCart, addToWishList, fetchWishlist } from '../lib/api';
 import toast from 'react-hot-toast';
 
 // ─── DUMMY WISHLIST DATA (replace with real API later) ───────────────────────
@@ -257,8 +257,8 @@ const WishlistCard = ({ book, onRemove }) => {
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 const WishlistPage = () => {
-  const [books, setBooks] = useState(DUMMY_WISHLIST);
-  const [loading] = useState(false);
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('recent');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -267,10 +267,26 @@ const WishlistPage = () => {
   const [openSort, setOpenSort] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const getWishlistData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchWishlist();
+        setBooks(data);
+      } catch (err) {
+        console.error('Failed to load wishlist:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getWishlistData();
+  }, []);
+
   const handleRemove = (id) => {
     toast.success('Removed from wishlist');
     setBooks((prev) => prev.filter((b) => b._id !== id));
   };
+
 
   // ─── Filtering + Sorting ──────────────────────────────────────────────────
   const filtered = useMemo(() => {

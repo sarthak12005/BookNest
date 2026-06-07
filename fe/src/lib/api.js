@@ -138,6 +138,17 @@ export const addToWishList = async (bookId) => {
   }
 };
 
+export const fetchWishlist = async () => {
+  try {
+    const res = await axiosInstance.get('/users/wishlist');
+    return res.data?.data || [];
+  } catch (error) {
+    console.error('Error fetching wishlist:', error);
+    return [];
+  }
+};
+
+
 export const fetchNewArrivals = async () => {
   try {
     const res = await axiosInstance.get(`/books/new-arrivals?limit=${10}`);

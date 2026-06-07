@@ -164,3 +164,8 @@ exports.addToWishList = async (bookId, userId) => {
     wishlistCount: updatedUser.wishlist.length,
   };
 };
+
+exports.getWishlist = async (userId) => {
+  return await UserRepo.getWishlist(userId);
+};
+
