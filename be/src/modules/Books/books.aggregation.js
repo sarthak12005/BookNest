@@ -33,6 +33,24 @@ exports.getAllBooksAggregationPipeline = (
       },
     },
 
+    // ✍️ Author lookup
+    {
+      $lookup: {
+        from: "authors",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
+      },
+    },
+
+    // unwind author
+    {
+      $unwind: {
+        path: "$author",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
   ];
 
   // ❤️ Wishlist Logic
@@ -123,7 +141,7 @@ exports.getAllBooksAggregationPipeline = (
 
         title: 1,
         slug: 1,
-        author: 1,
+        author: { $ifNull: ["$author.name", "Unknown Author"] },
         shortDescription: 1,
         price: 1,
         discountPrice: 1,

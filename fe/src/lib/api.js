@@ -40,16 +40,46 @@ export const loginUser = async (loginData, navigate) => {
   }
 };
 
-export const fetchBooks = async () => {
+export const fetchBooks = async (filters = {}) => {
   try {
-    const response = await axiosInstance.get('/book/books');
-    if (!response.data) {
-      return [];
-    }
-    const books = response.data;
-    return books;
+    const params = {};
+    if (filters.page) params.page = String(filters.page);
+    if (filters.limit) params.limit = String(filters.limit);
+    if (filters.search) params.search = String(filters.search);
+    if (filters.category) params.category = String(filters.category);
+    if (filters.minPrice !== undefined) params.minPrice = String(filters.minPrice);
+    if (filters.maxPrice !== undefined) params.maxPrice = String(filters.maxPrice);
+    if (filters.minRating !== undefined) params.minRating = String(filters.minRating);
+    if (filters.inStock !== undefined) params.inStock = String(filters.inStock);
+    if (filters.sortBy) params.sortBy = String(filters.sortBy);
+    if (filters.sortOrder) params.sortOrder = String(filters.sortOrder);
+
+    const response = await axiosInstance.get('/books', { params });
+    
+    return {
+      books: response.data?.data || [],
+      pagination: response.data?.pagination || {
+        total: 0,
+        page: 1,
+        limit: 10,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPrevPage: false
+      }
+    };
   } catch (error) {
     console.error('Error fetching books:', error);
+    return {
+      books: [],
+      pagination: {
+        total: 0,
+        page: 1,
+        limit: 10,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPrevPage: false
+      }
+    };
   }
 };
 
@@ -66,16 +96,17 @@ export const addBook = async (data) => {
   }
 };
 
-export const fetchCategory = async () => {
+export const fetchCategory = async (page = 1, limit = 100) => {
   try {
-    const res = await axiosInstance.get('/category?page=1&limit=5');
+    const res = await axiosInstance.get(`/category?page=${page}&limit=${limit}`);
 
     if (!res.data.data) {
       return [];
     }
-    return res.data.data.data;
+    return res.data.data;
   } catch (error) {
-    console.log('Error in fetching categories');
+    console.log('Error in fetching categories:', error);
+    return [];
   }
 };
 
@@ -123,6 +154,20 @@ export const fetchSingleBookById = async (id) => {
     return res?.data?.data || null;
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+};
+
+export const addToCart = async (productId, quantity = 1) => {
+  try {
+    const res = await axiosInstance.post('/carts', { productId, quantity });
+    if (res.status === 200 || res.status === 201) {
+      toast.success('Added to Cart!');
+      return res.data;
+    }
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    toast.error(error.response?.data?.message || 'Failed to add to cart');
     throw error;
   }
 };

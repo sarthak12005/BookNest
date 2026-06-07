@@ -1,13 +1,31 @@
 import { Truck, RotateCcw, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { addToCart } from '../../lib/api';
 
 const BuyCard = ({ book }) => {
   const [qty, setQty] = useState('1');
   const [added, setAdded] = useState(false);
+  const [adding, setAdding] = useState(false);
 
-  const handleAddToCart = () => {
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+  const handleAddToCart = async () => {
+    setAdding(true);
+    try {
+      await addToCart(book._id, Number(qty));
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    } catch (error) {
+      // Handled inside helper
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  const handleBuyNow = async () => {
+    try {
+      await addToCart(book._id, Number(qty));
+      toast.success('Redirecting to checkout...');
+    } catch (error) {}
   };
 
 
@@ -44,11 +62,15 @@ const BuyCard = ({ book }) => {
         <div className="space-y-3">
           <button
             onClick={handleAddToCart}
-            className={`w-full py-3.5 rounded-2xl border-2 font-bold text-sm transition-all duration-200 active:scale-95 ${added ? 'border-green-500 text-green-600 bg-green-50' : 'border-blue-600 text-blue-600 hover:bg-blue-50'}`}
+            disabled={adding}
+            className={`w-full py-3.5 rounded-2xl border-2 font-bold text-sm transition-all duration-200 active:scale-95 disabled:opacity-60 ${added ? 'border-green-500 text-green-600 bg-green-50' : 'border-blue-600 text-blue-600 hover:bg-blue-50'}`}
           >
-            {added ? '✓ Added to Cart!' : 'Add to Cart'}
+            {adding ? 'Adding...' : added ? '✓ Added to Cart!' : 'Add to Cart'}
           </button>
-          <button className="w-full py-3.5 rounded-2xl bg-blue-600 text-white font-bold text-sm shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all duration-200 active:scale-95">
+          <button
+            onClick={handleBuyNow}
+            className="w-full py-3.5 rounded-2xl bg-blue-600 text-white font-bold text-sm shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all duration-200 active:scale-95"
+          >
             Buy Now
           </button>
         </div>

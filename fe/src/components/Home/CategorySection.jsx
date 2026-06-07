@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const CategorySection = ({ categories }) => {
+  const navigate = useNavigate();
   const scrollRef = useRef(null);
   const [index, setIndex] = useState(0);
 
@@ -68,7 +70,8 @@ const CategorySection = ({ categories }) => {
             {categories?.map((cat, i) => (
               <div
                 key={i}
-                className="min-w-[270px] h-[230px]  rounded-2xl relative overflow-hidden shadow-lg cursor-pointer transform hover:rotate-3"
+                onClick={() => navigate(`/books?category=${cat._id}`)}
+                className="min-w-[270px] h-[230px] rounded-2xl relative overflow-hidden shadow-lg cursor-pointer transform hover:scale-[1.02] hover:rotate-1 transition-all duration-300"
                 style={{
                   backgroundImage: `url(${cat.image})`,
                   backgroundSize: 'cover',
@@ -77,7 +80,7 @@ const CategorySection = ({ categories }) => {
               >
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/30 p-6 flex flex-col justify-end text-white">
-                  <h3 className="text-2xl font-semibold">{cat.category_name}</h3>
+                  <h3 className="text-2xl font-semibold">{cat.name || cat.category_name}</h3>
                   <p className="text-sm">{cat.description}</p>
                   <p className="mt-3 text-sm underline flex items-center gap-1">Shop now →</p>
                 </div>
