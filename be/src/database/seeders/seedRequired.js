@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const seedPermissions = require('./seedPermissions');
 const seedRoles = require('./seedRoles');
 const seedSuperAdmin = require('./seedSuperAdmin');
+const seedCategories = require('./seedCategories');
 const connectDB = require('../../config/db');
 
 const runSeeder = async () => {
@@ -20,6 +21,8 @@ const runSeeder = async () => {
     await seedRoles(session);
 
     await seedSuperAdmin(session);
+
+    await seedCategories(session);
 
     // commit transaction
     await session.commitTransaction();
