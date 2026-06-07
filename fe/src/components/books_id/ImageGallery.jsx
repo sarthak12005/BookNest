@@ -1,10 +1,29 @@
 import { Heart } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { addToWishList } from '../../lib/api';
 import { calculateDiscount } from '../../lib/helper';
 
-const ImageGallery = ({ images, title, price, discountPrice, heart = false}) => {
+const ImageGallery = ({ bookId, images = [], title, price, discountPrice, heart = false}) => {
   const [active, setActive] = useState(0);
   const [wishlisted, setWishlisted] = useState(heart);
+
+  useEffect(() => {
+    setWishlisted(heart);
+  }, [heart]);
+
+  const handleWishlist = async () => {
+    try {
+      const res = await addToWishList(bookId);
+      if (res?.status === 200) {
+        toast.success(res?.data?.message || 'Wishlist updated');
+        setWishlisted(res?.data?.data?.wishlisted ?? !wishlisted);
+      }
+    } catch (error) {
+      console.error('Wishlist error:', error);
+      toast.error(error?.response?.data?.message || 'Failed to update wishlist');
+    }
+  };
 
   return (
     <div className="lg:col-span-4 flex gap-3">
@@ -33,7 +52,7 @@ const ImageGallery = ({ images, title, price, discountPrice, heart = false}) => 
           </span>
         </div>
         <button
-          onClick={() => setWishlisted((w) => !w)}
+          onClick={handleWishlist}
           className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow transition-transform hover:scale-110"
         >
           <Heart

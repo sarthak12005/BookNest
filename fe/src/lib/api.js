@@ -158,9 +158,9 @@ export const fetchSingleBookById = async (id) => {
   }
 };
 
-export const addToCart = async (bookId) => {
+export const addToCart = async (productId, quantity = 1) => {
   try {
-    const res = await axiosInstance.post('/carts', { bookId });
+    const res = await axiosInstance.post('/carts', { productId, quantity });
     if (res.status === 200 || res.status === 201) {
       toast.success('Added to Cart!');
       return res.data;

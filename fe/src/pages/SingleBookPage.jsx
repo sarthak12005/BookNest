@@ -93,6 +93,7 @@ const SingleBookPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
           <ImageGallery
+            bookId={book?._id}
             images={book?.coverImages}
             title={book?.title}
             price={book?.price}
